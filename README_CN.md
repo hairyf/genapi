@@ -2,7 +2,29 @@
 
 > [English](./README.md) | 中文
 
-API管道生成器，用于将OpenApi（v2~v3）和其他输入源转换为TS/JS API，目前支持 axios 模板。
+API管道生成器，用于将OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持 axios 模板。
+
+`apipgen` 由管道理念开发，将来作为通用的 `api` 生成工具使用，不局限于 `swagger/axios`。
+
+```ts
+const process = configs.map(
+  pPipe(
+    // 外模式 - 配置转换
+    config => parserTsConfig(config),
+    // 外模式 - 数据原
+    configRead => dataSource(configRead),
+    // 外模式 - 转模式
+    configRead => JSONParser(configRead),
+    // 模式   - 转内模式
+    configRead => tsCompiler(configRead),
+    // 内模式 - 转视图
+    configRead => generate(configRead),
+    // 视图   - 输出文件
+    configRead => dest(configRead),
+  ),
+)
+await Promise.all(process)
+```
 
 ## ⚙️ Install
 

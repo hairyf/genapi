@@ -4,7 +4,27 @@
 
 API pipeline generator, which is used to convert OpenApi (v2~v3) and other input sources into TS/JS APIs, and currently supports axios templates
 
-> `apipgen` is developed by the pipeline concept and will be used as a general api generation tool in the future, not limited to swagger/axios.
+`apipgen` is developed by the pipeline concept and will be used as a general api generation tool in the future, not limited to `swagger/axios`.
+
+```ts
+const process = configs.map(
+  pPipe(
+    // 外模式 - 配置转换
+    config => parserTsConfig(config),
+    // 外模式 - 数据原
+    configRead => dataSource(configRead),
+    // 外模式 - 转模式
+    configRead => JSONParser(configRead),
+    // 模式   - 转内模式
+    configRead => tsCompiler(configRead),
+    // 内模式 - 转视图
+    configRead => generate(configRead),
+    // 视图   - 输出文件
+    configRead => dest(configRead),
+  ),
+)
+await Promise.all(process)
+```
 
 ## ⚙️ Install
 
