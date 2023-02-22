@@ -9,17 +9,17 @@ API pipeline generator, which is used to convert OpenApi (v2~v3) and other input
 ```ts
 const process = configs.map(
   pPipe(
-    // 外模式 - 配置转换
+    // external mode - config conver
     config => parserTsConfig(config),
-    // 外模式 - 数据原
+    // external mode - data source
     configRead => dataSource(configRead),
-    // 外模式 - 转模式
+    // external mode - to mode
     configRead => JSONParser(configRead),
-    // 模式   - 转内模式
+    // mode          - to internal mode
     configRead => tsCompiler(configRead),
-    // 内模式 - 转视图
+    // internal mode - to view
     configRead => generate(configRead),
-    // 视图   - 输出文件
+    // view          - dest file
     configRead => dest(configRead),
   ),
 )
