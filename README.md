@@ -4,7 +4,7 @@
 
 API pipeline generator, which is used to convert OpenApi (v2~v3) and other input sources into TS/JS APIs, and currently supports axios templates
 
-> `apipgen` is developed by the pipeline concept and will be used as a general api generation tool in the future, not limited to `swagger/axios`.
+> `apipgen` is developed by the pipeline concept and will be used as a general api generation tool in the future, not limited to swagger/axios.
 
 ## ⚙️ Install
 
