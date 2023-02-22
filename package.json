@@ -1,0 +1,50 @@
+{
+  "name": "apipgen",
+  "version": "0.0.1",
+  "description": "Generator Api",
+  "author": "Hairy",
+  "license": "ISC",
+  "keywords": [
+    "api-generator",
+    "swagger",
+    "typescript"
+  ],
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "index.js",
+    "types": "./index.d.ts"
+  },
+  "scripts": {
+    "build": "ptsup -r src --dts --meta --clean"
+  },
+  "bin": {
+    "apipgen": "./bin/index.js"
+  },
+  "dependencies": {
+    "@phenomnomnominal/tsquery": "^5.0.0",
+    "axios": "^1.3.3",
+    "cac": "^6.7.14",
+    "chalk": "^5.2.0",
+    "fs-extra": "^11.1.0",
+    "lodash": "^4.17.21",
+    "ora": "^5",
+    "p-pipe": "^4.0.0",
+    "pascal-case": "^3.1.2",
+    "prettier": "^2.8.4",
+    "transliteration": "^2.3.5",
+    "typescript": "4.6.4",
+    "unconfig": "^0.3.7"
+  },
+  "devDependencies": {
+    "ptsup": "^0.3.1",
+    "@types/lodash": "^4.14.191",
+    "@antfu/eslint-config": "^0.35.2",
+    "@types/fs-extra": "^11.0.1",
+    "@types/node": "^18.14.0",
+    "@types/prettier": "^2.7.2",
+    "bumpp": "^8.2.1",
+    "esbuild": "^0.17.10",
+    "esbuild-register": "^3.4.2",
+    "eslint": "^8.34.0"
+  }
+}
