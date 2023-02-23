@@ -8,7 +8,7 @@ export interface ParserRequestOptions {
   /**
    * 文件注释
    */
-  jsonDocs: { type: 'single' | 'docs'; comment: string[] | string }[]
+  jsonDocs: { type: 'single' | 'multi'; comment: string[] | string }[]
   /**
    * http 导入
    */
@@ -46,7 +46,7 @@ export interface ParserTypingsOptions {
   /**
    * 文件注释
    */
-  jsonDocs: { type: 'single' | 'docs'; comment: string[] | string }[]
+  jsonDocs: { type: 'single' | 'multi'; comment: string[] | string }[]
   /**
    * 类型列表
    */

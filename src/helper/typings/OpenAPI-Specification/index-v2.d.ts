@@ -1,4 +1,4 @@
-import { AtWillObject } from '@hairy/libcore'
+import { AtWillObject } from './common'
 import { Tag } from './tag'
 import { Paths } from './paths'
 import { Definitions, SecurityDefinitions } from './definitions'

@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import { useRefMap, varName } from '../helper/util'
 import type * as OpenAPITypes from '../../typings/OpenAPI-Specification'
-import { astNodeToCode, markBlockTypeAliasAliasDeclaration } from '../../compiler/helper/ts-util'
+import * as extra from '../../compiler/extra'
 
 export function helperPropertie(propertie: OpenAPITypes.Schema): string {
   if (propertie.originalRef)
@@ -35,8 +35,8 @@ export function helperPropertie(propertie: OpenAPITypes.Schema): string {
         description: item.description,
       }
     })
-    const nodes = markBlockTypeAliasAliasDeclaration(fields)
-    const code = astNodeToCode(nodes)
+    const nodes = extra.createTypeAliasBlock(fields)
+    const code = extra.astNodeToCode(nodes)
     return code.replace(/ \? {2}: /g, '?: ')
   }
   if (propertie.type === 'array')

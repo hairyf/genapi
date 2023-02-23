@@ -45,7 +45,7 @@ class OpenAPI_JSONParserFactory {
     const options = this.$options
     const jsonDocs: ParserRequestOptions['jsonDocs'] = [
       {
-        type: 'docs',
+        type: 'multi',
         comment: [
           `@title ${data.info.title}`,
           `@description ${data.info.description}`,

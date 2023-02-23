@@ -1,27 +1,27 @@
-import type ts from 'typescript'
+import ts from 'typescript'
 import { factory } from 'typescript'
+import * as extra from './extra'
 import type { ParserRequestOptions, ParserTypingsOptions } from '../typings/parser'
-import { makeFunctionDeclaration } from './helper/ts-function'
-import { handleRequestOptions } from './helper/ts-request'
-import { makeInterfaceDeclaration } from './helper/ts-interface'
-import { codeToAstNode, markComment, markImportDeclaration, markNamespaceImportDeclaration, markTypeAliasDeclaration, markVariableDeclarationConst } from './helper/ts-util'
+import { extendsRequestOptions } from './utils/ts-request'
+import { createMethodFunction } from './utils/ts-function'
 
 export function createTSRequestDeclaration(o: ParserRequestOptions, t?: ParserTypingsOptions) {
-  const jsonDocs = o.jsonDocs.map(item => markComment(item.comment, item.type))
+  const jsonDocs = o.jsonDocs.map(item => extra.createComment(item.type, item.comment))
 
-  handleRequestOptions(o)
+  extendsRequestOptions(o)
 
   const imports = [
-    markImportDeclaration(o.httpImport.name, o.httpImport.value, o.httpImport.imports),
-    o.typeImport && o.typeImport.value && markNamespaceImportDeclaration(o.typeImport.name, o.typeImport.value),
+    extra.createImport(o.httpImport.name, o.httpImport.imports, o.httpImport.value),
+    o.typeImport && o.typeImport.value && extra.createNamespaceImport(o.typeImport.name, o.typeImport.value),
   ]
 
+  
   const vars = [
-    o.typeConfig && o.typeConfig.type && markTypeAliasDeclaration(o.typeConfig.name!, o.typeConfig.type!),
-    o.baseURL && o.baseURL.value && markVariableDeclarationConst(o.baseURL.name!, o.baseURL.value),
+    o.typeConfig && o.typeConfig.type && extra.createTypeAlias(o.typeConfig.name!, o.typeConfig.type!),
+    o.baseURL && o.baseURL.value && extra.createVariable(ts.NodeFlags.Const, o.baseURL.name!, o.baseURL.value),
   ]
 
-  const functions = o.functions.flatMap(item => makeFunctionDeclaration(item as any))
+  const functions = o.functions.flatMap(item => createMethodFunction(item as any))
 
   const nodes = [
     ...jsonDocs,
@@ -34,8 +34,8 @@ export function createTSRequestDeclaration(o: ParserRequestOptions, t?: ParserTy
   ].filter(Boolean) as ts.Node[]
 
   if (t) {
-    const response = codeToAstNode(`export type Response<T> = ${t.responseType || 'T'}`)
-    const typings = t.typings.map(v => makeInterfaceDeclaration(v))
+    const response = extra.codeToAstNode(`export type Response<T> = ${t.responseType || 'T'}`)
+    const typings = t.typings.map(v => extra.createInterface(v))
     nodes.push(factory.createIdentifier(''))
     nodes.push(factory.createIdentifier(''))
     nodes.push(response)

@@ -1,11 +1,12 @@
 import { format } from 'prettier'
 import type { OpenAPIBuildConfigurationRead } from '../typings/generator'
-import { astNodeToCode } from '../compiler/helper/ts-util'
+
+import * as extra from '../compiler/extra'
 
 export function generate(options: OpenAPIBuildConfigurationRead) {
   for (const output of options.outputs || []) {
     if (output.ast)
-      output.code = astNodeToCode(output.ast)
+      output.code = extra.astNodeToCode(output.ast)
     if (output.code)
       output.code = formatTypescript(output.code)
   }

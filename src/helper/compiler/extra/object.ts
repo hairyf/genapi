@@ -1,7 +1,12 @@
 import { factory } from 'typescript'
-import type { LiteralExpressionFiled } from './types'
+import type { LiteralFiled } from './types'
 
-export function markObjectLiteralExpression(filed: LiteralExpressionFiled) {
+/**
+ * create Object Literal Filed
+ * @example config, type: 'A', ...b
+ * @param filed 
+ */
+export function createObjectLiteral(filed: LiteralFiled) {
   if (typeof filed === 'string') {
     return factory.createShorthandPropertyAssignment(
       factory.createIdentifier(filed),

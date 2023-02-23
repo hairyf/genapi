@@ -1,4 +1,4 @@
-import { AtWillObject } from '@hairy/libcore'
+import { AtWillObject } from './common'
 import { Server } from './server'
 import { Tag } from './tag'
 import { Paths } from './paths'
@@ -18,7 +18,6 @@ export interface OpenAPISourceV3Json extends AtWillObject {
     description: string
     url: string
   }
-
   servers: Server[]
   tags: Tag[]
   paths: Paths

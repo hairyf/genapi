@@ -4,4 +4,4 @@ export interface StatementFiled {
   required?: boolean
   description?: string | string[] 
 }
-export type LiteralExpressionFiled = string | [string | '...', string]
+export type LiteralFiled = string | [string | '...', string]

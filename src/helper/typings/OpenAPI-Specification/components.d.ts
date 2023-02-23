@@ -1,4 +1,4 @@
-import { AtWillObject, StringObject } from '@hairy/libcore'
+import { AtWillObject, StringObject } from './common'
 import { Definitions } from './definitions'
 import { Schema } from './schema'
 

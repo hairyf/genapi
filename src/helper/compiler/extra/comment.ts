@@ -4,7 +4,7 @@ import ts, { factory } from 'typescript'
  * create line comment
  * @param doc line text
  */
-export function markSingleLineComment(doc: string) {
+export function createSingleLineComment(doc: string) {
   const typeDeclWithComment = ts.addSyntheticLeadingComment(
     factory.createIdentifier(''),
     ts.SyntaxKind.SingleLineCommentTrivia,
@@ -17,7 +17,7 @@ export function markSingleLineComment(doc: string) {
  * create Multi line comment
  * @param docs line text
  */
-export function markJSDocComment(docs: string[] | string) {
+export function createMultilineComment(docs: string[] | string) {
   if (!Array.isArray(docs))
     docs = [docs]
   if (docs.length === 1) {
@@ -35,9 +35,15 @@ export function markJSDocComment(docs: string[] | string) {
   )
   return comment as never
 }
-export function markComment(docs: string[] | string, type: 'single' | 'docs') {
+
+/**
+ * create Single/Multi comment
+ * @param type 
+ * @param docs 
+ */
+export function createComment(type: 'single' | 'multi', docs: string[] | string) {
   if (type === 'single' && typeof docs === 'string')
-    return markSingleLineComment(docs)
+    return createSingleLineComment(docs)
   else
-    return markJSDocComment(docs)
+    return createMultilineComment(docs)
 }

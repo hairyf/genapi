@@ -1,4 +1,6 @@
-import type { LiteralExpressionFiled, ParserRequestOptions, StatementFiled } from '../../typings/parser'
+import { factory } from 'typescript'
+import type { LiteralFiled, ParserRequestOptions, StatementFiled } from '../../typings/parser'
+import { createObjectLiteral } from '../extra'
 
 /**
  * 处理传入请求参数
@@ -7,7 +9,7 @@ import type { LiteralExpressionFiled, ParserRequestOptions, StatementFiled } fro
  * @param functions 添加 options / parameters
  * @param baseURL 添加 options
  */
-export function handleRequestOptions({
+export function extendsRequestOptions({
   baseURL,
   typeConfig,
   functions,
@@ -15,8 +17,8 @@ export function handleRequestOptions({
 }: ParserRequestOptions) {
   const commons = {
     parameters: [] as StatementFiled[],
-    before: [] as LiteralExpressionFiled[],
-    after: [] as LiteralExpressionFiled[],
+    before: [] as LiteralFiled[],
+    after: [] as LiteralFiled[],
   }
   if (baseURL)
     baseURL.name = baseURL.name ?? 'baseURL'
@@ -44,4 +46,34 @@ export function handleRequestOptions({
       ...commons.after,
     ]
   })
+}
+
+/**
+ * create Request Call
+ * @example [name]<[responseType]>({ filed })
+ * @param name 
+ * @param responseType 
+ * @param filed 
+ * @returns 
+ */
+export function createRequest(name: string, responseType: string, filed: LiteralFiled[]) {
+  return factory.createReturnStatement(
+    factory.createCallExpression(
+      factory.createPropertyAccessExpression(
+        factory.createIdentifier(name),
+        factory.createIdentifier('request'),
+      ),
+      [
+        factory.createTypeReferenceNode(
+          factory.createIdentifier(responseType),
+          undefined,
+        ),
+      ],
+      [
+        factory.createObjectLiteralExpression(
+          filed.map(createObjectLiteral),
+          false,
+        ),
+      ],
+    ))
 }

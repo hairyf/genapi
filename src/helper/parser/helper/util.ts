@@ -1,7 +1,7 @@
 import forIn from 'lodash/forIn'
 import { transliterate } from 'transliteration'
 import { pascalCase } from 'pascal-case'
-import type { LiteralExpressionFiled, StatementFiled } from '../../typings/parser'
+import type { LiteralFiled, StatementFiled } from '../../typings/parser'
 import type * as OpenAPITypes from '../../typings/OpenAPI-Specification'
 
 export interface TraverseParametersOptions {
@@ -160,7 +160,7 @@ export function createParametersHelpers() {
 
 export function createFunctionHelpers() {
   return {
-    options: [] as LiteralExpressionFiled[],
+    options: [] as LiteralFiled[],
     parameters: [] as StatementFiled[],
   }
 }

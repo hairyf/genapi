@@ -1,4 +1,4 @@
-import { StatementFiled, LiteralExpressionFiled } from './filed'
+import { StatementFiled, LiteralFiled } from './filed'
 export interface MethodFunctionOptions {
   /**
    * 方法名称
@@ -15,7 +15,7 @@ export interface MethodFunctionOptions {
   /**
    * 配置列表
    */
-  options: LiteralExpressionFiled[]
+  options: LiteralFiled[]
   /**
    * 函数调用 URL
    */
@@ -27,7 +27,7 @@ export interface MethodFunctionOptions {
   /**
    * jsonDocs
    */
-  jsonDocs?: string[] | string
+  comment?: string[] | string
   /**
    * 请求方法
    */
