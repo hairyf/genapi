@@ -55,6 +55,7 @@ export function markParameterDeclaration(o: StatementFiled) {
   return factory.createParameterDeclaration(
     undefined,
     undefined,
+    undefined,
     factory.createIdentifier(o.name),
     (typeof o.required === 'undefined' || o.required === false) ? factory.createToken(ts.SyntaxKind.QuestionToken) : undefined,
     factory.createTypeReferenceNode(o.type),
@@ -111,6 +112,7 @@ export function markRequestCall(name: string, responseType: string, filed: Liter
 export function markImportDeclaration(name: string, value: string, nameInputs?: string[]) {
   return factory.createImportDeclaration(
     undefined,
+    undefined,
     factory.createImportClause(
       false,
       factory.createIdentifier(name),
@@ -130,6 +132,7 @@ export function markImportDeclaration(name: string, value: string, nameInputs?: 
 }
 export function markImportsDeclaration(imports: string[], value: string) {
   return factory.createImportDeclaration(
+    undefined,
     undefined,
     factory.createImportClause(
       false,
@@ -163,6 +166,7 @@ export function markVariableDeclarationConst(name: string, value: string) {
 export function markTypeAliasDeclaration(name: string, value: string) {
   return factory.createTypeAliasDeclaration(
     undefined,
+    undefined,
     factory.createIdentifier(name),
     undefined,
     factory.createIdentifier(value) as any,
@@ -171,6 +175,7 @@ export function markTypeAliasDeclaration(name: string, value: string) {
 
 export function markNamespaceImportDeclaration(name: string, value: string) {
   return factory.createImportDeclaration(
+    undefined,
     undefined,
     factory.createImportClause(
       false,

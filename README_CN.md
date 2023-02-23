@@ -48,7 +48,7 @@ yarn add apipgen --dev
 - `api-generator.config.json`
 
 ```ts
-import { defineConfig } from 'ptsup'
+import { defineConfig } from 'apipgen'
 
 export default defineConfig({
   // 输入源(swagger url 或 swagger json)以及输出源
