@@ -1,6 +1,5 @@
-export * from './generator'
-export * from './method'
-export * from './output'
-export * from './parser'
+import { ApiPipeGen } from "./types"
 
-export { LiteralFiled, StatementFiled, StatementInterface } from '../compiler/extra'
+export { ApiPipeGen }
+
+export default ApiPipeGen

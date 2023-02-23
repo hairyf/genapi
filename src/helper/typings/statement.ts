@@ -58,6 +58,7 @@ export interface StatementFiled {
 export interface StatementImported {
   name?: string
   names?: string
+  namespace?: boolean
   value: string
 }
 
@@ -71,3 +72,5 @@ export interface StatementTypeAlias {
   name: string
   value: string
 }
+
+export type LiteralFiled = string | [string | '...', string]

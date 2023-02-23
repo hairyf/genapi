@@ -4,7 +4,7 @@
 
 API pipeline generator, which is used to convert OpenApi (v2~v3) and other input sources into TS/JS APIs, and currently supports axios templates
 
-`apipgen` is developed by the pipeline concept and will be used as a general api generation tool in the future, not limited to `swagger/axios`.
+`ApiPipeGen` is developed by the pipeline concept and will be used as a general api generation tool in the future, not limited to `swagger/axios`.
 
 ```ts
 const process = configs.map(
@@ -31,9 +31,9 @@ await Promise.all(process)
 Install it locally in your project folder:
 
 ```bash
-pnpm add apipgen -D
+pnpm add ApiPipeGen -D
 # Or Yarn
-yarn add apipgen --dev
+yarn add ApiPipeGen --dev
 ```
 
 You can also install it globally but it's not recommended.
@@ -42,13 +42,13 @@ You can also install it globally but it's not recommended.
 
 Currently, the CLI option is not provided, and the output content is determined by the config file. Currently, the following config files are supported:
 
-- `apipgen.config.ts`
-- `apipgen.config.js`
-- `apipgen.config.cjs`
-- `apipgen.config.json`
+- `ApiPipeGen.config.ts`
+- `ApiPipeGen.config.js`
+- `ApiPipeGen.config.cjs`
+- `ApiPipeGen.config.json`
 
 ```ts
-import { defineConfig } from 'apipgen'
+import { defineConfig } from 'ApiPipeGen'
 
 export default defineConfig({
   // your input source and output file (swagger api url or json)
@@ -67,8 +67,8 @@ export default defineConfig({
 ```
 
 ```sh
-# run apipgen
-pnpm apipgen
+# run ApiPipeGen
+pnpm ApiPipeGen
 ```
 
 ![cli-case](public/case.gif)
@@ -105,7 +105,7 @@ export default defineConfig({
 
 ## Other
 
-Sorry, I'm too lazy. You should know what else Apipgen can do from this list.
+Sorry, I'm too lazy. You should know what else ApiPipeGen can do from this list.
 
 - import (import related field aliases in the makefile - http or type)
 - paramsPartial (force all parameters to be optional)

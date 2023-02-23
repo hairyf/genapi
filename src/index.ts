@@ -1,9 +1,6 @@
 import ora from 'ora'
 import pPipe from 'p-pipe'
-import type {
-  OpenAPIBuildConfiguration,
-  OpenAPIDefineConfig,
-} from './helper'
+import type ApiPipeGen from './helper'
 import {
   JSONParser,
   dataSource,
@@ -13,12 +10,12 @@ import {
   tsCompiler,
 } from './helper'
 
-export interface OpenAPIWebClientGeneratorType {
-  (config: OpenAPIBuildConfiguration | OpenAPIBuildConfiguration[]): Promise<void>
+export interface ApiPipeWebClientGenerator {
+  (config: ApiPipeGen.Config | ApiPipeGen.Config[]): Promise<void>
 }
 
-export const openAPIWebClientGenerator: OpenAPIWebClientGeneratorType = async (config) => {
-  const configs: OpenAPIBuildConfiguration[] = Array.isArray(config) ? config : [config]
+export const openAPIWebClientGenerator: ApiPipeWebClientGenerator = async (config) => {
+  const configs: ApiPipeGen.Config[] = Array.isArray(config) ? config : [config]
   const spinner = ora('Generate OpenAPI File...\n').start()
 
   const process = configs.map(
@@ -49,6 +46,6 @@ export const openAPIWebClientGenerator: OpenAPIWebClientGeneratorType = async (c
  * @param config
  * @returns
  */
-export const defineConfig = (config: OpenAPIDefineConfig) => config
+export const defineConfig = (config: ApiPipeGen.DefineConfig) => config
 
 export * from './config'
