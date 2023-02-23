@@ -42,6 +42,7 @@ export function markJSDocComment(docs: string[] | string) {
     docs.join('\n'),
     [],
   )
+  ;(comment as any).name = factory.createIdentifier('')
   return comment as never
 }
 export function markComment(docs: string[] | string, type: 'single' | 'docs') {
@@ -158,6 +159,7 @@ export function markVariableDeclarationConst(name: string, value: string) {
     ts.NodeFlags.Const,
   ) as any as ts.TypeAliasDeclaration
 }
+
 export function markTypeAliasDeclaration(name: string, value: string) {
   return factory.createTypeAliasDeclaration(
     undefined,
@@ -166,6 +168,7 @@ export function markTypeAliasDeclaration(name: string, value: string) {
     factory.createIdentifier(value) as any,
   ) as any as ts.TypeAliasDeclaration
 }
+
 export function markNamespaceImportDeclaration(name: string, value: string) {
   return factory.createImportDeclaration(
     undefined,

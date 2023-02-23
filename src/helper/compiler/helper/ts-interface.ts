@@ -12,12 +12,19 @@ export function makeInterfaceDeclaration(o: InterfaceOptions) {
   // 方法名称
   const interfaceName = factory.createIdentifier(o.name)
   const properties: ts.PropertySignature[] = o.properties.flatMap((item) => {
+    const commit = item.description && markJSDocComment(item.description)
+    const property = markPropertySignature(item)
+    if (commit) {
+      (commit as any).name = property.name
+      ;(commit as any).type = property.type
+    }
     return [
-      item.description && markJSDocComment(item.description),
-      markPropertySignature(item),
+      commit,
+      property,
     ]
   })
     .filter(Boolean) as any
+
   return factory.createInterfaceDeclaration(
     [exportModifier],
     interfaceName,
