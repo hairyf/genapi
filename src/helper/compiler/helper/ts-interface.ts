@@ -19,7 +19,6 @@ export function makeInterfaceDeclaration(o: InterfaceOptions) {
   })
     .filter(Boolean) as any
   return factory.createInterfaceDeclaration(
-    undefined,
     [exportModifier],
     interfaceName,
     undefined,
