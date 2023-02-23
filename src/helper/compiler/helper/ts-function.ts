@@ -25,6 +25,7 @@ export function makeFunctionDeclaration(o: MethodFunctionOptions) {
     comment = markJSDocComment(o.jsonDocs)
 
   const node = factory.createFunctionDeclaration(
+    undefined,
     [exportModifier],
     undefined,
     functionName,
