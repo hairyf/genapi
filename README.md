@@ -48,7 +48,7 @@ Currently, the CLI option is not provided, and the output content is determined 
 - `api-generator.config.json`
 
 ```ts
-import { defineConfig } from 'ptsup'
+import { defineConfig } from 'apipgen'
 
 export default defineConfig({
   // your input source and output file (swagger api url or json)
