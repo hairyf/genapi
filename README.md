@@ -31,7 +31,7 @@ await Promise.all(process)
 Install it locally in your project folder:
 
 ```bash
-pnpm add apipgen --dev
+pnpm add apipgen -D
 # Or Yarn
 yarn add apipgen --dev
 ```
@@ -68,7 +68,7 @@ export default defineConfig({
 
 ```sh
 # run apipgen
-apipgen
+pnpm apipgen
 ```
 
 ![cli-case](public/case.gif)
