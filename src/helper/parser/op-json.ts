@@ -1,6 +1,6 @@
 import camelCase from 'lodash/camelCase'
 import forIn from 'lodash/forIn'
-import type { ParserRequestOptions, ParserTypingsOptions } from '../typings/parser'
+import type { StatementParserOptions } from '../typings/parser'
 import type * as OpenAPITypes from 'openapi-specification-types'
 import type { OpenAPIBuildConfigurationRead } from '../typings/generator'
 import { helperPropertie } from './helper/propertie'
@@ -21,10 +21,7 @@ const FORM_DATA_FILED = { name: 'data', type: 'FormData', required: true }
 class OpenAPI_JSONParserFactory {
   private $source: OpenAPITypes.OpenAPISpecificationV2
   private $options: OpenAPIBuildConfigurationRead
-  private $parser!: {
-    request: ParserRequestOptions
-    typings: ParserTypingsOptions
-  }
+  private $parser?: StatementParserOptions 
 
   public parser() {
     return this.$parser

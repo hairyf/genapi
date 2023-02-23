@@ -24,13 +24,13 @@ export const openAPIWebClientGenerator: OpenAPIWebClientGeneratorType = async (c
   const process = configs.map(
     pPipe(
       // 外模式 - 配置转换
-      config => parserTsConfig(config),
+      // config => parserTsConfig(config),
       // 外模式 - 数据原
       configRead => dataSource(configRead),
       // 外模式 - 转模式
-      configRead => JSONParser(configRead),
+      // configRead => parserOpenAPI(configRead),
       // 模式   - 转内模式
-      configRead => tsCompiler(configRead),
+      // configRead => tsCompiler(configRead),
       // 内模式 - 转视图
       configRead => generate(configRead),
       // 视图   - 输出文件

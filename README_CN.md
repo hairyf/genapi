@@ -42,10 +42,10 @@ yarn add apipgen --dev
 
 当前未提供CLI选项，输出内容由配置文件确定。目前支持以下配置文件：
 
-- `api-generator.config.ts`
-- `api-generator.config.js`
-- `api-generator.config.cjs`
-- `api-generator.config.json`
+- `apipgen.config.ts`
+- `apipgen.config.js`
+- `apipgen.config.cjs`
+- `apipgen.config.json`
 
 ```ts
 import { defineConfig } from 'apipgen'

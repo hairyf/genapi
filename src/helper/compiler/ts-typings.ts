@@ -1,6 +1,6 @@
 import { factory } from 'typescript'
 import type { ParserTypingsOptions } from '../typings/parser'
-import * as extra from './extra'
+import extra from 'ts-factory-extra'
 
 export function createTSTypingsDeclaration(o: ParserTypingsOptions) {
   const comment = o.comment.map(item => extra.createComment(item.type, item.comment))

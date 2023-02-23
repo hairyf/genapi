@@ -42,10 +42,10 @@ You can also install it globally but it's not recommended.
 
 Currently, the CLI option is not provided, and the output content is determined by the config file. Currently, the following config files are supported:
 
-- `api-generator.config.ts`
-- `api-generator.config.js`
-- `api-generator.config.cjs`
-- `api-generator.config.json`
+- `apipgen.config.ts`
+- `apipgen.config.js`
+- `apipgen.config.cjs`
+- `apipgen.config.json`
 
 ```ts
 import { defineConfig } from 'apipgen'

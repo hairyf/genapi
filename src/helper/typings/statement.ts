@@ -1,5 +1,3 @@
-import ts from "typescript"
-
 export interface StatementFunction {
   /**
    * function name
@@ -12,15 +10,15 @@ export interface StatementFunction {
   /**
    * function block
    */
-  body?: ts.Statement[]
+  body?: string[]
   /**
    * is export
    */
   export?: boolean
   /**
-   * function comment
+   * function description
    */
-  comment?: string | string[]
+  description?: string | string[]
 }
 
 export interface StatementInterface {
@@ -31,7 +29,7 @@ export interface StatementInterface {
   /**
    * all properties
    */
-  properties: StatementFiled[]
+  properties?: StatementFiled[]
   /**
    * is export
    */
@@ -39,9 +37,21 @@ export interface StatementInterface {
 }
 
 export interface StatementFiled {
+  /**
+   * filed name
+   */
   name: string
+  /**
+   * filed type
+   */
   type?: string
+  /**
+   * is required
+   */
   required?: boolean
+  /**
+   * filed description
+   */
   description?: string | string[]
 }
 
@@ -52,14 +62,12 @@ export interface StatementImported {
 }
 
 export interface StatementVariable {
-  flag: ts.NodeFlags
+  flag: 'let' | 'const' | 'var'
   name: string
   value?: string
 }
 
-/**
- * @example 'a' > { a }
- * @example ['a', 'b'] > { a: b }
- * @example ['...', 'c'] > { ...c }
- */
-export type LiteralFiled = string | [string | '...', string]
+export interface StatementTypeAlias {
+  name: string
+  value: string
+}

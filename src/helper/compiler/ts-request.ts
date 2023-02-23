@@ -1,6 +1,6 @@
 import ts from 'typescript'
 import { factory } from 'typescript'
-import * as extra from './extra'
+import extra from 'ts-factory-extra'
 import type { ParserRequestOptions, ParserTypingsOptions } from '../typings/parser'
 import { extendsRequestOptions } from './utils/ts-request'
 import { createMethodFunction } from './utils/ts-function'
@@ -11,7 +11,7 @@ export function createTSRequestDeclaration(o: ParserRequestOptions, t?: ParserTy
   extendsRequestOptions(o)
 
   const imports = [
-    extra.createImport(o.httpImport.name, o.httpImport.imports, o.httpImport.value),
+    extra.createImport(o.httpImport.name, o.httpImport.imports || [], o.httpImport.value),
     o.typeImport && o.typeImport.value && extra.createNamespaceImport(o.typeImport.name, o.typeImport.value),
   ]
 

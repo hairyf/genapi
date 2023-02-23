@@ -1,66 +1,35 @@
-import { StatementInterface } from '../compiler/extra';
+import { OpenAPIBuildConfiguration } from './generator';
 import { MethodStatementFunction } from './method'
+import { StatementFunction, StatementImported, StatementInterface, StatementTypeAlias, StatementVariable } from './statement';
 
-export * from  './method'
+export * from './method'
 
-export interface ParserRequestOptions {
+export interface StatementParseConfig {
   /**
-   * 文件注释
+   * config parser source
    */
-  comment: { type: 'single' | 'multi'; comment: string[] | string }[]
+  config: OpenAPIBuildConfiguration
   /**
-   * http 导入
+   * all api options
    */
-  httpImport: {
-    name: string
-    value: string
-    imports?: string[]
-  }
-
-  typeImport?: {
-    name: string
-    value: string
-  }
+  functions?: StatementFunction
   /**
-   * 基本地址 const [name] = [value]
+   * all request imports
    */
-  baseURL?: {
-    name?: string
-    value: string
-  }
-  /**
-   * http config
-   */
-  typeConfig?: {
-    name?: string
-    parameter?: string
-    type?: string
-  }
-  /**
-   * 方法列表
-   */
-  functions: Omit<MethodStatementFunction, 'httpImport'>[]
-}
-
-export interface ParserTypingsOptions {
-  /**
-   * 文件注释
-   */
-  comment: { type: 'single' | 'multi'; comment: string[] | string }[]
-  /**
-   * 类型列表
-   */
-  typings: StatementInterface[]
+  imports?: StatementImported[]
 
   /**
-   * 用于 infer 数据取值
-   * export type Response<T> = T
-   * 
-   * responseType = "T extends { data?: infer V } ? V : T"
-   * 
-   * export type Response<T> = T extends { data?: infer V } ? V : T
-   * 
-   * @default T
+   * all request variables
    */
-  responseType?: string
+  variables?: StatementVariable[]
+
+  /**
+   * all request typings
+   */
+  typings?: StatementTypeAlias[]
+
+  /**
+   * all request interfaces
+   */
+  interfaces?: StatementInterface[]
 }

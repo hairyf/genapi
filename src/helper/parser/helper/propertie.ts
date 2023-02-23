@@ -3,7 +3,7 @@ import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
 
 import { useRefMap, varName } from '../helper/util'
-import * as extra from '../../compiler/extra'
+import extra from 'ts-factory-extra'
 
 export function helperPropertie(propertie: OpenAPITypes.Schema): string {
   if (propertie.originalRef)

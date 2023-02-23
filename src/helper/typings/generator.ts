@@ -1,8 +1,7 @@
 import { AxiosRequestConfig } from 'axios'
-import { ParserRequestOptions, ParserTypingsOptions } from './parser'
 import { BuildOutput } from './output'
-import { StatementFiled, StatementImported, StatementVariable } from '../compiler/extra/types'
 import ts from 'typescript'
+import { StatementFunction, StatementImported, StatementTypeAlias, StatementVariable } from './statement'
 
 export interface OpenAPIBuildConfiguration {
   /** @description 传入字符串则解析为地址 */
@@ -52,54 +51,12 @@ export interface OpenAPIBuildConfiguration {
   config?: AxiosRequestConfig
 }
 
-export interface OpenAPIBuildConfigurationRead {
+export interface OpenAPIBuildConfigurationRead  {
   config: OpenAPIBuildConfiguration
-  baseURL?: ParserRequestOptions['baseURL']
-  typeConfig?: ParserRequestOptions['typeConfig']
-  httpImport?: ParserRequestOptions['httpImport']
-  typeImport?: ParserRequestOptions['typeImport']
-  responseType?: string
   outputs?: BuildOutput[]
-  request?: ParserRequestOptions
-  typings?: ParserTypingsOptions
   source?: any
 }
 
-export interface OpenAPIBuildFunction {
-  /**
-    * all request function parameters
-    */
-  parameters?: StatementFiled[]
-  /**
-   * all request function body
-   */
-  body?: ts.Statement[]
-}
-
-export interface OpenAPIBuildConfigurationReadV2 {
-  /**
-   * config parser source
-   */
-  config: OpenAPIBuildConfiguration
-  /**
-   * all api options
-   */
-  function?: OpenAPIBuildFunction
-  /**
-   * all request imports
-   */
-  imports?: StatementImported[]
-
-  /**
-   * all request variables
-   */
-  variables?: StatementVariable[]
-
-  /**
-   * all request typeAlias
-   */
-  typeAlias?: []
-}
 
 export interface OpenAPIBuildConfigurationServers extends Omit<OpenAPIBuildConfiguration, 'input'> {
   server: OpenAPIBuildConfiguration | OpenAPIBuildConfiguration[]

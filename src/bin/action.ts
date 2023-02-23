@@ -7,7 +7,7 @@ import { defaultConfig, openAPIWebClientGenerator } from '../'
 export const actionApiGenerator = async () => {
   const { config = {} } = await loadConfig<any>({
     sources: {
-      files: 'api-generator.config',
+      files: 'apipgen.config',
     },
   })
   if (!isArray(config.servers) && isObject(config.servers))

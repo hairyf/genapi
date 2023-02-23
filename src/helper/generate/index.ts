@@ -1,7 +1,7 @@
 import { format } from 'prettier'
 import type { OpenAPIBuildConfigurationRead } from '../typings/generator'
 
-import * as extra from '../compiler/extra'
+import extra from 'ts-factory-extra'
 
 export function generate(options: OpenAPIBuildConfigurationRead) {
   for (const output of options.outputs || []) {
