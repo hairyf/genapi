@@ -1,6 +1,6 @@
 import ts from "typescript"
 
-export interface FunctionOptions {
+export interface StatementFunction {
   /**
    * function name
    */
@@ -23,7 +23,7 @@ export interface FunctionOptions {
   comment?: string | string[]
 }
 
-export interface InterfaceOptions {
+export interface StatementInterface {
   /**
    * interface name
    */
@@ -43,6 +43,18 @@ export interface StatementFiled {
   type?: string
   required?: boolean
   description?: string | string[]
+}
+
+export interface StatementImported {
+  name?: string
+  names?: string
+  value: string
+}
+
+export interface StatementVariable {
+  flag: ts.NodeFlags
+  name: string
+  value?: string
 }
 
 /**

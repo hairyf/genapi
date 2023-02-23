@@ -1,5 +1,5 @@
 import ts, { factory } from 'typescript'
-import type { FunctionOptions, StatementFiled } from './types'
+import type { StatementFunction, StatementFiled } from './types'
 import {createMultilineComment} from './comment'
 
 /**
@@ -8,7 +8,7 @@ import {createMultilineComment} from './comment'
  * @param o 
  * @returns 
  */
-export function createFunction(o: FunctionOptions) {
+export function createFunction(o: StatementFunction) {
   const exportModifier = factory.createModifier(ts.SyntaxKind.ExportKeyword)
   const functionName = factory.createIdentifier(o.name)
   const parameters = o.parameters?.map(createParameter) || []

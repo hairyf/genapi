@@ -15,6 +15,7 @@ specifiers:
   eslint: ^8.34.0
   fs-extra: ^11.1.0
   lodash: ^4.17.21
+  openapi-specification-types: ^0.0.1
   ora: ^5
   p-pipe: ^3
   pascal-case: ^3.1.2
@@ -48,6 +49,7 @@ devDependencies:
   esbuild: 0.17.10
   esbuild-register: 3.4.2_esbuild@0.17.10
   eslint: 8.34.0
+  openapi-specification-types: 0.0.1
   ptsup: 0.3.1
 
 packages:
@@ -2447,6 +2449,10 @@ packages:
     dependencies:
       mimic-fn: 2.1.0
     dev: false
+
+  /openapi-specification-types/0.0.1:
+    resolution: {integrity: sha512-KChSN8df2T5G/e3rvzsGf+zZRQTZJy6H7M1R2syXkdrL1taNCp8bKKn8DaaT6WzzM1iESiVx8YlECgcX6d0A6w==}
+    dev: true
 
   /optionator/0.9.1:
     resolution: {integrity: sha512-74RlY5FCnhq4jRxVUPKDaRwrVNXMqsGsiW6AJw4XK8hmtm10wC0ypZBLw5IIp85NZMr91+qd1RvvENwg7jjRFw==}

@@ -8,6 +8,6 @@ export * from './object'
 export type {
   LiteralFiled,
   StatementFiled,
-  FunctionOptions,
-  InterfaceOptions,
+  StatementFunction,
+  StatementInterface,
 } from './types'

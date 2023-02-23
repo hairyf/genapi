@@ -1,6 +1,6 @@
 import ts, { factory } from 'typescript'
 import { createMultilineComment } from './comment'
-import type { InterfaceOptions, StatementFiled } from './types'
+import type { StatementInterface, StatementFiled } from './types'
 
 patchInterfaceComment()
 
@@ -10,7 +10,7 @@ patchInterfaceComment()
  * @param o 
  * @returns 
  */
-export function createInterface(o: InterfaceOptions) {
+export function createInterface(o: StatementInterface) {
   const exportModifier = factory.createModifier(ts.SyntaxKind.ExportKeyword)
   const interfaceName = factory.createIdentifier(o.name)
   const properties: ts.PropertySignature[] = o.properties.flatMap((item) => {

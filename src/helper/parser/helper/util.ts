@@ -2,7 +2,7 @@ import forIn from 'lodash/forIn'
 import { transliterate } from 'transliteration'
 import { pascalCase } from 'pascal-case'
 import type { LiteralFiled, StatementFiled } from '../../typings/parser'
-import type * as OpenAPITypes from '../../typings/OpenAPI-Specification'
+import type * as OpenAPITypes from 'openapi-specification-types'
 
 export interface TraverseParametersOptions {
   path: string
@@ -142,7 +142,7 @@ export function signAnyInter(filed: StatementFiled[]) {
  * @returns
  */
 export function isRequiredParameter(filed: StatementFiled[]) {
-  return filed.some(({ type, required, name }) => required && !name.startsWith('[') && !type.endsWith('any'))
+  return filed.some(({ type, required, name }) => required && !name.startsWith('[') && !type?.endsWith('any'))
 }
 
 /**

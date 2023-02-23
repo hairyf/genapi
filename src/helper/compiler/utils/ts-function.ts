@@ -1,20 +1,20 @@
 import ts from 'typescript'
-import type { MethodFunctionOptions } from '../../typings/parser'
+import type { MethodStatementFunction } from '../../typings/parser'
 import { createFunction, createVariable } from '../extra'
 import { createRequest } from './ts-request'
 
-export function createMethodFunction(o: MethodFunctionOptions) {
+export function createMethodFunction(o: MethodStatementFunction) {
 
-  const nodes = createFunction({
-    name: o.name,
-    export: true,
-    comment: o.comment,
-    parameters:  o.parameters,
-    body: [
+  const nodes = createFunction(
+    true,
+    o.comment,
+    o.name,
+    o.parameters,
+    [
       createVariable(ts.NodeFlags.Const, 'url', o.url),
-      createRequest(o.httpImport.name, o.responseType, ['url', ['method', `"${o.method}"`], ...o.options]),
+      createRequest(o.lib, o.responseType, ['url', ['method', `"${o.method}"`], ...o.options]),
     ]
-  })
-
+  )
+  
   return nodes
 }

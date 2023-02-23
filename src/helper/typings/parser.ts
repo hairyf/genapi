@@ -1,9 +1,8 @@
-import { MethodFunctionOptions } from './method'
-import { InterfaceOptions } from './interface'
+import { StatementInterface } from '../compiler/extra';
+import { MethodStatementFunction } from './method'
 
-export * from  './filed'
-export * from  './interface'
 export * from  './method'
+
 export interface ParserRequestOptions {
   /**
    * 文件注释
@@ -17,6 +16,7 @@ export interface ParserRequestOptions {
     value: string
     imports?: string[]
   }
+
   typeImport?: {
     name: string
     value: string
@@ -39,7 +39,7 @@ export interface ParserRequestOptions {
   /**
    * 方法列表
    */
-  functions: Omit<MethodFunctionOptions, 'httpImport'>[]
+  functions: Omit<MethodStatementFunction, 'httpImport'>[]
 }
 
 export interface ParserTypingsOptions {
@@ -50,7 +50,7 @@ export interface ParserTypingsOptions {
   /**
    * 类型列表
    */
-  typings: InterfaceOptions[]
+  typings: StatementInterface[]
 
   /**
    * 用于 infer 数据取值

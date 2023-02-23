@@ -1,8 +1,8 @@
+import type * as OpenAPITypes from 'openapi-specification-types'
 import isArray from 'lodash/isArray'
 import isEmpty from 'lodash/isEmpty'
 
 import { useRefMap, varName } from '../helper/util'
-import type * as OpenAPITypes from '../../typings/OpenAPI-Specification'
 import * as extra from '../../compiler/extra'
 
 export function helperPropertie(propertie: OpenAPITypes.Schema): string {

@@ -9,13 +9,13 @@ import { StatementFiled } from './types'
  * @param name 
  * @param value 
  */
-export function createVariable(flag: ts.NodeFlags, name: string, value: string) {
+export function createVariable(flag: ts.NodeFlags, name: string, value?: string) {
   return factory.createVariableDeclarationList(
     [factory.createVariableDeclaration(
       factory.createIdentifier(name),
       undefined,
       undefined,
-      factory.createIdentifier(value),
+      value ? factory.createIdentifier(value) : undefined,
     )],
     flag,
   ) as any as ts.TypeAliasDeclaration

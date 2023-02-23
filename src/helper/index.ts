@@ -9,4 +9,4 @@ export type {
   OpenAPIBuildConfigurationRead,
   OpenAPIBuildConfigurationServers,
   OpenAPIDefineConfig,
-} from './typings/generator.d'
+} from './typings/generator'

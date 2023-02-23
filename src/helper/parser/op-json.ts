@@ -1,7 +1,7 @@
 import camelCase from 'lodash/camelCase'
 import forIn from 'lodash/forIn'
 import type { ParserRequestOptions, ParserTypingsOptions } from '../typings/parser'
-import type * as OpenAPITypes from '../typings/OpenAPI-Specification'
+import type * as OpenAPITypes from 'openapi-specification-types'
 import type { OpenAPIBuildConfigurationRead } from '../typings/generator'
 import { helperPropertie } from './helper/propertie'
 import { helperParameter } from './helper/parameter'
@@ -19,7 +19,7 @@ import {
 const FORM_DATA_FILED = { name: 'data', type: 'FormData', required: true }
 
 class OpenAPI_JSONParserFactory {
-  private $source: OpenAPITypes.OpenAPISourceV2Json
+  private $source: OpenAPITypes.OpenAPISpecificationV2
   private $options: OpenAPIBuildConfigurationRead
   private $parser!: {
     request: ParserRequestOptions
@@ -30,7 +30,7 @@ class OpenAPI_JSONParserFactory {
     return this.$parser
   }
 
-  constructor(data: OpenAPITypes.OpenAPISourceV2Json, options: OpenAPIBuildConfigurationRead) {
+  constructor(data: OpenAPITypes.OpenAPISpecificationV2, options: OpenAPIBuildConfigurationRead) {
     this.$source = data
     this.$options = options
     this.transformAstOptions()
@@ -147,7 +147,7 @@ class OpenAPI_JSONParserFactory {
   /** @转换Ast基础配置 */
   private transformNameSpace() {
     this.$parser.request.functions.forEach((item) => {
-      item.parameters.forEach(item => (item.type = this.helperType(item.type)))
+      item.parameters.forEach(item => (item.type = this.helperType(item.type!)))
       item.responseType = this.helperType(item.responseType)
       item.responseType = this.helperTypeResponse(item.responseType)
     })

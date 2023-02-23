@@ -1,7 +1,7 @@
 import type { StatementFiled } from '../../typings/parser'
 import { spliceEnumDescription, spliceEnumType } from '../helper/util'
 import { helperPropertie } from '../helper/propertie'
-import type * as OpenAPITypes from '../../typings/OpenAPI-Specification'
+import type * as OpenAPITypes from 'openapi-specification-types'
 
 export function helperParameter(parameter: OpenAPITypes.Parameter): StatementFiled {
   const filed: StatementFiled = {

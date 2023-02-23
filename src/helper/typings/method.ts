@@ -1,13 +1,14 @@
-import { StatementFiled, LiteralFiled } from './filed'
-export interface MethodFunctionOptions {
+import { StatementFiled, LiteralFiled } from '../compiler/extra'
+
+export interface MethodStatementFunction {
   /**
    * 方法名称
    */
   name: string
   /**
-   * 调用名称
+   * 调用库|名称
    */
-  httpImport: { name: string }
+  lib: string
   /**
    * 形参列表
    */
