@@ -6,7 +6,7 @@ import { extendsRequestOptions } from './utils/ts-request'
 import { createMethodFunction } from './utils/ts-function'
 
 export function createTSRequestDeclaration(o: ParserRequestOptions, t?: ParserTypingsOptions) {
-  const jsonDocs = o.jsonDocs.map(item => extra.createComment(item.type, item.comment))
+  const comment = o.comment.map(item => extra.createComment(item.type, item.comment))
 
   extendsRequestOptions(o)
 
@@ -24,7 +24,7 @@ export function createTSRequestDeclaration(o: ParserRequestOptions, t?: ParserTy
   const functions = o.functions.flatMap(item => createMethodFunction(item as any))
 
   const nodes = [
-    ...jsonDocs,
+    ...comment,
     factory.createIdentifier(''),
     ...imports,
     factory.createIdentifier(''),

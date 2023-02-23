@@ -10,7 +10,7 @@ export interface InterfaceOptions {
   properties: StatementFiled[]
 }
 export interface FiledProperty {
-  jsonDocs?: string[] | string
+  comment?: string[] | string
   name: string
   type: string
   required?: boolean

@@ -25,7 +25,7 @@ export interface MethodFunctionOptions {
    */
   responseType: string
   /**
-   * jsonDocs
+   * comment
    */
   comment?: string[] | string
   /**

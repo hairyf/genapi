@@ -43,7 +43,7 @@ class OpenAPI_JSONParserFactory {
   private transformAstOptions() {
     const data = this.$source
     const options = this.$options
-    const jsonDocs: ParserRequestOptions['jsonDocs'] = [
+    const comment: ParserRequestOptions['comment'] = [
       {
         type: 'multi',
         comment: [
@@ -57,7 +57,7 @@ class OpenAPI_JSONParserFactory {
     const functions: ParserRequestOptions['functions'] = []
     const interfaces: ParserTypingsOptions['typings'] = []
     const request: ParserRequestOptions = {
-      jsonDocs,
+      comment,
       baseURL: options.baseURL,
       typeConfig: options.typeConfig,
       typeImport: options.typeImport,
@@ -69,7 +69,7 @@ class OpenAPI_JSONParserFactory {
       functions,
     }
     const typings: ParserTypingsOptions = {
-      jsonDocs,
+      comment,
       typings: interfaces,
       responseType: options.responseType,
     }
@@ -87,7 +87,7 @@ class OpenAPI_JSONParserFactory {
       /**
        * 函数注释
        */
-      const jsonDocs = [
+      const comment = [
         meta.summary && `@summary ${meta.summary}`,
         meta.description && `@description ${meta.description}`,
         `@method ${method}`,
@@ -112,7 +112,7 @@ class OpenAPI_JSONParserFactory {
         name,
         method,
         url,
-        jsonDocs,
+        comment,
         options,
         parameters,
         responseType,
