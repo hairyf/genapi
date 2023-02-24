@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 require('esbuild-register')
-require('../src/bin/index.ts')
+require('../packages/apipgen/bin/index.ts')

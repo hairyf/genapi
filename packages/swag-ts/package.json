@@ -1,0 +1,25 @@
+{
+  "name": "apipgen-swag-ts",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "ptsup -r src --dts --meta --clean"
+  },
+  "publishConfig": {
+    "directory": "dist",
+    "main": "index.js",
+    "types": "./index.d.ts"
+  },
+  "dependencies": {
+    "got": "^12.5.3",
+    "p-pipe": "^3"
+  },
+  "devDependencies": {
+    "apipgen": "workspace:*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

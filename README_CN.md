@@ -4,7 +4,7 @@
 
 API管道生成器，用于将OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持 axios 模板。
 
-`ApiPipeGen` 由管道理念开发，将来作为通用的 `api` 生成工具使用，不局限于 `swagger/axios`。
+`apipgen` 由管道理念开发，将来作为通用的 `api` 生成工具使用，不局限于 `swagger/axios`。
 
 ```ts
 const process = configs.map(
@@ -31,9 +31,9 @@ await Promise.all(process)
 在项目文件夹中本地安装：
 
 ```bash
-pnpm add ApiPipeGen -D
+pnpm add apipgen -D
 # Or Yarn
-yarn add ApiPipeGen --dev
+yarn add apipgen --dev
 ```
 
 > 您也可以全局安装，但不建议这样做。
@@ -42,13 +42,13 @@ yarn add ApiPipeGen --dev
 
 当前未提供CLI选项，输出内容由配置文件确定。目前支持以下配置文件：
 
-- `ApiPipeGen.config.ts`
-- `ApiPipeGen.config.js`
-- `ApiPipeGen.config.cjs`
-- `ApiPipeGen.config.json`
+- `apipgen.config.ts`
+- `apipgen.config.js`
+- `apipgen.config.cjs`
+- `apipgen.config.json`
 
 ```ts
-import { defineConfig } from 'ApiPipeGen'
+import { defineConfig } from 'apipgen'
 
 export default defineConfig({
   // 输入源(swagger url 或 swagger json)以及输出源
@@ -67,8 +67,8 @@ export default defineConfig({
 ```
 
 ```sh
-# run ApiPipeGen
-pnpm ApiPipeGen
+# run apipgen
+pnpm apipgen
 ```
 
 ![cli-case](public/case.gif)
@@ -105,7 +105,7 @@ export default defineConfig({
 
 ## Other
 
-你应该能从这个列表上知道 ApiPipeGen 还能做什么（sorry 我太懒。
+你应该能从这个列表上知道 apipgen 还能做什么（sorry 我太懒。
 
 - import（导入 API 中的相关字段别名 - http 或 type）
 

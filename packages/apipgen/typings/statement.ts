@@ -57,7 +57,7 @@ export interface StatementFiled {
 
 export interface StatementImported {
   name?: string
-  names?: string
+  names?: string[]
   namespace?: boolean
   value: string
 }

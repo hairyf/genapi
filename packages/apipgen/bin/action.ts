@@ -2,12 +2,12 @@ import isArray from 'lodash/isArray'
 import isObject from 'lodash/isObject'
 import isUndefined from 'lodash/isUndefined'
 import { loadConfig } from 'unconfig'
-import { defaultConfig, openAPIWebClientGenerator } from '../'
+import { openPipeWebClientGenerator } from '../'
 
 export const actionApiGenerator = async () => {
   const { config = {} } = await loadConfig<any>({
     sources: {
-      files: 'ApiPipeGen.config',
+      files: 'apipgen.config',
     },
   })
   if (!isArray(config.servers) && isObject(config.servers))
@@ -19,8 +19,8 @@ export const actionApiGenerator = async () => {
   const servers = config.servers
   delete config.servers
 
-  Object.assign(defaultConfig, config)
   if (config.input)
     servers.push(config)
-  await openAPIWebClientGenerator(servers)
+
+  await openPipeWebClientGenerator(servers)
 }

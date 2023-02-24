@@ -1,8 +1,9 @@
-import { defineConfig } from './src'
+import { defineConfig } from 'apipgen'
+import source from './example'
 
 const config = defineConfig({
   input: {
-    test: true,
+    json: source as Record<string, any>,
   },
   output: {
     main: 'dist-test/index.ts',
