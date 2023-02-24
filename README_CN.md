@@ -16,7 +16,7 @@ const process = configs.map(
     // 外模式 - 转模式
     configRead => parser(configRead),
     // 模式   - 转内模式
-    configRead => tsCompiler(configRead),
+    configRead => compiler(configRead),
     // 内模式 - 转视图
     configRead => generate(configRead),
     // 视图   - 输出文件

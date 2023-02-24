@@ -16,7 +16,7 @@ const process = configs.map(
     // external mode - to mode
     configRead => parser(configRead),
     // mode          - to internal mode
-    configRead => tsCompiler(configRead),
+    configRead => compiler(configRead),
     // internal mode - to view
     configRead => generate(configRead),
     // view          - dest file
