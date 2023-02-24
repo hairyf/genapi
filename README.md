@@ -82,14 +82,14 @@ pnpm apipgen
 
 ## Input
 
-Input supports three input sources `url|json|test`
+Input supports three input sources `url|json`
 
 ```ts
 export default defineConfig({
   // directly pass in url
   input: 'http://...api-docs',
   // or
-  input: { /* url|json|test */ }
+  input: { /* url|json */ }
 })
 ```
 

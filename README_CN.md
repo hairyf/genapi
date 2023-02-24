@@ -83,14 +83,14 @@ pnpm apipgen
 ## Input
 
 
-input 目前支持三个输入源 `url|json|test`
+input 目前支持三个输入源 `url|json`
 
 ```ts
 export default defineConfig({
   // 直接输入 swagger url
   input: 'http://...api-docs',
   // 或者选择其他源
-  input: { /* url|json|test */ }
+  input: { /* url|json */ }
 })
 ```
 
