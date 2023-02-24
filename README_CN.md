@@ -2,9 +2,9 @@
 
 > [English](./README.md) | 中文
 
-API 管道生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持 swag-ts|swag-js 管道。
+API 管道生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持 swag-ts|swag-js 管道处理器。
 
-`apipgen` 由管道理念开发，作为通用的 `api` 生成工具使用，不局限于 `swagger/axios`。
+`apipgen` 由处理管道运作，从输入 config 到最终 dest 输出文件为一个完整管道，它作为通用的 `api` 生成工具使用，不局限于 `swagger/axios`。
 
 ```ts
 const process = configs.map(
