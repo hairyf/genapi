@@ -1,6 +1,6 @@
 {
   "name": "apipgen",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Generator Api",
   "author": "Hairy",
   "license": "ISC",
@@ -17,7 +17,7 @@
   },
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "ptsup -r src --dts --meta --clean"
+    "build": "ptsup --dts --meta --clean"
   },
   "bin": {
     "apipgen": "./bin/index.js"
