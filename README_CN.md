@@ -2,29 +2,7 @@
 
 > [English](./README.md) | 中文
 
-API 管道生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持 swag-ts|swag-js 管道处理器。
-
-`apipgen` 由处理管道运作，从输入 config 到最终 dest 输出文件为一个完整管道，它作为通用的 `api` 生成工具使用，不局限于 `swagger/axios`。
-
-```ts
-const process = configs.map(
-  pPipe(
-    // 外模式 - 配置转换
-    config => readConfig(config),
-    // 外模式 - 数据原
-    configRead => original(configRead),
-    // 外模式 - 转模式
-    configRead => parser(configRead),
-    // 模式   - 转内模式
-    configRead => compiler(configRead),
-    // 内模式 - 转视图
-    configRead => generate(configRead),
-    // 视图   - 输出文件
-    configRead => dest(configRead),
-  ),
-)
-await Promise.all(process)
-```
+API 生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持 swag-ts|swag-js 处理管道。
 
 ## ⚙️ Install
 
@@ -52,7 +30,7 @@ import { defineConfig } from 'apipgen'
 
 export default defineConfig({
   /**
-   * 使用的编译 pipeline 支持 npm 包（添加前缀apipgen-）或本地路径
+   * 使用的编译处理管道，支持 npm 包（添加前缀apipgen-）或本地路径
    *
    * 默认支持 swag-ts|swag-js
    * @default 'swag-ts'
@@ -128,6 +106,8 @@ Run `apipgen`
 ![swag-js](public/swag-js.png)
 
 ## Pipeline
+
+apipgen 由特殊的处理管道运作，从输入 config 到最终 dest 输出文件作为一个完整管道，而每个管道都可以相互复用并重组。
 
 apipgen 在定义配置时传入 `pipeline` 参数支持 npm 包（前缀 apipgen-） 和本地路径。
 
