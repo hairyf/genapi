@@ -1,5 +1,11 @@
 # apipgen-swag-ts
 
+## 0.0.4
+
+### Patch Changes
+
+- fix: apipgen-swag-ts uri get to json error
+
 ## 0.0.3
 
 ### Patch Changes

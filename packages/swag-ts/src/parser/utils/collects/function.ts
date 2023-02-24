@@ -56,7 +56,7 @@ export function getFunctionOptions(pathParams: PathParameters) {
   }
 
   config.parameters.push({
-    type: 'import("axios").AxiosRequestConfig',
+    type: 'AxiosRequestConfig',
     name: 'config',
     required: false,
   })

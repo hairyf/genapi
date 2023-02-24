@@ -1,10 +1,9 @@
 import { defineConfig } from 'apipgen'
-import source from './example'
 
 const config = defineConfig({
   pipeline: 'swag-ts',
   input: {
-    json: source as Record<string, any>,
+    uri: 'https://petstore.swagger.io/v2/swagger.json',
   },
   output: {
     main: 'dist-test/index.ts',
