@@ -40,7 +40,7 @@ yarn add apipgen --dev
 
 ## 📖 Usage
 
-当前未提供CLI选项，输出内容由配置文件确定。目前支持以下配置文件：
+当前仅提供 CLI 运行，未提供其他 CLI 选项，由配置文件确定输入/出内容。目前支持以下配置文件：
 
 - `apipgen.config.ts`
 - `apipgen.config.js`
