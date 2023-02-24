@@ -3,16 +3,17 @@
   "private": true,
   "author": "Hairy",
   "license": "ISC",
-  "scripts": {},
-  "bin": {
-    "apipgen": "./bin/index.js",
+  "scripts": {
     "release": "changeset && changeset version"
+  },
+  "bin": {
+    "apipgen": "./bin/index.js"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.35.2",
     "@types/node": "^18.14.0",
     "apipgen": "workspace:*",
-    "changeset": "^0.2.6",
+    "@changesets/cli": "^2.22.0",
     "esbuild": "^0.17.10",
     "esbuild-register": "^3.4.2",
     "eslint": "^8.34.0",
