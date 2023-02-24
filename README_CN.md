@@ -116,7 +116,7 @@ export default defineConfig({
 
 ```ts
 export default defineConfig({
-  pipeline: 'swag-ts',
+  pipeline: 'swag-js',
   input: {
     uri: 'https://petstore.swagger.io/v2/swagger.json',
   },
