@@ -1,5 +1,12 @@
 # apipgen-swag-js
 
+## 0.0.4
+
+### Patch Changes
+
+- fix: apipgen-swag-js axios import type none
+  - apipgen-swag-ts@0.0.3
+
 ## 0.0.3
 
 ### Patch Changes

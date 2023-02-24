@@ -2,19 +2,19 @@
 
 > [English](./README.md) | 中文
 
-API管道生成器，用于将OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持 axios 模板。
+API 管道生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持 swag-ts|swag-js 管道。
 
-`apipgen` 由管道理念开发，将来作为通用的 `api` 生成工具使用，不局限于 `swagger/axios`。
+`apipgen` 由管道理念开发，作为通用的 `api` 生成工具使用，不局限于 `swagger/axios`。
 
 ```ts
 const process = configs.map(
   pPipe(
     // 外模式 - 配置转换
-    config => parserTsConfig(config),
+    config => readConfig(config),
     // 外模式 - 数据原
-    configRead => dataSource(configRead),
+    configRead => original(configRead),
     // 外模式 - 转模式
-    configRead => JSONParser(configRead),
+    configRead => parser(configRead),
     // 模式   - 转内模式
     configRead => tsCompiler(configRead),
     // 内模式 - 转视图
@@ -51,6 +51,13 @@ yarn add apipgen --dev
 import { defineConfig } from 'apipgen'
 
 export default defineConfig({
+  /**
+   * 使用的编译 pipeline 支持 npm 包（添加前缀apipgen-）或本地路径
+   *
+   * 默认支持 swag-ts|swag-js
+   * @default 'swag-ts'
+   */
+  pipeline: 'swag-ts',
   // 输入源(swagger url 或 swagger json)以及输出源
   // 如果有多个源，可以使用 server 字段
   input: 'http://...api-docs',
@@ -101,6 +108,58 @@ export default defineConfig({
     { import: '...', output: {/* ... */} },
   ]
 })
+```
+
+## Pipeline
+
+apipgen 在定义配置时传入 `pipeline` 参数支持 npm 包（前缀 apipgen-） 和本地路径。
+
+```ts
+export default defineConfig({
+  pipeline: './custom-pipe',
+})
+```
+
+管道中由 `apipgen` 提供的 `pipeline` 方法定义。
+
+```ts
+// custom-pipe.ts
+
+// 使用 apipgen 提供的 pipeline 创建 API 管道生成器
+import { pipeline } from 'apipgen'
+
+// 每个管道都暴露了对应方法，可以进行复用并重组
+import { dest, generate, original } from 'apipgen-swag-ts'
+
+function myCustomPipe(config) {
+  const process = pipeline(
+    // 读取配置，转换为内部配置，并提供默认值
+    config => readConfig(config),
+    // 获取数据源
+    configRead => original(configRead),
+    // 解析数据源为数据图表（graphs）
+    configRead => parser(configRead),
+    // 编译数据，转换为抽象语法树（AST）
+    configRead => compiler(configRead),
+    // 生成代码（code）
+    configRead => generate(configRead),
+    // 利用 outputs 输出文件
+    configRead => dest(configRead),
+  )
+  return process(config)
+}
+
+function readConfig(config) {
+  // ...
+}
+
+function parser(configRead) {
+  // ...
+}
+
+function compiler(configRead) {
+  // ...
+}
 ```
 
 ## Other

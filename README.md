@@ -4,17 +4,17 @@
 
 API pipeline generator, which is used to convert OpenApi (v2~v3) and other input sources into TS/JS APIs, and currently supports axios templates
 
-`apipgen` is developed by the pipeline concept and will be used as a general api generation tool in the future, not limited to `swagger/axios`.
+`Apipgen 'is developed by the pipeline concept and used as a general' api 'generation tool, which is not limited to' swagger/axios'.
 
 ```ts
 const process = configs.map(
   pPipe(
     // external mode - config conver
-    config => parserTsConfig(config),
+    config => readConfig(config),
     // external mode - data source
-    configRead => dataSource(configRead),
+    configRead => original(configRead),
     // external mode - to mode
-    configRead => JSONParser(configRead),
+    configRead => parser(configRead),
     // mode          - to internal mode
     configRead => tsCompiler(configRead),
     // internal mode - to view
@@ -51,6 +51,13 @@ Currently, the CLI option is not provided, and the output content is determined 
 import { defineConfig } from 'apipgen'
 
 export default defineConfig({
+  /**
+   * 使用的编译 pipeline 支持 npm 包（添加前缀apipgen-）或本地路径
+   *
+   * 默认支持 swag-ts|swag-js
+   * @default 'swag-ts'
+   */
+  pipeline: 'swag-ts',
   // your input source and output file (swagger api url or json)
   // if you have multiple sources, you can use 'server'
   input: 'http://...api-docs',
@@ -103,6 +110,57 @@ export default defineConfig({
 })
 ```
 
+## Pipeline
+
+When defining the configuration, apipgen passes in the 'pipeline' parameter to support the npm package (prefix `apipgen-`) and local path.
+
+```ts
+export default defineConfig({
+  pipeline: './custom-pipe',
+})
+```
+
+pipeline is defined by the `pipeline` method provided by `apipgen`.
+
+```ts
+// custom-pipe.ts
+
+// create an API pipeline generator using the pipeline provided by apipgen
+import { pipeline } from 'apipgen'
+
+// each pipeline exposes corresponding methods, which can be reused and reorganized
+import { dest, generate, original } from 'apipgen-swag-ts'
+
+function myCustomPipe(config) {
+  const process = pipeline(
+    // read config, convert to internal config, and provide default values
+    config => readConfig(config),
+    // get data source
+    configRead => original(configRead),
+    // parse the data source as data graphs
+    configRead => parser(configRead),
+    // compile data and convert it into abstract syntax tree (AST)
+    configRead => compiler(configRead),
+    // generate code string
+    configRead => generate(configRead),
+    // use outputs to output files
+    configRead => dest(configRead),
+  )
+  return process(config)
+}
+
+function readConfig(config) {
+  // ...
+}
+
+function parser(configRead) {
+  // ...
+}
+
+function compiler(configRead) {
+  // ...
+}
+```
 ## Other
 
 Sorry, I'm too lazy. You should know what else apipgen can do from this list.
