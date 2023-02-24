@@ -1,8 +1,7 @@
-# API Pipeline Operator
-
+# apipgen
 > [中文](./README_CN.md) | English
 
-API pipeline generator, which is used to convert OpenApi (v2~v3) and other input sources into TS/JS APIs, and currently supports axios templates
+API generator, which is used to convert OpenApi (v2~v3) and other input sources into TS/JS APIs, and currently supports axios templates
 
 ## ⚙️ Install
 
