@@ -126,6 +126,6 @@ namespace ApiPipeline {
 }
 
 export type { ApiPipeline }
-export type { LiteralField, StatementField, StatementFunction, StatementImported, StatementInterface, StatementTypeAlias, StatementVariable } from './statement'
+export type { StatementField, StatementFunction, StatementImported, StatementInterface, StatementTypeAlias, StatementVariable } from './statement'
 
 export default ApiPipeline
