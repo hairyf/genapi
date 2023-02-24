@@ -1,5 +1,13 @@
 # apipgen
 
+## 0.2.7
+
+### Patch Changes
+
+- Updated dependencies
+  - apipgen-swag-js@0.0.7
+  - apipgen-swag-ts@0.0.5
+
 ## 0.2.6
 
 ### Patch Changes

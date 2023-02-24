@@ -110,6 +110,23 @@ export default defineConfig({
 })
 ```
 
+## swag-js
+
+Use the `swag-js` pipeline to generate JavaScript files with both types.
+
+```ts
+export default defineConfig({
+  pipeline: 'swag-ts',
+  input: {
+    uri: 'https://petstore.swagger.io/v2/swagger.json',
+  },
+})
+```
+
+Run `apipgen`
+
+![swag-js](public/swag-js.png)
+
 ## Pipeline
 
 When defining the configuration, apipgen passes in the 'pipeline' parameter to support the npm package (prefix `apipgen-`) and local path.

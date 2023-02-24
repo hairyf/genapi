@@ -79,6 +79,8 @@ function prefix(path: string) {
 }
 
 function readJson(json: string | Record<string, any>): Record<string, any> | undefined {
+  if (!json)
+    return undefined
   if (typeof json === 'object')
     return json
   else

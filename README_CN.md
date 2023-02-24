@@ -110,6 +110,23 @@ export default defineConfig({
 })
 ```
 
+## swag-js
+
+使用 swag-js 管道生成同时具备类型的 JavaScript 文件。
+
+```ts
+export default defineConfig({
+  pipeline: 'swag-ts',
+  input: {
+    uri: 'https://petstore.swagger.io/v2/swagger.json',
+  },
+})
+```
+
+Run `apipgen`
+
+![swag-js](public/swag-js.png)
+
 ## Pipeline
 
 apipgen 在定义配置时传入 `pipeline` 参数支持 npm 包（前缀 apipgen-） 和本地路径。
