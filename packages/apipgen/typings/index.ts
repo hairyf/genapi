@@ -4,9 +4,8 @@ namespace ApiPipeline {
   export interface Output {
     type: 'request' | 'typings'
     root: string
-    import: string
     path: string
-    ast?: Node[] | Node
+    ast?: any
     code?: string
   }
   export interface Inputs {

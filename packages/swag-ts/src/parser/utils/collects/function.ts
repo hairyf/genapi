@@ -1,6 +1,7 @@
 import type { Method, Parameter } from 'openapi-specification-types'
-import type { LiteralField, StatementField, StatementInterface } from 'apipgen'
+import type { StatementField, StatementInterface } from 'apipgen'
 import type { PathParameters } from '../traverse'
+import type { LiteralField } from '../other'
 import { isRequiredParameter, signAnyInter } from '../other'
 import { varName } from '../format'
 import { getParameterFields } from './parameter'
@@ -12,13 +13,13 @@ export function getFunctionOptions(pathParams: PathParameters) {
   const requestConfigs = {
     body: [] as StatementField[],
     formData: [] as StatementField[],
-    header: [] as StatementField[],
     path: [] as StatementField[],
     query: [] as StatementField[],
+    header: [] as StatementField[],
   }
 
   const config = {
-    options: [] as LiteralField[],
+    options: ['url'] as LiteralField[],
     parameters: [] as StatementField[],
     interfaces: [] as StatementInterface[],
   }

@@ -12,11 +12,8 @@ function OpenAPI2Typescript(config: ApiPipeline.Config) {
     config => readConfig(config),
     configRead => original(configRead),
     configRead => parser(configRead),
-    // TODO
     configRead => compiler(configRead),
-    // TODO
     configRead => generate(configRead),
-    // TODO
     configRead => dest(configRead),
   )
   return process(config)

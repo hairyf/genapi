@@ -56,23 +56,29 @@ importers:
 
   packages/swag-ts:
     specifiers:
+      '@types/fs-extra': ^11.0.1
       '@types/lodash': ^4.14.191
       apipgen: workspace:*
+      fs-extra: ^11.1.0
       got: ^12.5.3
       lodash: ^4.17.21
       openapi-specification-types: ^0.0.1
       p-pipe: ^3
       pascal-case: ^3.1.2
+      prettier: ^2.8.4
       transliteration: ^2.3.5
-      ts-factory-extra: ^0.0.1
+      ts-factory-extra: ^0.0.3
     dependencies:
+      fs-extra: 11.1.0
       got: 12.5.3
       lodash: 4.17.21
       p-pipe: 3.1.0
       pascal-case: 3.1.2
+      prettier: 2.8.4
       transliteration: 2.3.5
-      ts-factory-extra: 0.0.1
+      ts-factory-extra: 0.0.3
     devDependencies:
+      '@types/fs-extra': 11.0.1
       '@types/lodash': 4.14.191
       apipgen: link:../apipgen
       openapi-specification-types: 0.0.1
@@ -2694,6 +2700,12 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
+  /prettier/2.8.4:
+    resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    dev: false
+
   /prompts/2.4.2:
     resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==}
     engines: {node: '>= 6'}
@@ -3080,8 +3092,8 @@ packages:
       yargs: 17.7.1
     dev: false
 
-  /ts-factory-extra/0.0.1:
-    resolution: {integrity: sha512-XzkjtCGDVxP7C3oqrN/TEBgFiMwY9MJ02VoGZrmBOA4KA0L76YdpGeB1plzgwQ5vTqrK8X+gXr0vnHSqQ12+OA==}
+  /ts-factory-extra/0.0.3:
+    resolution: {integrity: sha512-pWQsQ9KyHeFOHEsQqlMSFq+DjJCi3EE/8Y1Flgma0MgFHq5gC/YmHRMtMZp0UKzixIoNXUc+FtIhkYdRclcflA==}
     dev: false
 
   /tsconfig-paths/3.14.1:

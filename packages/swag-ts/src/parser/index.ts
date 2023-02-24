@@ -20,12 +20,13 @@ export function parser(configRead: ApiPipeline.ConfigRead) {
   const interfaces: StatementInterface[] = []
   const functions: StatementFunction[] = []
 
-  pathsPuFunctions(source.paths, {
+  defPuInterfaces(source.definitions, {
     configRead,
     functions,
     interfaces,
   })
-  defPuInterfaces(source.definitions, {
+
+  pathsPuFunctions(source.paths, {
     configRead,
     functions,
     interfaces,
@@ -75,13 +76,13 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
      * response type
      */
     const responseType = meta.responses['200'] ? getPropertieType(meta.responses['200']) : 'void'
-    const prefixType = configRead.config.output?.type === false ? '' : 'OpenAPITypes.'
-    const genericType = `${prefixType}Response<${spliceTypeSpace(responseType)}>`
+    const genericType = `Response<${spliceTypeSpace(responseType)}>`
 
     function spliceTypeSpace(name: string) {
-      const isRenderType = configRead.config.output?.type !== false
+      const isGenerateType = configRead.config.output?.type !== false
       const isSomeType = interfaces.map(v => v.name).includes(name.replace('[]', ''))
-      if (isRenderType && isSomeType)
+
+      if (isGenerateType && isSomeType)
         return `OpenAPITypes.${name}`
       return name
     }
@@ -98,7 +99,7 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
       parameters,
       body: [
         url.includes('$') ? `const url = \`${url}\`;` : `const url = "${url}"`,
-        `http.request<${genericType}>>({ ${literalFieldsToString(options)} })`,
+        `http.request<${genericType}>({ ${literalFieldsToString(options)} })`,
       ],
     })
   })

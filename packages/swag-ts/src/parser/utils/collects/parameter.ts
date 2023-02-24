@@ -1,6 +1,6 @@
 import type { StatementField } from 'apipgen'
 import type { Parameter } from 'openapi-specification-types'
-import { spliceEnumDescription } from '../format'
+import { spliceEnumDescription, spliceEnumType } from '../format'
 import { getPropertieType } from './propertie'
 
 export function getParameterFields(parameter: Parameter) {
@@ -23,6 +23,7 @@ export function getParameterFields(parameter: Parameter) {
     else {
       const enums = spliceEnumDescription(parameter.name, parameter.items?.enum)
       field.description = [field.description || '', enums].filter(Boolean)
+      field.type = `string | ${spliceEnumType(parameter.items?.enum)}`
     }
   }
 

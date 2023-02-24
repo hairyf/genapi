@@ -7,7 +7,6 @@ const config = defineConfig({
   },
   output: {
     main: 'dist-test/index.ts',
-    type: 'dist-test/types.ts',
   },
 })
 

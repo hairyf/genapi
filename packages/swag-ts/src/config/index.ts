@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import process from 'process'
 import path from 'path'
-import type { ApiPipeline, StatementImported } from 'apipgen'
+import type { ApiPipeline, StatementImported, StatementVariable } from 'apipgen'
 
 const USER_ROOT = process.cwd()
 
@@ -10,9 +10,16 @@ export function readConfig(config: ApiPipeline.Config): ApiPipeline.ConfigRead {
   config.output = config.output || {}
   config.import.http = config.import.http || 'axios'
   config.output.main = config.output.main || 'src/api/index.ts'
-  if (config.output.type !== false)
-    config.output.type = config.output.type || config.output.main.replace(/\.ts|\.js/g, '.type.ts')
   config.responseType = config.responseType || 'T'
+  if (config.output?.type !== false)
+    config.output.type = config.output.type || config.output.main.replace(/\.ts|\.js/g, '.type.ts')
+
+  const isGenerateType = config.output?.type !== false
+
+  const importType = prefix(
+    path.relative(
+      path.dirname(config.output.main), config.output.type || ''),
+  ).replace('.ts', '')
 
   const imports: (StatementImported | false)[] = [
     {
@@ -24,10 +31,22 @@ export function readConfig(config: ApiPipeline.Config): ApiPipeline.ConfigRead {
       names: ['AxiosRequestConfig'],
       value: 'axios',
     },
-    {
+    isGenerateType && {
       name: 'OpenAPITypes',
-      value: config.import?.type || '',
+      value: importType,
       namespace: true,
+    },
+    isGenerateType && {
+      names: ['Response'],
+      value: importType,
+    },
+  ]
+
+  const variables: (StatementVariable | false)[] = [
+    !!config.baseURL && {
+      flag: 'const',
+      name: 'baseURL',
+      value: config.baseURL,
     },
   ]
 
@@ -35,7 +54,6 @@ export function readConfig(config: ApiPipeline.Config): ApiPipeline.ConfigRead {
     {
       type: 'request',
       root: path.join(USER_ROOT, path.dirname(config.output.main)),
-      import: config.output.main.replace(/\.ts$/, ''),
       path: path.join(USER_ROOT, config.output.main),
     },
   ]
@@ -44,7 +62,6 @@ export function readConfig(config: ApiPipeline.Config): ApiPipeline.ConfigRead {
     outputs.push({
       type: 'typings',
       root: path.join(USER_ROOT, path.dirname(config.output.type)),
-      import: prefix(path.relative(path.dirname(config.output.main), config.output.type)),
       path: path.join(USER_ROOT, config.output.type),
     })
   }
@@ -65,6 +82,7 @@ export function readConfig(config: ApiPipeline.Config): ApiPipeline.ConfigRead {
     outputs,
     graphs: {
       imports: imports.filter(Boolean) as StatementImported[],
+      variables: variables.filter(Boolean) as StatementVariable[],
     },
   }
 

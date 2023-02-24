@@ -55,3 +55,15 @@ export function spliceEnumDescription(name: string, enums: string[] = []) {
   const em2 = enums?.map(i => `${name}=${i}`).join('&') || `${name}=a&${name}=b`
   return `@param ${em1} | ${em2}`
 }
+
+/**
+ * 拼接 enum type
+ * @param enums
+ * @returns
+ */
+export function spliceEnumType(enums: string[] = []) {
+  if (enums.length > 0)
+    return `(${enums.map(v => `"${v}"`).join(' | ')})[]`
+
+  return 'string'
+}

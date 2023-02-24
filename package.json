@@ -4,7 +4,9 @@
   "author": "Hairy",
   "license": "ISC",
   "scripts": {},
-  "bin": {},
+  "bin": {
+    "apipgen": "./bin/index.js"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^0.35.2",
     "@types/node": "^18.14.0",
