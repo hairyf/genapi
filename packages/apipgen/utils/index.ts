@@ -5,6 +5,7 @@ import type ApiPipeline from '../typings'
 
 export function inPipeline(pipe: string): ApiPipeline.Pipeline | undefined {
   const inputs = [`apipgen-${pipe}`, absolutePath(pipe)]
+
   for (const input of inputs) {
     const inputModule = require(input)
     const pipeline = inputModule.default || inputModule

@@ -1,0 +1,30 @@
+{
+  "name": "apipgen-swag-js",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "ptsup -r src --dts --meta --clean"
+  },
+  "publishConfig": {
+    "directory": "dist",
+    "main": "index.js",
+    "types": "./index.d.ts"
+  },
+  "dependencies": {
+    "apipgen-swag-ts": "workspace:*",
+    "lodash": "^4.17.21",
+    "ts-factory-extra": "^0.0.3"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.191",
+    "apipgen": "workspace:*",
+    "openapi-specification-types": "^0.0.1",
+    "pascal-case": "^3.1.2",
+    "transliteration": "^2.3.5"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

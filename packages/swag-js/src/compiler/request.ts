@@ -2,7 +2,6 @@ import type { ApiPipeline } from 'apipgen'
 import { NodeFlags, factory } from 'typescript'
 
 import { codeToAstNode, createComment, createFunction, createImport, createVariable } from 'ts-factory-extra'
-import { compilerTsTypingsDeclaration } from './typings'
 
 const varFlags = {
   let: NodeFlags.Let,
@@ -16,7 +15,6 @@ export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead)
   configRead.graphs.variables = configRead.graphs.variables || []
   configRead.graphs.functions = configRead.graphs.functions || []
 
-  const isGenerateType = configRead.outputs.some(v => v.type === 'typings')
   const comments = [
     createComment('multi', configRead.graphs.comments),
   ]
@@ -45,12 +43,6 @@ export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead)
     factory.createIdentifier(''),
     ...functions,
   ]
-
-  if (!isGenerateType) {
-    nodes.push(factory.createIdentifier(''))
-    nodes.push(factory.createIdentifier(''))
-    nodes.push(...compilerTsTypingsDeclaration(configRead, false))
-  }
 
   return nodes
 }

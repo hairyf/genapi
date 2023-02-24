@@ -1,13 +1,11 @@
 import type { ApiPipeline } from 'apipgen'
 import { pipeline } from 'apipgen'
+import { dest, generate, original } from 'apipgen-swag-ts'
 import { compiler } from './compiler'
 import { readConfig } from './config'
-import { dest } from './dest'
-import { generate } from './generate'
-import { original } from './original'
 import { parser } from './parser'
 
-function OpenAPI2Typescript(config: ApiPipeline.Config) {
+function OpenAPI2Javascript(config: ApiPipeline.Config) {
   const process = pipeline(
     config => readConfig(config),
     configRead => original(configRead),
@@ -18,6 +16,6 @@ function OpenAPI2Typescript(config: ApiPipeline.Config) {
   )
   return process(config)
 }
-export { readConfig, original, parser, compiler, generate, dest }
+export { readConfig, original, parser, compiler, generate }
 
-export default OpenAPI2Typescript
+export default OpenAPI2Javascript

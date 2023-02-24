@@ -5,6 +5,7 @@ namespace ApiPipeline {
     type: 'request' | 'typings'
     root: string
     path: string
+    import?: string
     ast?: any
     code?: string
   }

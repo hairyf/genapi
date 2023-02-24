@@ -30,7 +30,8 @@
     "ora": "^5",
     "p-pipe": "^3",
     "unconfig": "^0.3.7",
-    "apipgen-swag-ts": "workspace:*"
+    "apipgen-swag-ts": "workspace:*",
+    "apipgen-swag-js": "workspace:*"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",

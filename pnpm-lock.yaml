@@ -28,6 +28,7 @@ importers:
       '@types/lodash': ^4.14.191
       '@types/node': ^18.14.0
       '@types/prettier': ^2.7.2
+      apipgen-swag-js: workspace:*
       apipgen-swag-ts: workspace:*
       cac: ^6.7.14
       chalk: ^5.2.0
@@ -38,6 +39,7 @@ importers:
       p-pipe: ^3
       unconfig: ^0.3.7
     dependencies:
+      apipgen-swag-js: link:../swag-js
       apipgen-swag-ts: link:../swag-ts
       cac: 6.7.14
       chalk: 5.2.0
@@ -52,6 +54,28 @@ importers:
       '@types/node': 18.14.0
       '@types/prettier': 2.7.2
       openapi-specification-types: 0.0.1
+    publishDirectory: dist
+
+  packages/swag-js:
+    specifiers:
+      '@types/lodash': ^4.14.191
+      apipgen: workspace:*
+      apipgen-swag-ts: workspace:*
+      lodash: ^4.17.21
+      openapi-specification-types: ^0.0.1
+      pascal-case: ^3.1.2
+      transliteration: ^2.3.5
+      ts-factory-extra: ^0.0.3
+    dependencies:
+      apipgen-swag-ts: link:../swag-ts
+      lodash: 4.17.21
+      ts-factory-extra: 0.0.3
+    devDependencies:
+      '@types/lodash': 4.14.191
+      apipgen: link:../apipgen
+      openapi-specification-types: 0.0.1
+      pascal-case: 3.1.2
+      transliteration: 2.3.5
     publishDirectory: dist
 
   packages/swag-ts:
@@ -984,7 +1008,6 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
-    dev: false
 
   /clone/1.0.4:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
@@ -1139,7 +1162,6 @@ packages:
 
   /emoji-regex/8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
-    dev: false
 
   /entities/4.4.0:
     resolution: {integrity: sha512-oYp7156SP8LkeGD0GF85ad1X9Ai79WtRsZ2gxJqtBuzH+98YUV6jkHEKlZkMbcrjJjIVJNIDP/3WL9wQkoPbWA==}
@@ -1259,7 +1281,6 @@ packages:
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
     engines: {node: '>=6'}
-    dev: false
 
   /escape-string-regexp/1.0.5:
     resolution: {integrity: sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==}
@@ -1796,7 +1817,6 @@ packages:
   /get-caller-file/2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
-    dev: false
 
   /get-intrinsic/1.2.0:
     resolution: {integrity: sha512-L049y6nFOuom5wGyRc3/gdTLO94dySVKRACj1RmJZBQXlbTMhtNIgkWkUHq+jYmZvKf14EW1EoJnnjbmoHij0Q==}
@@ -2099,7 +2119,6 @@ packages:
   /is-fullwidth-code-point/3.0.0:
     resolution: {integrity: sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg==}
     engines: {node: '>=8'}
-    dev: false
 
   /is-glob/4.0.3:
     resolution: {integrity: sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg==}
@@ -2817,7 +2836,6 @@ packages:
   /require-directory/2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
-    dev: false
 
   /resolve-alpn/1.2.1:
     resolution: {integrity: sha512-0a1F4l73/ZFZOakJnQ3FvkJ2+gSTQWz/r2KE5OdDY0TxPm5h4GkqkWWfM47T7HsbnOtcJVEF4epCVy6u7Q3K+g==}
@@ -3008,7 +3026,6 @@ packages:
       emoji-regex: 8.0.0
       is-fullwidth-code-point: 3.0.0
       strip-ansi: 6.0.1
-    dev: false
 
   /string.prototype.trimend/1.0.6:
     resolution: {integrity: sha512-JySq+4mrPf9EsDBEDYMOb/lM7XQLulwg5R/m1r0PXEFqrV0qHvl58sdTilSXtKOflCsK2E8jxf+GKC0T07RWwQ==}
@@ -3090,7 +3107,6 @@ packages:
     hasBin: true
     dependencies:
       yargs: 17.7.1
-    dev: false
 
   /ts-factory-extra/0.0.3:
     resolution: {integrity: sha512-pWQsQ9KyHeFOHEsQqlMSFq+DjJCi3EE/8Y1Flgma0MgFHq5gC/YmHRMtMZp0UKzixIoNXUc+FtIhkYdRclcflA==}
@@ -3271,7 +3287,6 @@ packages:
       ansi-styles: 4.3.0
       string-width: 4.2.3
       strip-ansi: 6.0.1
-    dev: false
 
   /wrappy/1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
@@ -3285,7 +3300,6 @@ packages:
   /y18n/5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
     engines: {node: '>=10'}
-    dev: false
 
   /yallist/4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
@@ -3308,7 +3322,6 @@ packages:
   /yargs-parser/21.1.1:
     resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==}
     engines: {node: '>=12'}
-    dev: false
 
   /yargs/17.7.1:
     resolution: {integrity: sha512-cwiTb08Xuv5fqF4AovYacTFNxk62th7LKJ6BL9IGUpTJrWoU7/7WdQGTP2SjKf1dUNBGzDd28p/Yfs/GI6JrLw==}
@@ -3321,7 +3334,6 @@ packages:
       string-width: 4.2.3
       y18n: 5.0.8
       yargs-parser: 21.1.1
-    dev: false
 
   /yocto-queue/0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
