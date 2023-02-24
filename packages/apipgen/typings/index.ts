@@ -30,9 +30,7 @@ namespace ApiPipeline {
      * apipgen output file options
      */
     output?: {
-      /** @default 'src/api/index.ts' */
       main?: string
-      /** @default 'src/api/index.type.ts' */
       type?: string | false
     }
   }
@@ -42,14 +40,11 @@ namespace ApiPipeline {
     baseURL?: string
     /** Import type of makefile */
     import?: {
-      /** Default alias address of import request function @default axios */
       http?: string
-      /** Import types to generate alias of types @default output.type */
       type?: string
     }
     /**
      * Type conversion of response body
-     * @default T >>> type Response<T> = T >>> http.get<Response<Data>>({...})
      * @template `T extends { data?: infer V } ? V : void`
      */
     responseType?: string
