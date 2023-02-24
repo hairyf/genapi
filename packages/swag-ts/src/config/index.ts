@@ -27,7 +27,7 @@ export function readConfig(config: ApiPipeline.Config): ApiPipeline.ConfigRead {
       names: config.import.http === 'axios' ? ['AxiosRequestConfig'] : undefined,
       value: config.import.http,
     },
-    config.import.http === 'axios' && {
+    config.import.http !== 'axios' && {
       names: ['AxiosRequestConfig'],
       value: 'axios',
     },

@@ -1,5 +1,11 @@
 # apipgen-swag-ts
 
+## 0.0.5
+
+### Patch Changes
+
+- fix: axios config type import error
+
 ## 0.0.4
 
 ### Patch Changes
