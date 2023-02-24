@@ -1,4 +1,4 @@
-import { StatementFunction, StatementImported, StatementInterface, StatementTypeAlias, StatementVariable } from './statement'
+import type { StatementFunction, StatementImported, StatementInterface, StatementTypeAlias, StatementVariable } from './statement'
 
 namespace ApiPipeline {
   export interface Output {
@@ -33,7 +33,7 @@ namespace ApiPipeline {
       /** @default 'src/api/index.ts' */
       main?: string
       /** @default 'src/api/index.type.ts' */
-      type?: string
+      type?: string | false
     }
   }
 
@@ -66,6 +66,12 @@ namespace ApiPipeline {
   }
 
   export interface Graphs {
+
+    /**
+     * all comments
+     */
+    comments?: string[]
+
     /**
      * all api options
      */
@@ -79,12 +85,10 @@ namespace ApiPipeline {
      * all request variables
      */
     variables?: StatementVariable[]
-
     /**
      * all request typings
      */
     typings?: StatementTypeAlias[]
-
     /**
      * all request interfaces
      */
@@ -121,6 +125,7 @@ namespace ApiPipeline {
   export type Pipeline = (config: ApiPipeline.Config) => Promise<void>
 }
 
-export { StatementFunction, StatementImported, StatementInterface, StatementTypeAlias, StatementVariable, ApiPipeline }
+export type { ApiPipeline }
+export type { LiteralField, StatementField, StatementFunction, StatementImported, StatementInterface, StatementTypeAlias, StatementVariable } from './statement'
 
 export default ApiPipeline

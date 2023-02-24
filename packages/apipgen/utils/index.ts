@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import path from 'path'
 import { cwd } from 'process'
 import type ApiPipeline from '../typings'
@@ -5,8 +6,10 @@ import type ApiPipeline from '../typings'
 export function inPipeline(pipe: string): ApiPipeline.Pipeline | undefined {
   const inputs = [`apipgen-${pipe}`, absolutePath(pipe)]
   for (const input of inputs) {
-    if (require(input))
-      return require(input)
+    const inputModule = require(input)
+    const pipeline = inputModule.default || inputModule
+    if (pipeline)
+      return pipeline
   }
 }
 

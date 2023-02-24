@@ -6,7 +6,7 @@ export interface StatementFunction {
   /**
    * function params
    */
-  parameters?: StatementFiled[]
+  parameters?: StatementField[]
   /**
    * function block
    */
@@ -29,20 +29,20 @@ export interface StatementInterface {
   /**
    * all properties
    */
-  properties?: StatementFiled[]
+  properties?: StatementField[]
   /**
    * is export
    */
   export?: boolean
 }
 
-export interface StatementFiled {
+export interface StatementField {
   /**
-   * filed name
+   * field name
    */
   name: string
   /**
-   * filed type
+   * field type
    */
   type?: string
   /**
@@ -50,11 +50,15 @@ export interface StatementFiled {
    */
   required?: boolean
   /**
-   * filed description
+   * field description
    */
   description?: string | string[]
 }
 
+/**
+ * @example import [name], {[names]} from [value]
+ * @example import http, { AxiosConfig } from 'axios'
+ */
 export interface StatementImported {
   name?: string
   names?: string[]
@@ -62,15 +66,21 @@ export interface StatementImported {
   value: string
 }
 
+/**
+ * @example [export] [flag] [name] = [value]
+ */
 export interface StatementVariable {
+  export?: boolean
   flag: 'let' | 'const' | 'var'
   name: string
   value?: string
 }
 
+/**
+ * @example [export] type [name] = [value]
+ */
 export interface StatementTypeAlias {
+  export?: boolean
   name: string
   value: string
 }
-
-export type LiteralFiled = string | [string | '...', string]

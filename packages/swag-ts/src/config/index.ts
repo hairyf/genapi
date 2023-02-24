@@ -10,7 +10,8 @@ export function readConfig(config: ApiPipeline.Config): ApiPipeline.ConfigRead {
   config.output = config.output || {}
   config.import.http = config.import.http || 'axios'
   config.output.main = config.output.main || 'src/api/index.ts'
-  config.output.type = config.output.type || config.output.main.replace(/\.ts|\.js/g, '.type.ts')
+  if (config.output.type !== false)
+    config.output.type = config.output.type || config.output.main.replace(/\.ts|\.js/g, '.type.ts')
   config.responseType = config.responseType || 'T'
 
   const imports: (StatementImported | false)[] = [
@@ -37,13 +38,16 @@ export function readConfig(config: ApiPipeline.Config): ApiPipeline.ConfigRead {
       import: config.output.main.replace(/\.ts$/, ''),
       path: path.join(USER_ROOT, config.output.main),
     },
-    {
+  ]
+
+  if (config.output.type !== false) {
+    outputs.push({
       type: 'typings',
       root: path.join(USER_ROOT, path.dirname(config.output.type)),
       import: prefix(path.relative(path.dirname(config.output.main), config.output.type)),
       path: path.join(USER_ROOT, config.output.type),
-    },
-  ]
+    })
+  }
 
   const inputs: ApiPipeline.Inputs = {}
 
