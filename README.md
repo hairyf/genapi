@@ -1,4 +1,4 @@
-# API Pipeline Generator
+# API Pipeline Operator
 
 > [中文](./README_CN.md) | English
 
