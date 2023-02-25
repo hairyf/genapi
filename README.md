@@ -1,11 +1,12 @@
 # API Pipeline Generator
-> [中文](./README_CN.md) | English
 
-API generator, which is used to convert OpenApi (v2~v3) and other input sources into TS/JS APIs, and currently supports axios pipeline
+> [English](./README.md) | 中文
+
+API 生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持 swag-ts-axios|swag-js-axios 处理管道。
 
 ## ⚙️ Install
 
-Install it locally in your project folder:
+在项目文件夹中本地安装：
 
 ```bash
 pnpm add apipgen -D
@@ -13,11 +14,11 @@ pnpm add apipgen -D
 yarn add apipgen --dev
 ```
 
-You can also install it globally but it's not recommended.
+> 您也可以全局安装，但不建议这样做。
 
 ## 📖 Usage
 
-Currently, the CLI option is not provided, and the output content is determined by the config file. Currently, the following config files are supported:
+当前仅提供 CLI 运行，未提供其他 CLI 选项，由配置文件确定输入/出内容。目前支持以下配置文件：
 
 - `apipgen.config.ts`
 - `apipgen.config.js`
@@ -29,23 +30,23 @@ import { defineConfig } from 'apipgen'
 
 export default defineConfig({
   /**
-   * 使用的编译 pipeline 支持 npm 包（添加前缀apipgen-）或本地路径
+   * 使用的编译处理管道，支持 npm 包（添加前缀apipgen-）或本地路径
    *
    * 默认支持 swag-ts-axios|swag-js-axios
    * @default 'swag-ts-axios'
    */
   pipeline: 'swag-ts-axios',
-  // your input source and output file (swagger api url or json)
-  // if you have multiple sources, you can use 'server'
+  // 输入源(swagger url 或 swagger json)以及输出源
+  // 如果有多个源，可以使用 server 字段
   input: 'http://...api-docs',
   output: {
     main: 'src/api/index.ts',
     type: 'src/api/index.type.ts',
   },
 
-  // your API baseUrl
+  // API baseUrl，此配置将传递给 axios
   baseURL: 'import.meta.env.VITE_APP_BASE_API',
-  // customize the output response type. default 'T'
+  // 自定义 responseType，默认 T
   responseType: 'T extends { data?: infer V } ? V : void',
 })
 ```
@@ -59,26 +60,26 @@ pnpm apipgen
 
 ## Input
 
-Input supports three input sources `url|json`
+
+input 目前支持三个输入源 `url|json`
 
 ```ts
 export default defineConfig({
-  // directly pass in url
+  // 直接输入 swagger url
   input: 'http://...api-docs',
-  // or
+  // 或者选择其他源
   input: { /* url|json */ }
 })
 ```
 
 ## Server
 
-Maybe you have multiple services. You can use 'server' to set multiple services. Usually, other config at the top level are used as additional config
+如果有多个服务。您可以使用 `server` 设置多个服务。顶层的其他配置被用作附加配置。
 
 ```ts
 export default defineConfig({
-  // Your API baseUrl, this configuration will be passed to the axios request
   baseUrl: 'https://...',
-  // all servers inherit the upper layer configuration
+  // 所有 server 都继承上层配置
   server: [
     { import: '...', output: {/* ... */} },
     { import: '...', output: {/* ... */} },
@@ -89,7 +90,7 @@ export default defineConfig({
 
 ## swag-js-axios
 
-Use the `swag-js-axios` pipeline to generate JavaScript files with both types.
+使用 swag-js-axios 管道生成同时具备类型的 JavaScript 文件。
 
 ```ts
 export default defineConfig({
@@ -106,7 +107,9 @@ Run `apipgen`
 
 ## Pipeline
 
-When defining the configuration, apipgen passes in the 'pipeline' parameter to support the npm package (prefix `apipgen-`) and local path.
+apipgen 由特殊的处理管道运作，从输入 config 到最终 dest 输出文件作为一个完整管道，而每个管道都可以相互复用并重组。
+
+apipgen 在定义配置时传入 `pipeline` 参数支持 npm 包（前缀 apipgen-） 和本地路径。
 
 ```ts
 export default defineConfig({
@@ -114,30 +117,30 @@ export default defineConfig({
 })
 ```
 
-pipeline is defined by the `pipeline` method provided by `apipgen`.
+管道中由 `apipgen` 提供的 `pipeline` 方法定义。
 
 ```ts
 // custom-pipe.ts
 
-// create an API pipeline generator using the pipeline provided by apipgen
+// 使用 apipgen 提供的 pipeline 创建 API 管道生成器
 import { pipeline } from 'apipgen'
 
-// each pipeline exposes corresponding methods, which can be reused and reorganized
+// 每个管道都暴露了对应方法，可以进行复用并重组
 import { dest, generate, original } from 'apipgen-swag-ts-axios'
 
 function myCustomPipe(config) {
   const process = pipeline(
-    // read config, convert to internal config, and provide default values
+    // 读取配置，转换为内部配置，并提供默认值
     config => readConfig(config),
-    // get data source
+    // 获取数据源
     configRead => original(configRead),
-    // parse the data source as data graphs
+    // 解析数据源为数据图表（graphs）
     configRead => parser(configRead),
-    // compile data and convert it into abstract syntax tree (AST)
+    // 编译数据，转换为抽象语法树（AST）
     configRead => compiler(configRead),
-    // generate code string
+    // 生成代码（code）
     configRead => generate(configRead),
-    // use outputs to output files
+    // 利用 outputs 输出文件
     configRead => dest(configRead),
   )
   return process(config)
@@ -155,9 +158,11 @@ function compiler(configRead) {
   // ...
 }
 ```
+
 ## Other
 
-Sorry, I'm too lazy. You should know what else apipgen can do from this list.
+你应该能从这个列表上知道 apipgen 还能做什么（sorry 我太懒。
 
-- import (import related field aliases in the makefile - http or type)
-- paramsPartial (force all parameters to be optional)
+- import（导入 API 中的相关字段别名 - http 或 type）
+
+- paramsPartial（强制所有参数为可选）
