@@ -1,4 +1,4 @@
-# apipgen-swag-ts
+# apipgen-swag-ts-axios
 
 ## 0.0.5
 
@@ -10,7 +10,7 @@
 
 ### Patch Changes
 
-- fix: apipgen-swag-ts uri get to json error
+- fix: apipgen-swag-ts-axios uri get to json error
 
 ## 0.0.3
 

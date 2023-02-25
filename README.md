@@ -31,10 +31,10 @@ export default defineConfig({
   /**
    * 使用的编译 pipeline 支持 npm 包（添加前缀apipgen-）或本地路径
    *
-   * 默认支持 swag-ts|swag-js
-   * @default 'swag-ts'
+   * 默认支持 swag-ts-axios|swag-js-axios
+   * @default 'swag-ts-axios'
    */
-  pipeline: 'swag-ts',
+  pipeline: 'swag-ts-axios',
   // your input source and output file (swagger api url or json)
   // if you have multiple sources, you can use 'server'
   input: 'http://...api-docs',
@@ -87,13 +87,13 @@ export default defineConfig({
 })
 ```
 
-## swag-js
+## swag-js-axios
 
-Use the `swag-js` pipeline to generate JavaScript files with both types.
+Use the `swag-js-axios` pipeline to generate JavaScript files with both types.
 
 ```ts
 export default defineConfig({
-  pipeline: 'swag-js',
+  pipeline: 'swag-js-axios',
   input: {
     uri: 'https://petstore.swagger.io/v2/swagger.json',
   },
@@ -102,7 +102,7 @@ export default defineConfig({
 
 Run `apipgen`
 
-![swag-js](public/swag-js.png)
+![swag-js-axios](public/swag-js-axios.png)
 
 ## Pipeline
 
@@ -123,7 +123,7 @@ pipeline is defined by the `pipeline` method provided by `apipgen`.
 import { pipeline } from 'apipgen'
 
 // each pipeline exposes corresponding methods, which can be reused and reorganized
-import { dest, generate, original } from 'apipgen-swag-ts'
+import { dest, generate, original } from 'apipgen-swag-ts-axios'
 
 function myCustomPipe(config) {
   const process = pipeline(

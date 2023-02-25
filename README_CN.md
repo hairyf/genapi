@@ -2,7 +2,7 @@
 
 > [English](./README.md) | 中文
 
-API 生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持 swag-ts|swag-js 处理管道。
+API 生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持 swag-ts-axios|swag-js-axios 处理管道。
 
 ## ⚙️ Install
 
@@ -32,10 +32,10 @@ export default defineConfig({
   /**
    * 使用的编译处理管道，支持 npm 包（添加前缀apipgen-）或本地路径
    *
-   * 默认支持 swag-ts|swag-js
-   * @default 'swag-ts'
+   * 默认支持 swag-ts-axios|swag-js-axios
+   * @default 'swag-ts-axios'
    */
-  pipeline: 'swag-ts',
+  pipeline: 'swag-ts-axios',
   // 输入源(swagger url 或 swagger json)以及输出源
   // 如果有多个源，可以使用 server 字段
   input: 'http://...api-docs',
@@ -88,13 +88,13 @@ export default defineConfig({
 })
 ```
 
-## swag-js
+## swag-js-axios
 
-使用 swag-js 管道生成同时具备类型的 JavaScript 文件。
+使用 swag-js-axios 管道生成同时具备类型的 JavaScript 文件。
 
 ```ts
 export default defineConfig({
-  pipeline: 'swag-js',
+  pipeline: 'swag-js-axios',
   input: {
     uri: 'https://petstore.swagger.io/v2/swagger.json',
   },
@@ -103,7 +103,7 @@ export default defineConfig({
 
 Run `apipgen`
 
-![swag-js](public/swag-js.png)
+![swag-js-axios](public/swag-js-axios.png)
 
 ## Pipeline
 
@@ -126,7 +126,7 @@ export default defineConfig({
 import { pipeline } from 'apipgen'
 
 // 每个管道都暴露了对应方法，可以进行复用并重组
-import { dest, generate, original } from 'apipgen-swag-ts'
+import { dest, generate, original } from 'apipgen-swag-ts-axios'
 
 function myCustomPipe(config) {
   const process = pipeline(

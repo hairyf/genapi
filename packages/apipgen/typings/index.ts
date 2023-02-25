@@ -55,7 +55,7 @@ namespace ApiPipeline {
   export interface Config extends PreInputs, PreOutput, Meta {
     /**
      * The compilation pipeline used supports npm package (add the prefix apipgen -) | local path
-     * @default 'swag-ts'
+     * @default 'swag-ts-axios'
      */
     pipeline?: string
   }

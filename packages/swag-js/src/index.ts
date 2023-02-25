@@ -1,6 +1,6 @@
 import type { ApiPipeline } from 'apipgen'
 import { pipeline } from 'apipgen'
-import { dest, generate, original } from 'apipgen-swag-ts'
+import { dest, generate, original } from 'apipgen-swag-ts-axios'
 import { compiler } from './compiler'
 import { readConfig } from './config'
 import { parser } from './parser'

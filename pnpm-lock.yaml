@@ -30,8 +30,8 @@ importers:
       '@types/lodash': ^4.14.191
       '@types/node': ^18.14.0
       '@types/prettier': ^2.7.2
-      apipgen-swag-js: workspace:*
-      apipgen-swag-ts: workspace:*
+      apipgen-swag-js-axios: workspace:*
+      apipgen-swag-ts-axios: workspace:*
       cac: ^6.7.14
       chalk: ^5.2.0
       fs-extra: ^11.1.0
@@ -41,8 +41,8 @@ importers:
       p-pipe: ^3
       unconfig: ^0.3.7
     dependencies:
-      apipgen-swag-js: link:../swag-js
-      apipgen-swag-ts: link:../swag-ts
+      apipgen-swag-js-axios: link:../swag-js
+      apipgen-swag-ts-axios: link:../swag-ts
       cac: 6.7.14
       chalk: 5.2.0
       fs-extra: 11.1.0
@@ -62,14 +62,14 @@ importers:
     specifiers:
       '@types/lodash': ^4.14.191
       apipgen: workspace:*
-      apipgen-swag-ts: workspace:*
+      apipgen-swag-ts-axios: workspace:*
       lodash: ^4.17.21
       openapi-specification-types: ^0.0.1
       pascal-case: ^3.1.2
       transliteration: ^2.3.5
       ts-factory-extra: ^0.0.4
     dependencies:
-      apipgen-swag-ts: link:../swag-ts
+      apipgen-swag-ts-axios: link:../swag-ts
       lodash: 4.17.21
       ts-factory-extra: 0.0.4
     devDependencies:

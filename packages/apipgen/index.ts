@@ -6,7 +6,7 @@ export async function openPipeWebClientGenerator(config: ApiPipeline.Config | Ap
   // const spinner = ora('Generate API File...\n').start()
 
   const process = configs.map((config) => {
-    const pipeline = inPipeline(config.pipeline || 'swag-ts')
+    const pipeline = inPipeline(config.pipeline || 'swag-ts-axios')
     if (!pipeline)
       throw new Error(`Pipeline not found ${config.pipeline}`)
     return pipeline(config)
