@@ -26,6 +26,8 @@
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
     "@types/lodash": "^4.14.191",
+    "@apipgen/swag-parser": "workspace:*",
+    "@apipgen/pipeline": "workspace:*",
     "apipgen": "workspace:*",
     "openapi-specification-types": "^0.0.1"
   },

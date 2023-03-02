@@ -17,6 +17,8 @@ export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead)
   configRead.graphs.functions = configRead.graphs.functions || []
 
   const isGenerateType = configRead.outputs.some(v => v.type === 'typings')
+  const isTypescript = configRead.outputs.some(v => v.type === 'request' && v.path.endsWith('.ts'))
+
   const comments = [
     createComment('multi', configRead.graphs.comments),
   ]
@@ -46,7 +48,7 @@ export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead)
     ...functions,
   ]
 
-  if (!isGenerateType) {
+  if (!isGenerateType && isTypescript) {
     nodes.push(factory.createIdentifier(''))
     nodes.push(factory.createIdentifier(''))
     nodes.push(...compilerTsTypingsDeclaration(configRead, false))

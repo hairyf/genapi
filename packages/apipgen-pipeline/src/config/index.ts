@@ -1,5 +1,6 @@
 import path from 'path'
 import type { ApiPipeline, StatementImported, StatementVariable } from 'apipgen'
+import type { StatementTypeAlias } from 'apipgen/typings'
 
 export function readConfig(config: ApiPipeline.Config) {
   config.import = config.import || {}
@@ -41,6 +42,10 @@ export function readConfig(config: ApiPipeline.Config) {
     },
   ]
 
+  const typings: StatementTypeAlias[] = [
+    { export: true, name: 'Response<T>', value: config.responseType || 'T' },
+  ]
+
   if (config.output.type !== false) {
     outputs.push({
       type: 'typings',
@@ -67,7 +72,7 @@ export function readConfig(config: ApiPipeline.Config) {
       comments: [],
       functions: [],
       interfaces: [],
-      typings: [],
+      typings,
     },
   }
 
