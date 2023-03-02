@@ -41,8 +41,8 @@ importers:
       p-pipe: ^3
       unconfig: ^0.3.7
     dependencies:
-      apipgen-swag-js-axios: link:../swag-js
-      apipgen-swag-ts-axios: link:../swag-ts
+      apipgen-swag-js-axios: link:../swag-js-axios
+      apipgen-swag-ts-axios: link:../swag-ts-fetch
       cac: 6.7.14
       chalk: 5.2.0
       fs-extra: 11.1.0
@@ -58,7 +58,59 @@ importers:
       openapi-specification-types: 0.0.1
     publishDirectory: dist
 
-  packages/swag-js:
+  packages/apipgen-parser-swagger:
+    specifiers:
+      '@types/fs-extra': ^11.0.1
+      '@types/lodash': ^4.14.191
+      apipgen: workspace:*
+      fs-extra: ^11.1.0
+      lodash: ^4.17.21
+      openapi-specification-types: ^0.0.1
+      pascal-case: ^3.1.2
+      transliteration: ^2.3.5
+      ts-factory-extra: ^0.0.4
+    dependencies:
+      fs-extra: 11.1.0
+      lodash: 4.17.21
+      openapi-specification-types: 0.0.1
+      pascal-case: 3.1.2
+      transliteration: 2.3.5
+      ts-factory-extra: 0.0.4
+    devDependencies:
+      '@types/fs-extra': 11.0.1
+      '@types/lodash': 4.14.191
+      apipgen: link:../apipgen
+    publishDirectory: dist
+
+  packages/apipgen-pipeline:
+    specifiers:
+      '@types/fs-extra': ^11.0.1
+      '@types/lodash': ^4.14.191
+      apipgen: workspace:*
+      fs-extra: ^11.1.0
+      got: 11.8.5
+      lodash: ^4.17.21
+      p-pipe: ^3
+      pascal-case: ^3.1.2
+      prettier: ^2.8.4
+      transliteration: ^2.3.5
+      ts-factory-extra: ^0.0.4
+    dependencies:
+      fs-extra: 11.1.0
+      got: 11.8.5
+      lodash: 4.17.21
+      p-pipe: 3.1.0
+      pascal-case: 3.1.2
+      prettier: 2.8.4
+      transliteration: 2.3.5
+      ts-factory-extra: 0.0.4
+    devDependencies:
+      '@types/fs-extra': 11.0.1
+      '@types/lodash': 4.14.191
+      apipgen: link:../apipgen
+    publishDirectory: dist
+
+  packages/swag-js-axios:
     specifiers:
       '@types/lodash': ^4.14.191
       apipgen: workspace:*
@@ -69,7 +121,7 @@ importers:
       transliteration: ^2.3.5
       ts-factory-extra: ^0.0.4
     dependencies:
-      apipgen-swag-ts-axios: link:../swag-ts
+      apipgen-swag-ts-axios: link:../swag-ts-fetch
       lodash: 4.17.21
       ts-factory-extra: 0.0.4
     devDependencies:
@@ -80,7 +132,39 @@ importers:
       transliteration: 2.3.5
     publishDirectory: dist
 
-  packages/swag-ts:
+  packages/swag-ts-axios:
+    specifiers:
+      '@types/fs-extra': ^11.0.1
+      '@types/lodash': ^4.14.191
+      apipgen: workspace:*
+      fs-extra: ^11.1.0
+      got: 11.8.5
+      lodash: ^4.17.21
+      openapi-specification-types: ^0.0.1
+      p-pipe: ^3
+      pascal-case: ^3.1.2
+      prettier: ^2.8.4
+      transliteration: ^2.3.5
+      ts-factory-extra: ^0.0.4
+      typescript: ^4.9.5
+    dependencies:
+      fs-extra: 11.1.0
+      got: 11.8.5
+      lodash: 4.17.21
+      p-pipe: 3.1.0
+      pascal-case: 3.1.2
+      prettier: 2.8.4
+      transliteration: 2.3.5
+      ts-factory-extra: 0.0.4
+      typescript: 4.9.5
+    devDependencies:
+      '@types/fs-extra': 11.0.1
+      '@types/lodash': 4.14.191
+      apipgen: link:../apipgen
+      openapi-specification-types: 0.0.1
+    publishDirectory: dist
+
+  packages/swag-ts-fetch:
     specifiers:
       '@types/fs-extra': ^11.0.1
       '@types/lodash': ^4.14.191
@@ -3090,7 +3174,6 @@ packages:
 
   /openapi-specification-types/0.0.1:
     resolution: {integrity: sha512-KChSN8df2T5G/e3rvzsGf+zZRQTZJy6H7M1R2syXkdrL1taNCp8bKKn8DaaT6WzzM1iESiVx8YlECgcX6d0A6w==}
-    dev: true
 
   /optionator/0.9.1:
     resolution: {integrity: sha512-74RlY5FCnhq4jRxVUPKDaRwrVNXMqsGsiW6AJw4XK8hmtm10wC0ypZBLw5IIp85NZMr91+qd1RvvENwg7jjRFw==}
