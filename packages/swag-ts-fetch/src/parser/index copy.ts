@@ -1,14 +1,14 @@
-import type { ApiPipeline, StatementFunction, StatementInterface } from 'apipgen'
-import type { Definitions, OpenAPISpecificationV2, Paths, Schema } from 'openapi-specification-types'
+/* eslint-disable no-template-curly-in-string */
 import {
   literalFieldsToString,
   parseHeaderCommits,
   parseMethodMetadata,
   parseMethodParameters,
   parseSchemaType,
-  traversePaths,
-  varName,
+  traversePaths, varName,
 } from '@apipgen/swag-parser'
+import type { ApiPipeline, StatementFunction, StatementInterface } from 'apipgen'
+import type { Definitions, OpenAPISpecificationV2, Paths, Schema } from 'openapi-specification-types'
 
 export function parser(configRead: ApiPipeline.ConfigRead) {
   const source = configRead.source as OpenAPISpecificationV2
@@ -49,16 +49,13 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
      * function params/function options/function use interfaces
      */
     const { parameters, interfaces: interfaceUses, options } = parseMethodParameters(config, {
-      body: 'data',
-      query: 'params',
     })
-    const { name, description, url, responseType } = parseMethodMetadata(config)
-
-    options.unshift('url')
-    options.push(['...', 'config'])
+    let { name, description, url, responseType } = parseMethodMetadata(config)
+    const body: string[] = []
+    options.push(['...', 'init'])
     parameters.push({
-      name: 'config',
-      type: 'AxiosRequestConfig',
+      name: 'init',
+      type: 'RequestInit',
       required: false,
     })
     interfaces.push(...interfaceUses)
@@ -70,14 +67,26 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
         parameter.type = spliceTypeSpace(parameter.type)
     }
 
+    url = url.includes('$') ? `\`${url}\`;` : `"${url}"`
+
+    if (options.includes('query')) {
+      options.splice(options.findIndex(v => v === 'query'), 1)
+      body.push('const querySearch = `?${new URLSearchParams(Object.entries(query)).toString()}`')
+      url += '+ `${querySearch}`'
+    }
+    if (options.includes('body'))
+      options.splice(options.findIndex(v => v === 'body'), 1, ['body', 'JSON.stringify(body || {})'])
+
     functions.push({
       export: true,
+      async: true,
       name,
       description,
       parameters,
       body: [
-        url.includes('$') ? `const url = \`${url}\`;` : `const url = "${url}"`,
-        `return http.request<${genericType}>({ ${literalFieldsToString(options)} })`,
+        ...body,
+        `const response =  fetch(${url}, { ${literalFieldsToString(options)} })`,
+        `return response.json() as Promise<${genericType}>`,
       ],
     })
 

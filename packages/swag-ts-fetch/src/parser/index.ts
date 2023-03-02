@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import type { ApiPipeline, StatementFunction, StatementInterface } from 'apipgen'
 import type { Definitions, OpenAPISpecificationV2, Paths, Schema } from 'openapi-specification-types'
 import {
@@ -49,26 +50,38 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
      * function params/function options/function use interfaces
      */
     const { parameters, interfaces: interfaceUses, options } = parseMethodParameters(config, {
-      body: 'data',
-      query: 'params',
+      formData: 'body',
     })
-    const { name, description, url, responseType } = parseMethodMetadata(config)
 
-    options.unshift('url')
-    options.push(['...', 'config'])
-    parameters.push({
-      name: 'config',
-      type: 'AxiosRequestConfig',
-      required: false
-    })
     interfaces.push(...interfaceUses)
 
+    let { name, description, url, responseType } = parseMethodMetadata(config)
     const genericType = `Response<${spliceTypeSpace(responseType)}>`
+    const body: string[] = []
+
+    options.push(['...', 'init'])
+    parameters.push({
+      name: 'init',
+      type: 'RequestInit',
+      required: false,
+    })
 
     for (const parameter of parameters || []) {
       if (parameter.type)
         parameter.type = spliceTypeSpace(parameter.type)
     }
+
+    if (options.includes('query')) {
+      options.splice(options.findIndex(v => v === 'query'), 1)
+      body.push('const querySearch = `?${new URLSearchParams(Object.entries(query)).toString()}`')
+      url += '${querySearch}'
+    }
+    if (options.includes('body') && !parameters.find(v => v.type === 'FormData'))
+      options.splice(options.findIndex(v => v === 'body'), 1, ['body', 'JSON.stringify(body || {})'])
+    if (configRead.config.baseURL)
+      url = `\${baseURL}${url}`
+
+    url = url.includes('$') ? `\`${url}\`;` : `"${url}"`
 
     functions.push({
       export: true,
@@ -76,8 +89,10 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
       description,
       parameters,
       body: [
-        url.includes('$') ? `const url = \`${url}\`;` : `const url = "${url}"`,
-        `http.request<${genericType}>({ ${literalFieldsToString(options)} })`,
+        ...body,
+        url.includes('$') ? `const url = ${url};` : `const url = ${url}`,
+        `const response = await fetch(url, { ${literalFieldsToString(options)} })`,
+        `return response.json() as Promise<${genericType}>`,
       ],
     })
 

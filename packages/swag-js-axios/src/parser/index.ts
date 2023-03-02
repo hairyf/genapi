@@ -65,8 +65,6 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
     })
     interfaces.push(...interfaceUses)
 
-
-
     for (const parameter of parameters || []) {
       if (!parameter.type)
         continue
@@ -88,7 +86,7 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
       parameters,
       body: [
         url.includes('$') ? `const url = \`${url}\`;` : `const url = "${url}"`,
-        `http.request({ ${literalFieldsToString(options)} })`,
+        `return http.request({ ${literalFieldsToString(options)} })`,
       ],
     })
 

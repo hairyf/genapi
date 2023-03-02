@@ -32,6 +32,7 @@ importers:
       '@types/prettier': ^2.7.2
       apipgen-swag-js-axios: workspace:*
       apipgen-swag-ts-axios: workspace:*
+      apipgen-swag-ts-fetch: workspace:*
       cac: ^6.7.14
       chalk: ^5.2.0
       fs-extra: ^11.1.0
@@ -43,6 +44,7 @@ importers:
     dependencies:
       apipgen-swag-js-axios: link:../swag-js-axios
       apipgen-swag-ts-axios: link:../swag-ts-axios
+      apipgen-swag-ts-fetch: link:../swag-ts-fetch
       cac: 6.7.14
       chalk: 5.2.0
       fs-extra: 11.1.0

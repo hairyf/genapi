@@ -16,6 +16,10 @@ export interface StatementFunction {
    */
   export?: boolean
   /**
+   * is async
+   */
+  async?: boolean
+  /**
    * function description
    */
   description?: string | string[]
