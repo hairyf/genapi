@@ -6,7 +6,7 @@ const config = defineConfig({
     uri: 'https://petstore.swagger.io/v2/swagger.json',
   },
   output: {
-    main: 'dist-test/index.js',
+    main: 'dist-test/index.ts',
   },
 })
 

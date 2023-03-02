@@ -56,6 +56,11 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
 
     options.unshift('url')
     options.push(['...', 'config'])
+    parameters.push({
+      name: 'config',
+      type: 'AxiosRequestConfig',
+      required: false
+    })
     interfaces.push(...interfaceUses)
 
     const genericType = `Response<${spliceTypeSpace(responseType)}>`
