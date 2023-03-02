@@ -1,22 +1,20 @@
-import camelCase from 'lodash/camelCase'
-import type { ApiPipeline, StatementFunction, StatementInterface, StatementTypeAlias } from 'apipgen'
+import type { ApiPipeline, StatementFunction, StatementInterface } from 'apipgen'
 import type { Definitions, OpenAPISpecificationV2, Paths, Schema } from 'openapi-specification-types'
-import { getFunctionOptions, getPropertieType, traversePaths } from './utils'
-import { varName } from './utils/format'
-import { literalFieldsToString } from './utils/other'
+import {
+  literalFieldsToString,
+  parseHeaderCommits,
+  parseMethodMetadata,
+  parseMethodParameters,
+  parseSchemaType,
+  traversePaths,
+  varName,
+} from '@apipgen/swag-parser'
 
 export function parser(configRead: ApiPipeline.ConfigRead) {
   const source = configRead.source as OpenAPISpecificationV2
 
-  const comments = [
-    `@title ${source.info.title}`,
-    `@description ${source.info.description}`,
-    source.swagger && `@swagger ${source.swagger}`,
-    `@version ${source.info.version}`,
-  ]
-  const typings: StatementTypeAlias[] = [
-    { export: true, name: 'Response<T>', value: 'T' },
-  ]
+  const comments = parseHeaderCommits(source)
+
   const interfaces: StatementInterface[] = []
   const functions: StatementFunction[] = []
 
@@ -34,7 +32,6 @@ export function parser(configRead: ApiPipeline.ConfigRead) {
 
   configRead.graphs.comments = comments
   configRead.graphs.functions = functions
-  configRead.graphs.typings = typings
   configRead.graphs.interfaces = interfaces
 
   return configRead
@@ -48,67 +45,60 @@ interface TransformOptions {
 
 function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: TransformOptions) {
   traversePaths(paths, (config) => {
-    const { method, path, options: meta } = config
     /**
      * function params/function options/function use interfaces
      */
-    const { parameters, interfaces: interfaceUses, options } = getFunctionOptions(config)
+    const { parameters, interfaces: interfaceUses, options } = parseMethodParameters(config, {
+      body: 'data',
+      query: 'params',
+    })
+    const { name, description, url, responseType } = parseMethodMetadata(config)
+    const typeOutput = configRead.outputs.find(v => v.type === 'typings')!
+    const isGenerateType = configRead.config.output?.type !== false
 
+    options.unshift('url')
+    options.push(['...', 'config'])
+    parameters.push({
+      type: 'import("axios").AxiosRequestConfig',
+      name: 'config',
+      required: false,
+    })
     interfaces.push(...interfaceUses)
 
-    /**
-     * function comments
-     */
-    const comments = [
-      meta.summary && `@summary ${meta.summary}`,
-      meta.description && `@description ${meta.description}`,
-      `@method ${method}`,
-      meta.tags && `@tags ${meta.tags.join(' | ') || '-'}`,
-      meta.consumes && `@consumes ${meta.consumes.join('; ') || '-'}`,
-    ]
-    /**
-     * function name
-     */
-    const name = camelCase(`${method}/${path}`)
-    const url = `${path.replace(/({)/g, '${paths?.')}`
-    const typeOutput = configRead.outputs.find(v => v.type === 'typings')!
 
-    /**
-     * response type
-     */
-    const responseType = meta.responses['200'] ? getPropertieType(meta.responses['200']) : 'void'
-    const genericType = `import("${typeOutput.import}").Response<${spliceTypeSpace(responseType)}>`
-
-    function spliceTypeSpace(name: string) {
-      const isGenerateType = configRead.config.output?.type !== false
-      const isSomeType = interfaces.map(v => v.name).includes(name.replace('[]', ''))
-
-      if (isGenerateType && isSomeType)
-        return `import("${typeOutput.import}").${name}`
-      return name
-    }
 
     for (const parameter of parameters || []) {
       if (!parameter.type)
         continue
       parameter.type = spliceTypeSpace(parameter.type)
-      comments.push(`@param {${parameter.type}${parameter.required ? '' : '='}} ${parameter.name}`)
+      if (isGenerateType)
+        description.push(`@param {${parameter.type}${parameter.required ? '' : '='}} ${parameter.name}`)
       parameter.type = undefined
       parameter.required = true
     }
-
-    comments.push(`@return {${genericType}}`)
+    if (isGenerateType) {
+      const genericType = `import("${typeOutput?.import}").Response<${spliceTypeSpace(responseType)}>`
+      description.push(`@return {${genericType}}`)
+    }
 
     functions.push({
       export: true,
       name,
-      description: comments.filter(Boolean),
+      description,
       parameters,
       body: [
         url.includes('$') ? `const url = \`${url}\`;` : `const url = "${url}"`,
         `http.request({ ${literalFieldsToString(options)} })`,
       ],
     })
+
+    function spliceTypeSpace(name: string) {
+      const isGenerateType = configRead.config.output?.type !== false
+      const isSomeType = interfaces.map(v => v.name).includes(name.replace('[]', ''))
+      if (isGenerateType && isSomeType)
+        return `import("${typeOutput.import}").${name}`
+      return name
+    }
   })
 }
 
@@ -128,7 +118,7 @@ function defPuInterfaces(definitions: Definitions, { interfaces }: TransformOpti
         propertie.description = `@description ${propertie.description}`
       return {
         name,
-        type: getPropertieType(propertie),
+        type: parseSchemaType(propertie),
         description: propertie.description,
         required: propertie.required,
       }
