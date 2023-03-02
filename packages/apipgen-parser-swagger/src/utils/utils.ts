@@ -1,6 +1,14 @@
 import type { StatementField } from 'apipgen'
 import type { Method, Parameter } from 'openapi-specification-types'
 
+export interface InSchemas {
+  path?: string
+  body?: string
+  query?: string
+  header?: string
+  formData?: string
+}
+
 export function fillParameters(options: Method, parameters: Parameter[]) {
   parameters = parameters.filter((item) => {
     return !options.parameters?.some(v => v.name === item.name)
@@ -9,15 +17,15 @@ export function fillParameters(options: Method, parameters: Parameter[]) {
   return parameters
 }
 
-export function toUndefField(inType: Parameter['in']) {
-  const schemas = {
-    path: 'paths',
-    body: 'data',
-    query: 'params',
-    header: 'headers',
-    formData: 'data',
+export function toUndefField(inType: Parameter['in'], schemas: InSchemas = {}) {
+  const toSchemas = {
+    path: schemas.path || 'paths',
+    body: schemas.body || 'body',
+    query: schemas.query || 'query',
+    header: schemas.header || 'headers',
+    formData: schemas.formData || schemas.body || 'data',
   }
-  return schemas[inType]
+  return toSchemas[inType]
 }
 
 /**

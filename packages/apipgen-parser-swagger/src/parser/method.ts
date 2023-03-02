@@ -2,17 +2,19 @@ import type { StatementField, StatementInterface } from 'apipgen'
 import type { Parameter } from 'openapi-specification-types'
 import camelCase from 'lodash/camelCase'
 import type { PathMethod } from '../traverse'
-import type { LiteralField } from '../utils'
+import type { InSchemas, LiteralField } from '../utils'
 import { fillParameters, isRequiredParameter, signAnyInter, toUndefField, varName } from '../utils'
 import { parseParameterFiled } from './parameter'
 import { parseSchemaType } from './schema'
+
+export type { InSchemas }
 
 /**
  * parse params to function options
  * @param param
  * @returns
  */
-export function parseMethodParameters({ method, parameters, options, path }: PathMethod) {
+export function parseMethodParameters({ method, parameters, options, path }: PathMethod, schemas?: InSchemas) {
   parameters = fillParameters(options, parameters)
 
   const requestConfigs = {
@@ -36,7 +38,7 @@ export function parseMethodParameters({ method, parameters, options, path }: Pat
     if (properties.length === 0)
       continue
 
-    const name = toUndefField(inType)
+    const name = toUndefField(inType, schemas)
 
     if (inType !== 'path')
       config.options.push(name)
