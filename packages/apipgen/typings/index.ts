@@ -10,7 +10,7 @@ namespace ApiPipeline {
     code?: string
   }
   export interface Inputs {
-    json?: Record<string, string>
+    json?: string | Record<string, string>
     uri?: string
   }
   export interface PreInputs {
@@ -65,31 +65,31 @@ namespace ApiPipeline {
     /**
      * all comments
      */
-    comments?: string[]
+    comments: string[]
 
     /**
      * all api options
      */
-    functions?: StatementFunction[]
+    functions: StatementFunction[]
     /**
      * all request imports
      */
-    imports?: StatementImported[]
+    imports: StatementImported[]
 
     /**
      * all request variables
      */
-    variables?: StatementVariable[]
+    variables: StatementVariable[]
     /**
      * all request typings
      */
-    typings?: StatementTypeAlias[]
+    typings: StatementTypeAlias[]
     /**
      * all request interfaces
      */
-    interfaces?: StatementInterface[]
+    interfaces: StatementInterface[]
   }
-  export interface ConfigRead {
+  export interface ConfigRead<Config = ApiPipeline.Config> {
     /**
      * source input
      */

@@ -1,0 +1,33 @@
+{
+  "name": "@apipgen/swagger-parser",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "ptsup -r src --dts --meta --clean"
+  },
+  "publishConfig": {
+    "directory": "dist",
+    "main": "index.js",
+    "types": "./index.d.ts"
+  },
+  "dependencies": {
+    "fs-extra": "^11.1.0",
+    "got": "11.8.5",
+    "lodash": "^4.17.21",
+    "p-pipe": "^3",
+    "pascal-case": "^3.1.2",
+    "prettier": "^2.8.4",
+    "transliteration": "^2.3.5",
+    "ts-factory-extra": "^0.0.4"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1",
+    "@types/lodash": "^4.14.191",
+    "apipgen": "workspace:*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
