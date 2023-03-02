@@ -56,6 +56,11 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
 
     options.unshift('url')
     options.push(['...', 'config'])
+    parameters.push({
+      name: 'config',
+      type: 'AxiosRequestConfig',
+      required: false
+    })
     interfaces.push(...interfaceUses)
 
     const genericType = `Response<${spliceTypeSpace(responseType)}>`
@@ -80,7 +85,7 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
       const isGenerateType = configRead.config.output?.type !== false
       const isSomeType = interfaces.map(v => v.name).includes(name.replace('[]', ''))
       if (isGenerateType && isSomeType)
-        return `OpenAPITypes.${name}`
+        return `Types.${name}`
       return name
     }
   })

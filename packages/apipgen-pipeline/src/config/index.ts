@@ -11,16 +11,17 @@ export function readConfig(config: ApiPipeline.Config) {
     config.output.type = config.output.type || config.output.main.replace(/\.ts|\.js/g, '.type.ts')
 
   const userRoot = process.cwd()
+  const isTypescript = config.output.main.endsWith('.ts')
   const isGenerateType = config.output?.type !== false
   const importTypePath = config.import.type || getImportTypePath(config.output.main, config.output.type || '')
 
   const imports: (StatementImported | false)[] = [
-    isGenerateType && {
-      name: 'OpenAPITypes',
+    isTypescript && isGenerateType && {
+      name: 'Types',
       value: importTypePath,
       namespace: true,
     },
-    isGenerateType && {
+    isTypescript && isGenerateType && {
       names: ['Response'],
       value: importTypePath,
     },
