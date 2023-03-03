@@ -23,7 +23,7 @@ export function toUndefField(inType: Parameter['in'], schemas: InSchemas = {}) {
     body: schemas.body || 'body',
     query: schemas.query || 'query',
     header: schemas.header || 'headers',
-    formData: schemas.formData || schemas.body || 'data',
+    formData: schemas.formData || schemas.body || 'body',
   }
   return toSchemas[inType]
 }

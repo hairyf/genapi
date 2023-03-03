@@ -1,14 +1,20 @@
 import type { ApiPipeline, StatementFunction, StatementInterface } from 'apipgen'
-import type { Definitions, OpenAPISpecificationV2, Paths, Schema } from 'openapi-specification-types'
+import type { OpenAPISpecificationV2, Paths } from 'openapi-specification-types'
 import {
   literalFieldsToString,
   parseHeaderCommits,
   parseMethodMetadata,
   parseMethodParameters,
-  parseSchemaType,
+  transformDefinitions,
+  transformParameters,
   traversePaths,
-  varName,
 } from '@apipgen/swag-parser'
+
+export interface PathsTransformOptions {
+  configRead: ApiPipeline.ConfigRead
+  interfaces: StatementInterface[]
+  functions: StatementFunction[]
+}
 
 export function parser(configRead: ApiPipeline.ConfigRead) {
   const source = configRead.source as OpenAPISpecificationV2
@@ -18,13 +24,11 @@ export function parser(configRead: ApiPipeline.ConfigRead) {
   const interfaces: StatementInterface[] = []
   const functions: StatementFunction[] = []
 
-  defPuInterfaces(source.definitions, {
-    configRead,
-    functions,
+  transformDefinitions(source.definitions, {
     interfaces,
   })
 
-  pathsPuFunctions(source.paths, {
+  transformPaths(source.paths, {
     configRead,
     functions,
     interfaces,
@@ -37,25 +41,18 @@ export function parser(configRead: ApiPipeline.ConfigRead) {
   return configRead
 }
 
-interface TransformOptions {
-  configRead: ApiPipeline.ConfigRead
-  interfaces: StatementInterface[]
-  functions: StatementFunction[]
-}
-
-function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: TransformOptions) {
+export function transformPaths(paths: Paths, { configRead, functions, interfaces }: PathsTransformOptions) {
   traversePaths(paths, (config) => {
     /**
      * function params/function options/function use interfaces
      */
-    const { parameters, interfaces: interfaceUses, options } = parseMethodParameters(config, {
+    const { parameters, interfaces: attachInters, options } = parseMethodParameters(config, {
       body: 'data',
       query: 'params',
     })
     const { name, description, url, responseType } = parseMethodMetadata(config)
-    const typeOutput = configRead.outputs.find(v => v.type === 'typings')!
-    const isGenerateType = configRead.config.output?.type !== false
 
+    interfaces.push(...attachInters)
     options.unshift('url')
     options.push(['...', 'config'])
     parameters.push({
@@ -63,21 +60,16 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
       name: 'config',
       required: false,
     })
-    interfaces.push(...interfaceUses)
+    if (configRead.config.baseURL)
+      options.push('baseURL')
 
-    for (const parameter of parameters || []) {
-      if (!parameter.type)
-        continue
-      parameter.type = spliceTypeSpace(parameter.type)
-      if (isGenerateType)
-        description.push(`@param {${parameter.type}${parameter.required ? '' : '='}} ${parameter.name}`)
-      parameter.type = undefined
-      parameter.required = true
-    }
-    if (isGenerateType) {
-      const genericType = `import("${typeOutput?.import}").Response<${spliceTypeSpace(responseType)}>`
-      description.push(`@return {${genericType}}`)
-    }
+    transformParameters(parameters, {
+      syntax: 'ecmascript',
+      configRead,
+      description,
+      interfaces,
+      responseType,
+    })
 
     functions.push({
       export: true,
@@ -89,37 +81,5 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
         `return http.request({ ${literalFieldsToString(options)} })`,
       ],
     })
-
-    function spliceTypeSpace(name: string) {
-      const isGenerateType = configRead.config.output?.type !== false
-      const isSomeType = interfaces.map(v => v.name).includes(name.replace('[]', ''))
-      if (isGenerateType && isSomeType)
-        return `import("${typeOutput.import}").${name}`
-      return name
-    }
   })
-}
-
-function defPuInterfaces(definitions: Definitions, { interfaces }: TransformOptions) {
-  for (const [name, definition] of Object.entries(definitions)) {
-    const { properties = {} } = definition
-
-    interfaces.push({
-      export: true,
-      name: varName(name),
-      properties: Object.keys(properties).map(name => defToFields(name, properties[name])),
-    })
-
-    function defToFields(name: string, propertie: Schema) {
-      propertie.required = definition?.required?.some(v => v === name)
-      if (propertie.description)
-        propertie.description = `@description ${propertie.description}`
-      return {
-        name,
-        type: parseSchemaType(propertie),
-        description: propertie.description,
-        required: propertie.required,
-      }
-    }
-  }
 }

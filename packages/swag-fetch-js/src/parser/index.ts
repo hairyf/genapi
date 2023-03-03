@@ -1,15 +1,23 @@
-/* eslint-disable no-template-curly-in-string */
 import type { ApiPipeline, StatementFunction, StatementInterface } from 'apipgen'
-import type { Definitions, OpenAPISpecificationV2, Paths, Schema } from 'openapi-specification-types'
+import type { OpenAPISpecificationV2, Paths } from 'openapi-specification-types'
 import {
   literalFieldsToString,
   parseHeaderCommits,
   parseMethodMetadata,
   parseMethodParameters,
-  parseSchemaType,
+  transformBodyStringify,
+  transformDefinitions,
+  transformParameters,
+  transformQueryParams,
+  transformUrlSyntax,
   traversePaths,
-  varName,
 } from '@apipgen/swag-parser'
+
+export interface PathsTransformOptions {
+  configRead: ApiPipeline.ConfigRead
+  interfaces: StatementInterface[]
+  functions: StatementFunction[]
+}
 
 export function parser(configRead: ApiPipeline.ConfigRead) {
   const source = configRead.source as OpenAPISpecificationV2
@@ -19,13 +27,11 @@ export function parser(configRead: ApiPipeline.ConfigRead) {
   const interfaces: StatementInterface[] = []
   const functions: StatementFunction[] = []
 
-  defPuInterfaces(source.definitions, {
-    configRead,
-    functions,
+  transformDefinitions(source.definitions, {
     interfaces,
   })
 
-  pathsPuFunctions(source.paths, {
+  transformPaths(source.paths, {
     configRead,
     functions,
     interfaces,
@@ -38,29 +44,18 @@ export function parser(configRead: ApiPipeline.ConfigRead) {
   return configRead
 }
 
-interface TransformOptions {
-  configRead: ApiPipeline.ConfigRead
-  interfaces: StatementInterface[]
-  functions: StatementFunction[]
-}
-
-function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: TransformOptions) {
+export function transformPaths(paths: Paths, { configRead, functions, interfaces }: PathsTransformOptions) {
   traversePaths(paths, (config) => {
     /**
      * function params/function options/function use interfaces
      */
-    const { parameters, interfaces: interfaceUses, options } = parseMethodParameters(config, {
+    const { parameters, interfaces: attachInters, options } = parseMethodParameters(config, {
       formData: 'body',
     })
-    const typeOutput = configRead.outputs.find(v => v.type === 'typings')!
-    const isGenerateType = configRead.config.output?.type !== false
 
-    interfaces.push(...interfaceUses)
+    let { name, description, url, responseType, body } = parseMethodMetadata(config)
 
-    let { name, description, url, responseType } = parseMethodMetadata(config)
-
-    const body: string[] = []
-
+    interfaces.push(...attachInters)
     options.push(['...', 'config'])
     parameters.push({
       name: 'config',
@@ -68,35 +63,18 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
       required: false,
     })
 
-    for (const parameter of parameters || []) {
-      if (parameter.type)
-        parameter.type = spliceTypeSpace(parameter.type)
-    }
-    for (const parameter of parameters || []) {
-      if (!parameter.type)
-        continue
-      parameter.type = spliceTypeSpace(parameter.type)
-      if (isGenerateType)
-        description.push(`@param {${parameter.type}${parameter.required ? '' : '='}} ${parameter.name}`)
-      parameter.type = undefined
-      parameter.required = true
-    }
-    if (isGenerateType) {
-      const genericType = `import("${typeOutput?.import}").Response<${spliceTypeSpace(responseType)}>`
-      description.push(`@return {${genericType}}`)
-    }
+    transformParameters(parameters, {
+      syntax: 'ecmascript',
+      configRead,
+      description,
+      interfaces,
+      responseType,
+    })
 
-    if (options.includes('query')) {
-      options.splice(options.findIndex(v => v === 'query'), 1)
-      body.push('const _querys_ = `?${new URLSearchParams(Object.entries(query)).toString()}`')
-      url += '${_querys_}'
-    }
-    if (options.includes('body') && !parameters.find(v => v.type === 'FormData'))
-      options.splice(options.findIndex(v => v === 'body'), 1, ['body', 'JSON.stringify(body || {})'])
-    if (configRead.config.baseURL)
-      url = `\${baseURL}${url}`
+    transformBodyStringify('body', { options, parameters })
 
-    url = url.includes('$') ? `\`${url}\`` : `'${url}'`
+    url = transformQueryParams('query', { body, options, url })
+    url = transformUrlSyntax(url, { baseURL: configRead.config.baseURL })
 
     functions.push({
       export: true,
@@ -112,37 +90,5 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
         'return response.json()',
       ],
     })
-
-    function spliceTypeSpace(name: string) {
-      const isGenerateType = configRead.config.output?.type !== false
-      const isSomeType = interfaces.map(v => v.name).includes(name.replace('[]', ''))
-      if (isGenerateType && isSomeType)
-        return `import("${typeOutput.import}").${name}`
-      return name
-    }
   })
-}
-
-function defPuInterfaces(definitions: Definitions, { interfaces }: TransformOptions) {
-  for (const [name, definition] of Object.entries(definitions)) {
-    const { properties = {} } = definition
-
-    interfaces.push({
-      export: true,
-      name: varName(name),
-      properties: Object.keys(properties).map(name => defToFields(name, properties[name])),
-    })
-
-    function defToFields(name: string, propertie: Schema) {
-      propertie.required = definition?.required?.some(v => v === name)
-      if (propertie.description)
-        propertie.description = `@description ${propertie.description}`
-      return {
-        name,
-        type: parseSchemaType(propertie),
-        description: propertie.description,
-        required: propertie.required,
-      }
-    }
-  }
 }
