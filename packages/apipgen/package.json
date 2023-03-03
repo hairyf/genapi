@@ -30,8 +30,8 @@
     "ora": "^5",
     "p-pipe": "^3",
     "unconfig": "^0.3.7",
-    "apipgen-swag-ts-axios": "workspace:*",
-    "apipgen-swag-js-axios": "workspace:*"
+    "apipgen-swag-axios-ts": "workspace:*",
+    "apipgen-swag-axios-js": "workspace:*"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
