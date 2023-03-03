@@ -3,10 +3,12 @@
 
 API generator, which is used to convert OpenApi (v2~v3) and other input sources into TS/JS APIs, and currently supports axios pipeline
 
-- `swag-ts-axios`
-- `swag-js-axios`
-- `swag-ts-fetch` (npm install apipgen-swag-ts-fetch)
-- `swag-js-fetch` (npm install apipgen-swag-js-fetch)
+- `swag-axios-ts`
+- `swag-axios-js`
+- `swag-fetch-ts` (npm install apipgen-swag-fetch-ts)
+- `swag-fetch-js` (npm install apipgen-swag-fetch-js)
+- `swag-ky-ts` (npm install apipgen-swag-ky-ts)
+- `swag-ky-js` (npm install apipgen-swag-ky-js)
 
 ## ⚙️ Install
 
@@ -36,10 +38,10 @@ export default defineConfig({
   /**
    * 使用的编译 pipeline 支持 npm 包（添加前缀apipgen-）或本地路径
    *
-   * 默认支持 swag-ts-axios|swag-js-axios|swag-ts-fetch|swag-js-fetch
-   * @default 'swag-ts-axios'
+   * 默认支持 swag-axios-ts|swag-axios-js|swag-fetch-ts|swag-fetch-js
+   * @default 'swag-axios-ts'
    */
-  pipeline: 'swag-ts-axios',
+  pipeline: 'swag-axios-ts',
   // your input source and output file (swagger api url or json)
   // if you have multiple sources, you can use 'server'
   input: 'http://...api-docs',
@@ -92,13 +94,13 @@ export default defineConfig({
 })
 ```
 
-## swag-js-axios
+## swag-axios-js
 
-Use the `swag-js-axios` pipeline to generate JavaScript files with both types.
+Use the `swag-axios-js` pipeline to generate JavaScript files with both types.
 
 ```ts
 export default defineConfig({
-  pipeline: 'swag-js-axios',
+  pipeline: 'swag-axios-js',
   input: {
     uri: 'https://petstore.swagger.io/v2/swagger.json',
   },
@@ -107,7 +109,7 @@ export default defineConfig({
 
 Run `apipgen`
 
-![swag-js-axios](public/swag-js-axios.png)
+![swag-axios-js](public/swag-axios-js.png)
 
 ## Pipeline
 
@@ -128,7 +130,7 @@ pipeline is defined by the `pipeline` method provided by `apipgen`.
 import { pipeline } from 'apipgen'
 
 // each pipeline exposes corresponding methods, which can be reused and reorganized
-import { dest, generate, original } from 'apipgen-swag-ts-axios'
+import { dest, generate, original } from 'apipgen-swag-axios-ts'
 
 function myCustomPipe(config) {
   const process = pipeline(

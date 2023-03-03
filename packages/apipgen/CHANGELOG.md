@@ -5,8 +5,8 @@
 ### Patch Changes
 
 - feat: add swag-ky support
-  - apipgen-swag-js-axios@0.1.0
-  - apipgen-swag-ts-axios@0.1.0
+  - apipgen-swag-axios-js@0.1.0
+  - apipgen-swag-axios-ts@0.1.0
 
 ## 0.3.0
 
@@ -17,10 +17,10 @@
 ### Patch Changes
 
 - Updated dependencies
-  - apipgen-swag-js-axios@0.1.0
-  - apipgen-swag-js-fetch@0.1.0
-  - apipgen-swag-ts-axios@0.1.0
-  - apipgen-swag-ts-fetch@0.1.0
+  - apipgen-swag-axios-js@0.1.0
+  - apipgen-swag-fetch-js@0.1.0
+  - apipgen-swag-axios-ts@0.1.0
+  - apipgen-swag-fetch-ts@0.1.0
 
 ## 0.2.7
 

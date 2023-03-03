@@ -1,4 +1,4 @@
-# apipgen-swag-ts-fetch
+# apipgen-swag-fetch-ts
 
 ## 0.1.0
 

@@ -1,4 +1,4 @@
-# apipgen-swag-js-fetch
+# apipgen-swag-fetch-js
 
 ## 0.1.1
 
