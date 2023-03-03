@@ -8,6 +8,7 @@
     "build": "ptsup -r src --dts --meta --clean"
   },
   "publishConfig": {
+    "access": "public",
     "directory": "dist",
     "main": "index.js",
     "types": "./index.d.ts"
