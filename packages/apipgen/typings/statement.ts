@@ -1,3 +1,8 @@
+export interface StatementGeneric {
+  name: string
+  extends?: string
+  default?: string
+}
 export interface StatementFunction {
   /**
    * function name
@@ -19,10 +24,17 @@ export interface StatementFunction {
    * is async
    */
   async?: boolean
+
+  generator?: boolean
+
   /**
    * function description
    */
   description?: string | string[]
+
+  returnType?: string
+
+  generics?: StatementGeneric[]
 }
 
 export interface StatementInterface {
@@ -67,6 +79,7 @@ export interface StatementImported {
   name?: string
   names?: string[]
   namespace?: boolean
+  type?: boolean
   value: string
 }
 

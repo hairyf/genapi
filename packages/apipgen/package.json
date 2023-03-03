@@ -32,6 +32,7 @@
     "unconfig": "^0.3.7",
     "apipgen-swag-ts-axios": "workspace:*",
     "apipgen-swag-ts-fetch": "workspace:*",
+    "apipgen-swag-js-fetch": "workspace:*",
     "apipgen-swag-js-axios": "workspace:*"
   },
   "devDependencies": {

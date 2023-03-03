@@ -35,6 +35,10 @@ export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead)
       name: item.name,
       parameters: item.parameters,
       body: item.body?.map(codeToAstNode),
+      async: item.async,
+      returnType: item.returnType,
+      generics: item.generics,
+      generator: item.generator,
     })
   })
 

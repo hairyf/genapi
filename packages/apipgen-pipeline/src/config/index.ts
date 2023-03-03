@@ -19,11 +19,13 @@ export function readConfig(config: ApiPipeline.Config) {
     isTypescript && isGenerateType && {
       name: 'Types',
       value: importTypePath,
+      type: true,
       namespace: true,
     },
     isTypescript && isGenerateType && {
       names: ['Response'],
       value: importTypePath,
+      type: true,
     },
   ]
 

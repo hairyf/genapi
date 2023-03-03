@@ -90,7 +90,7 @@ export function parseMethodMetadata({ method, options: meta, path }: PathMethod)
   ]
 
   const name = camelCase(`${method}/${path}`)
-  const url = `${path.replace(/({)/g, '${paths?.')}`
+  const url = `${path.replace(/({)/g, '${paths.')}`
   const responseType = meta.responses['200'] ? parseSchemaType(meta.responses['200']) : 'void'
 
   return { description: comments.filter(Boolean), name, url, responseType }

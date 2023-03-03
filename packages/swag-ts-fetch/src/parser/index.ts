@@ -59,9 +59,9 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
     const genericType = `Response<${spliceTypeSpace(responseType)}>`
     const body: string[] = []
 
-    options.push(['...', 'init'])
+    options.push(['...', 'config'])
     parameters.push({
-      name: 'init',
+      name: 'config',
       type: 'RequestInit',
       required: false,
     })
@@ -73,25 +73,27 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
 
     if (options.includes('query')) {
       options.splice(options.findIndex(v => v === 'query'), 1)
-      body.push('const querySearch = `?${new URLSearchParams(Object.entries(query)).toString()}`')
-      url += '${querySearch}'
+      body.push('const _querys_ = `?${new URLSearchParams(Object.entries(query)).toString()}`')
+      url += '${_querys_}'
     }
     if (options.includes('body') && !parameters.find(v => v.type === 'FormData'))
       options.splice(options.findIndex(v => v === 'body'), 1, ['body', 'JSON.stringify(body || {})'])
     if (configRead.config.baseURL)
       url = `\${baseURL}${url}`
 
-    url = url.includes('$') ? `\`${url}\`;` : `"${url}"`
+    url = url.includes('$') ? `\`${url}\`` : `'${url}'`
 
     functions.push({
       export: true,
+      async: true,
       name,
       description,
       parameters,
       body: [
         ...body,
-        url.includes('$') ? `const url = ${url};` : `const url = ${url}`,
-        `const response = await fetch(url, { ${literalFieldsToString(options)} })`,
+        `const response = await fetch(${url}, { 
+          ${literalFieldsToString(options)} 
+        })`,
         `return response.json() as Promise<${genericType}>`,
       ],
     })

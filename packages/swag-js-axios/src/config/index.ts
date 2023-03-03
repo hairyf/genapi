@@ -5,7 +5,7 @@ export function readConfig(config: ApiPipeline.Config): ApiPipeline.ConfigRead {
   config.import = config.import || {}
   config.output = config.output || {}
   config.import.http = config.import.http || 'axios'
-  config.output.main = config.output.main || 'src/api/index.js'
+  config.output.main = config.output.main?.replace('.ts', '.js') || 'src/api/index.js'
 
   const configRead = _readConfig(config)
 

@@ -31,6 +31,7 @@ importers:
       '@types/node': ^18.14.0
       '@types/prettier': ^2.7.2
       apipgen-swag-js-axios: workspace:*
+      apipgen-swag-js-fetch: workspace:*
       apipgen-swag-ts-axios: workspace:*
       apipgen-swag-ts-fetch: workspace:*
       cac: ^6.7.14
@@ -43,6 +44,7 @@ importers:
       unconfig: ^0.3.7
     dependencies:
       apipgen-swag-js-axios: link:../swag-js-axios
+      apipgen-swag-js-fetch: link:../swag-js-fetch
       apipgen-swag-ts-axios: link:../swag-ts-axios
       apipgen-swag-ts-fetch: link:../swag-ts-fetch
       cac: 6.7.14
@@ -96,7 +98,7 @@ importers:
       pascal-case: ^3.1.2
       prettier: ^2.8.4
       transliteration: ^2.3.5
-      ts-factory-extra: ^0.0.4
+      ts-factory-extra: ^0.0.5
     dependencies:
       fs-extra: 11.1.0
       got: 11.8.5
@@ -105,7 +107,7 @@ importers:
       pascal-case: 3.1.2
       prettier: 2.8.4
       transliteration: 2.3.5
-      ts-factory-extra: 0.0.4
+      ts-factory-extra: 0.0.5
     devDependencies:
       '@types/fs-extra': 11.0.1
       '@types/lodash': 4.14.191
@@ -113,6 +115,20 @@ importers:
     publishDirectory: dist
 
   packages/swag-js-axios:
+    specifiers:
+      '@apipgen/pipeline': workspace:*
+      '@apipgen/swag-parser': workspace:*
+      apipgen: workspace:*
+      openapi-specification-types: ^0.0.1
+    dependencies:
+      '@apipgen/pipeline': link:../apipgen-pipeline
+      '@apipgen/swag-parser': link:../apipgen-parser-swagger
+    devDependencies:
+      apipgen: link:../apipgen
+      openapi-specification-types: 0.0.1
+    publishDirectory: dist
+
+  packages/swag-js-fetch:
     specifiers:
       '@apipgen/pipeline': workspace:*
       '@apipgen/swag-parser': workspace:*
@@ -808,6 +824,113 @@ packages:
   /@sindresorhus/is/4.6.0:
     resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
     engines: {node: '>=10'}
+    dev: false
+
+  /@swc/core-darwin-arm64/1.3.37:
+    resolution: {integrity: sha512-iIyVqqioUpVeT/hbBVfkrsjfCyL4idNH+LVKGmoTAWaTTSB0+UNhNuA7Wh2CqIHWh1Mv7IlumitWPcqsVDdoEw==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/core-darwin-x64/1.3.37:
+    resolution: {integrity: sha512-dao5nXPWKxtaxqak4ZkRyBoApNIelW/glantQhPhj0FjMjuIQc+v03ldJ8XDByWOG+6xuVUTheANCtEccxoQBw==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/core-linux-arm-gnueabihf/1.3.37:
+    resolution: {integrity: sha512-/mVrc8H/f062CUkqKGmBiil2VIYu4mKawHxERfeP1y38X5K/OwjG5s9MgO9TVxy+Ly6vejwj70kRhSa3hVp1Bw==}
+    engines: {node: '>=10'}
+    cpu: [arm]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/core-linux-arm64-gnu/1.3.37:
+    resolution: {integrity: sha512-eRQ3KaZI0j5LidTfOIi/kUVOOMuVmw1HCdt/Z1TAUKoHMLVxY8xcJ3pEE3/+ednI60EmHpwpJRs6LelXyL6uzQ==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/core-linux-arm64-musl/1.3.37:
+    resolution: {integrity: sha512-w2BRLODyxNQY2rfHZMZ5ir6QrrnGBPlnIslTrgKmVbn1OjZoxUCtuqhrYnCmybaAc4DOkeH02TqynEFXrm+EMw==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/core-linux-x64-gnu/1.3.37:
+    resolution: {integrity: sha512-CfoH8EsZJZ9kunjMUjBNYD5fFuO86zw+K/o4wEw72Yg6ZEiqPmeIlCKU8tpTv4sK+CbhUXrmVzMB5tqsb2jALQ==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/core-linux-x64-musl/1.3.37:
+    resolution: {integrity: sha512-9YPrHYNdoG7PK11gV51GfL45biI2dic+YTqHUDKyykemsD7Ot1zUFX7Ty//pdvpKcKSff6SrHbfFACD5ziNirA==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/core-win32-arm64-msvc/1.3.37:
+    resolution: {integrity: sha512-h17Ek8/wCDje6BrXOvCXBM80oBRmTSMMdLyt87whTl5xqYlWYYs9oQIzZndNRTlNpTgjGO8Ns2eo4kwVxIkBIA==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/core-win32-ia32-msvc/1.3.37:
+    resolution: {integrity: sha512-1BR175E1olGy/zdt94cgdb6ps/lBNissAOaxyBk8taFpcjy3zpdP30yAoH0GIsC6isnZ5JfArbOJNRXXO5tE0Q==}
+    engines: {node: '>=10'}
+    cpu: [ia32]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/core-win32-x64-msvc/1.3.37:
+    resolution: {integrity: sha512-1siDQ7dccQ1pesJmgAL3BUBbRPtfbNInOWnZOkiie/DfFqGQ117QKnCVyjUvwFKfTQx1+3UUTDmMSlRd00SlXg==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@swc/core/1.3.37:
+    resolution: {integrity: sha512-VOFlEQ1pReOM73N9A7R8rt561GU8Rxsq833jiimWDUB2sXEN3V6n6wFTgYmZuMz2T4/R0cQA1nV48KkaT4gkFw==}
+    engines: {node: '>=10'}
+    requiresBuild: true
+    optionalDependencies:
+      '@swc/core-darwin-arm64': 1.3.37
+      '@swc/core-darwin-x64': 1.3.37
+      '@swc/core-linux-arm-gnueabihf': 1.3.37
+      '@swc/core-linux-arm64-gnu': 1.3.37
+      '@swc/core-linux-arm64-musl': 1.3.37
+      '@swc/core-linux-x64-gnu': 1.3.37
+      '@swc/core-linux-x64-musl': 1.3.37
+      '@swc/core-win32-arm64-msvc': 1.3.37
+      '@swc/core-win32-ia32-msvc': 1.3.37
+      '@swc/core-win32-x64-msvc': 1.3.37
     dev: false
 
   /@szmarczak/http-timer/4.0.6:
@@ -3845,6 +3968,13 @@ packages:
   /ts-factory-extra/0.0.4:
     resolution: {integrity: sha512-gZMC1o2bpJ6Tz91D6uu9gdE8yGzIBcsRiJsIAC0H6lEeePpCx8jA9bmgGwYbZ6eBhJIjgx6FvsTcYyEK6FOFSA==}
     dependencies:
+      typescript: 4.9.5
+    dev: false
+
+  /ts-factory-extra/0.0.5:
+    resolution: {integrity: sha512-FulKH2js0nDJQ4FRxA8tz5Vw6v0syvZyjfIqlzMWWQCm+9OUu8kbGdBwAVlBRY8kUfw9TtuxFXbFpxH4Lls7gw==}
+    dependencies:
+      '@swc/core': 1.3.37
       typescript: 4.9.5
     dev: false
 
