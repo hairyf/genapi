@@ -53,12 +53,12 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     let { name, description, url, responseType } = parseMethodMetadata(config)
 
     interfaces.push(...attachInters)
-    options.push(['...', 'config'])
     parameters.push({
       name: 'config',
       type: 'Options',
       required: false,
     })
+    options.push(['...', 'config'])
 
     transformParameters(parameters, {
       syntax: 'ecmascript',

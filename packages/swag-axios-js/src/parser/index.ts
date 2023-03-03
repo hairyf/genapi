@@ -52,9 +52,9 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     })
     const { name, description, url, responseType } = parseMethodMetadata(config)
 
-    interfaces.push(...attachInters)
     options.unshift('url')
     options.push(['...', 'config'])
+    interfaces.push(...attachInters)
     parameters.push({
       type: 'import("axios").AxiosRequestConfig',
       name: 'config',

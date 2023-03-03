@@ -53,6 +53,12 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     let { name, description, url, responseType, body } = parseMethodMetadata(config)
 
     interfaces.push(...attachInters)
+    parameters.push({
+      name: 'config',
+      type: 'RequestInit',
+      required: false,
+    })
+    options.push(['...', 'config'])
 
     const { spliceTypeSpace } = transformParameters(parameters, {
       syntax: 'typescript',
