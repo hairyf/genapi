@@ -32,8 +32,10 @@ importers:
       '@types/prettier': ^2.7.2
       apipgen-swag-js-axios: workspace:*
       apipgen-swag-js-fetch: workspace:*
+      apipgen-swag-js-ky: workspace:*
       apipgen-swag-ts-axios: workspace:*
       apipgen-swag-ts-fetch: workspace:*
+      apipgen-swag-ts-ky: workspace:*
       cac: ^6.7.14
       chalk: ^5.2.0
       fs-extra: ^11.1.0
@@ -45,8 +47,10 @@ importers:
     dependencies:
       apipgen-swag-js-axios: link:../swag-js-axios
       apipgen-swag-js-fetch: link:../swag-js-fetch
+      apipgen-swag-js-ky: link:../swag-js-ky
       apipgen-swag-ts-axios: link:../swag-ts-axios
       apipgen-swag-ts-fetch: link:../swag-ts-fetch
+      apipgen-swag-ts-ky: link:../swag-ts-ky
       cac: 6.7.14
       chalk: 5.2.0
       fs-extra: 11.1.0
@@ -142,6 +146,22 @@ importers:
       openapi-specification-types: 0.0.1
     publishDirectory: dist
 
+  packages/swag-js-ky:
+    specifiers:
+      '@apipgen/pipeline': workspace:*
+      '@apipgen/swag-parser': workspace:*
+      apipgen: workspace:*
+      ky: ^0.33.2
+      openapi-specification-types: ^0.0.1
+    dependencies:
+      '@apipgen/pipeline': link:../apipgen-pipeline
+      '@apipgen/swag-parser': link:../apipgen-parser-swagger
+      ky: 0.33.2
+    devDependencies:
+      apipgen: link:../apipgen
+      openapi-specification-types: 0.0.1
+    publishDirectory: dist
+
   packages/swag-ts-axios:
     specifiers:
       '@apipgen/pipeline': workspace:*
@@ -165,6 +185,22 @@ importers:
     dependencies:
       '@apipgen/pipeline': link:../apipgen-pipeline
       '@apipgen/swag-parser': link:../apipgen-parser-swagger
+    devDependencies:
+      apipgen: link:../apipgen
+      openapi-specification-types: 0.0.1
+    publishDirectory: dist
+
+  packages/swag-ts-ky:
+    specifiers:
+      '@apipgen/pipeline': workspace:*
+      '@apipgen/swag-parser': workspace:*
+      apipgen: workspace:*
+      ky: ^0.33.2
+      openapi-specification-types: ^0.0.1
+    dependencies:
+      '@apipgen/pipeline': link:../apipgen-pipeline
+      '@apipgen/swag-parser': link:../apipgen-parser-swagger
+      ky: 0.33.2
     devDependencies:
       apipgen: link:../apipgen
       openapi-specification-types: 0.0.1
@@ -2941,6 +2977,11 @@ packages:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
     dev: true
+
+  /ky/0.33.2:
+    resolution: {integrity: sha512-f6oS2rKUcPu5FzdqCDbFpmzis/JlqFZw8uIHm/jf8Kc3vtnW+VDhuashOAKyBZv8bFiZFZUMNxTC0JtahEvujA==}
+    engines: {node: '>=14.16'}
+    dev: false
 
   /levn/0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}

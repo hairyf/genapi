@@ -1,4 +1,3 @@
-/* eslint-disable no-template-curly-in-string */
 import type { ApiPipeline, StatementFunction, StatementInterface } from 'apipgen'
 import type { Definitions, OpenAPISpecificationV2, Paths, Schema } from 'openapi-specification-types'
 import {
@@ -49,52 +48,28 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
     /**
      * function params/function options/function use interfaces
      */
-    const { parameters, interfaces: interfaceUses, options } = parseMethodParameters(config, {
-      formData: 'body',
-    })
-    const typeOutput = configRead.outputs.find(v => v.type === 'typings')!
-    const isGenerateType = configRead.config.output?.type !== false
-
-    interfaces.push(...interfaceUses)
-
+    const { parameters, interfaces: interfaceUses, options } = parseMethodParameters(config)
     let { name, description, url, responseType } = parseMethodMetadata(config)
-
-    const body: string[] = []
 
     options.push(['...', 'config'])
     parameters.push({
       name: 'config',
-      type: 'RequestInit',
+      type: 'Options',
       required: false,
     })
+    interfaces.push(...interfaceUses)
+
+    const genericType = `Response<${spliceTypeSpace(responseType)}>`
 
     for (const parameter of parameters || []) {
       if (parameter.type)
         parameter.type = spliceTypeSpace(parameter.type)
     }
-    for (const parameter of parameters || []) {
-      if (!parameter.type)
-        continue
-      parameter.type = spliceTypeSpace(parameter.type)
-      if (isGenerateType)
-        description.push(`@param {${parameter.type}${parameter.required ? '' : '='}} ${parameter.name}`)
-      parameter.type = undefined
-      parameter.required = true
-    }
-    if (isGenerateType) {
-      const genericType = `import("${typeOutput?.import}").Response<${spliceTypeSpace(responseType)}>`
-      description.push(`@return {${genericType}}`)
-    }
 
-    if (options.includes('query')) {
-      options.splice(options.findIndex(v => v === 'query'), 1)
-      body.push('const _querys_ = `?${new URLSearchParams(Object.entries(query)).toString()}`')
-      url += '${_querys_}'
-    }
+    if (options.includes('query'))
+      options.splice(options.findIndex(v => v === 'query'), 1, ['searchParams', 'new URLSearchParams(Object.entries(query))'])
     if (options.includes('body') && !parameters.find(v => v.type === 'FormData'))
       options.splice(options.findIndex(v => v === 'body'), 1, ['body', 'JSON.stringify(body || {})'])
-    if (configRead.config.baseURL)
-      url = `\${baseURL}${url}`
 
     url = url.includes('$') ? `\`${url}\`` : `'${url}'`
 
@@ -105,11 +80,10 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
       description,
       parameters,
       body: [
-        ...body,
-        `const response = await fetch(${url}, { 
-          ${literalFieldsToString(options)} 
+        `const response = await http(${url}, {
+          ${literalFieldsToString(options)}
         })`,
-        'return response.json()',
+        `return response.json<${genericType}>()`,
       ],
     })
 
@@ -117,7 +91,7 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
       const isGenerateType = configRead.config.output?.type !== false
       const isSomeType = interfaces.map(v => v.name).includes(name.replace('[]', ''))
       if (isGenerateType && isSomeType)
-        return `import("${typeOutput.import}").${name}`
+        return `Types.${name}`
       return name
     }
   })

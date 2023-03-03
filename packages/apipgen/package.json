@@ -1,6 +1,6 @@
 {
   "name": "apipgen",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Generator Api",
   "author": "Hairy",
   "license": "ISC",
@@ -31,8 +31,6 @@
     "p-pipe": "^3",
     "unconfig": "^0.3.7",
     "apipgen-swag-ts-axios": "workspace:*",
-    "apipgen-swag-ts-fetch": "workspace:*",
-    "apipgen-swag-js-fetch": "workspace:*",
     "apipgen-swag-js-axios": "workspace:*"
   },
   "devDependencies": {

@@ -1,4 +1,3 @@
-/* eslint-disable no-template-curly-in-string */
 import type { ApiPipeline, StatementFunction, StatementInterface } from 'apipgen'
 import type { Definitions, OpenAPISpecificationV2, Paths, Schema } from 'openapi-specification-types'
 import {
@@ -59,12 +58,10 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
 
     let { name, description, url, responseType } = parseMethodMetadata(config)
 
-    const body: string[] = []
-
     options.push(['...', 'config'])
     parameters.push({
       name: 'config',
-      type: 'RequestInit',
+      type: 'Options',
       required: false,
     })
 
@@ -86,15 +83,10 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
       description.push(`@return {${genericType}}`)
     }
 
-    if (options.includes('query')) {
-      options.splice(options.findIndex(v => v === 'query'), 1)
-      body.push('const _querys_ = `?${new URLSearchParams(Object.entries(query)).toString()}`')
-      url += '${_querys_}'
-    }
+    if (options.includes('query'))
+      options.splice(options.findIndex(v => v === 'query'), 1, ['searchParams', 'new URLSearchParams(Object.entries(query))'])
     if (options.includes('body') && !parameters.find(v => v.type === 'FormData'))
       options.splice(options.findIndex(v => v === 'body'), 1, ['body', 'JSON.stringify(body || {})'])
-    if (configRead.config.baseURL)
-      url = `\${baseURL}${url}`
 
     url = url.includes('$') ? `\`${url}\`` : `'${url}'`
 
@@ -105,9 +97,8 @@ function pathsPuFunctions(paths: Paths, { configRead, functions, interfaces }: T
       description,
       parameters,
       body: [
-        ...body,
-        `const response = await fetch(${url}, { 
-          ${literalFieldsToString(options)} 
+        `const response = await http(${url}, {
+          ${literalFieldsToString(options)}
         })`,
         'return response.json()',
       ],

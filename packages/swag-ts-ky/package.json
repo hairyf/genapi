@@ -1,6 +1,6 @@
 {
-  "name": "apipgen-swag-js-fetch",
-  "version": "0.1.1",
+  "name": "apipgen-swag-ts-ky",
+  "version": "0.0.1",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
@@ -13,8 +13,8 @@
     "types": "./index.d.ts"
   },
   "dependencies": {
-    "@apipgen/swag-parser": "workspace:*",
-    "@apipgen/pipeline": "workspace:*"
+    "@apipgen/pipeline": "workspace:*",
+    "@apipgen/swag-parser": "workspace:*"
   },
   "devDependencies": {
     "apipgen": "workspace:*",

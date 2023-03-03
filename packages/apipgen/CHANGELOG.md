@@ -1,5 +1,13 @@
 # apipgen
 
+## 0.3.1
+
+### Patch Changes
+
+- feat: add swag-ky support
+  - apipgen-swag-js-axios@0.1.0
+  - apipgen-swag-ts-axios@0.1.0
+
 ## 0.3.0
 
 ### Minor Changes
