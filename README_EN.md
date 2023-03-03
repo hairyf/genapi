@@ -3,6 +3,11 @@
 
 API generator, which is used to convert OpenApi (v2~v3) and other input sources into TS/JS APIs, and currently supports axios pipeline
 
+- `swag-ts-axios`
+- `swag-js-axios`
+- `swag-ts-fetch` (npm install apipgen-swag-ts-fetch)
+- `swag-js-fetch` (npm install apipgen-swag-js-fetch)
+
 ## ⚙️ Install
 
 Install it locally in your project folder:
@@ -31,7 +36,7 @@ export default defineConfig({
   /**
    * 使用的编译 pipeline 支持 npm 包（添加前缀apipgen-）或本地路径
    *
-   * 默认支持 swag-ts-axios|swag-js-axios
+   * 默认支持 swag-ts-axios|swag-js-axios|swag-ts-fetch|swag-js-fetch
    * @default 'swag-ts-axios'
    */
   pipeline: 'swag-ts-axios',

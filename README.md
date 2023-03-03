@@ -2,7 +2,12 @@
 
 > [English](./README.md) | 中文
 
-API 生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持 swag-ts-axios|swag-js-axios 处理管道。
+API 生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持一下管道：
+
+- `swag-ts-axios`
+- `swag-js-axios`
+- `swag-ts-fetch` (npm install apipgen-swag-ts-fetch)
+- `swag-js-fetch` (npm install apipgen-swag-js-fetch)
 
 ## ⚙️ Install
 
@@ -32,7 +37,7 @@ export default defineConfig({
   /**
    * 使用的编译处理管道，支持 npm 包（添加前缀apipgen-）或本地路径
    *
-   * 默认支持 swag-ts-axios|swag-js-axios
+   * 默认支持 swag-ts-axios|swag-js-axios|swag-ts-fetch|swag-js-fetch
    * @default 'swag-ts-axios'
    */
   pipeline: 'swag-ts-axios',
