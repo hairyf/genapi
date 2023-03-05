@@ -5,6 +5,7 @@ import {
   parseHeaderCommits,
   parseMethodMetadata,
   parseMethodParameters,
+  transformBaseURL,
   transformBodyStringify,
   transformDefinitions,
   transformParameters,
@@ -27,6 +28,9 @@ export function parser(configRead: ApiPipeline.ConfigRead) {
   const interfaces: StatementInterface[] = []
   const functions: StatementFunction[] = []
 
+  transformBaseURL(source, {
+    configRead,
+  })
   transformDefinitions(source.definitions, {
     interfaces,
   })

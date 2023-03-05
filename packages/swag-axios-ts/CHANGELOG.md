@@ -1,5 +1,14 @@
 # apipgen-swag-axios-ts
 
+## 0.1.3
+
+### Patch Changes
+
+- chore: transform swag auto get baseURL
+- Updated dependencies
+  - @apipgen/swag-parser@0.1.2
+  - @apipgen/pipeline@0.1.2
+
 ## 0.1.2
 
 ### Patch Changes

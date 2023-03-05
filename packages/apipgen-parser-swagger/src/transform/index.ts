@@ -1,5 +1,5 @@
 import type { ApiPipeline, StatementField, StatementInterface } from 'apipgen'
-import type { Definitions, Schema } from 'openapi-specification-types'
+import type { Definitions, OpenAPISpecificationV2, Schema } from 'openapi-specification-types'
 import { parseSchemaType } from '../parser'
 import type { LiteralField } from '../utils'
 import { varName } from '../utils'
@@ -26,8 +26,12 @@ export interface BodyJsonTransformOptions {
   parameters: StatementField[]
 }
 
-export interface BaseUrlTransformOptions {
+export interface BaseUrlSyntaxTransformOptions {
   baseURL?: string
+}
+
+export interface BaseUrlTransformOptions {
+  configRead: ApiPipeline.ConfigRead
 }
 
 export function transformParameters(parameters: StatementField[], options: ParameterTransformOptions) {
@@ -105,8 +109,24 @@ export function transformQueryParams(name: string, { body, options, key, url }: 
   return url || ''
 }
 
-export function transformUrlSyntax(url: string, { baseURL }: BaseUrlTransformOptions = {}) {
+export function transformUrlSyntax(url: string, { baseURL }: BaseUrlSyntaxTransformOptions = {}) {
   if (baseURL)
     url = `\${baseURL}${url}`
   return url.includes('$') ? `\`${url}\`` : `'${url}'`
+}
+
+export function transformBaseURL(source: OpenAPISpecificationV2, { configRead }: BaseUrlTransformOptions) {
+  if (!configRead.config.baseURL && source.schemes.length && source.host) {
+    const prefix = source.schemes.includes('https') ? 'https://' : 'http://'
+    configRead.config.baseURL = `"${prefix}${source.host}${source.basePath}/"`
+  }
+
+  if (configRead.config.baseURL) {
+    configRead.graphs.variables.push({
+      export: true,
+      flag: 'const',
+      name: 'baseURL',
+      value: configRead.config.baseURL,
+    })
+  }
 }

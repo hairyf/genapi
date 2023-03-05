@@ -1,5 +1,11 @@
 # @apipgen/swag-parser
 
+## 0.1.2
+
+### Patch Changes
+
+- chore: transform swag auto get baseURL
+
 ## 0.1.1
 
 ### Patch Changes
