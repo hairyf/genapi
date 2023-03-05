@@ -1,5 +1,11 @@
 # @apipgen/pipeline
 
+## 0.1.2
+
+### Patch Changes
+
+- chore: add ky baseURL config and export baseURL
+
 ## 0.1.1
 
 ### Patch Changes

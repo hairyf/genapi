@@ -59,6 +59,8 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       required: false,
     })
     options.push(['...', 'config'])
+    if (configRead.config.baseURL)
+      options.unshift(['prefixUrl', 'baseURL'])
 
     transformParameters(parameters, {
       syntax: 'ecmascript',

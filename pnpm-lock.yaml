@@ -10,6 +10,10 @@ importers:
       apipgen: workspace:*
       apipgen-swag-axios-js: workspace:*
       apipgen-swag-axios-ts: workspace:*
+      apipgen-swag-fetch-js: workspace:*
+      apipgen-swag-fetch-ts: workspace:*
+      apipgen-swag-ky-js: workspace:*
+      apipgen-swag-ky-ts: workspace:*
       esbuild: ^0.17.10
       esbuild-register: ^3.4.2
       eslint: ^8.34.0
@@ -26,6 +30,10 @@ importers:
       apipgen: link:packages/apipgen
       apipgen-swag-axios-js: link:packages/swag-axios-js
       apipgen-swag-axios-ts: link:packages/swag-axios-ts
+      apipgen-swag-fetch-js: link:packages/swag-fetch-js
+      apipgen-swag-fetch-ts: link:packages/swag-fetch-ts
+      apipgen-swag-ky-js: link:packages/swag-ky-js
+      apipgen-swag-ky-ts: link:packages/swag-ky-ts
       esbuild: 0.17.10
       esbuild-register: 3.4.2_esbuild@0.17.10
       eslint: 8.35.0

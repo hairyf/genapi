@@ -26,6 +26,7 @@ export function readConfig(config: ApiPipeline.Config) {
 
   const variables: (StatementVariable | false)[] = [
     !!config.baseURL && {
+      export: true,
       flag: 'const',
       name: 'baseURL',
       value: config.baseURL,
