@@ -1,5 +1,14 @@
 # apipgen
 
+## 0.3.2
+
+### Patch Changes
+
+- feat: add unit test and fix parse config
+- Updated dependencies
+  - apipgen-swag-axios-js@0.1.1
+  - apipgen-swag-axios-ts@0.1.1
+
 ## 0.3.1
 
 ### Patch Changes
