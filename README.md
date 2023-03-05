@@ -25,7 +25,7 @@ yarn add apipgen --dev
 
 ## 📖 Usage
 
-当前仅提供 CLI 运行，未提供其他 CLI 选项，由配置文件确定输入/出内容。目前支持以下配置文件：
+由 CLI | 配置文件确定输入/出内容。目前支持以下配置文件：
 
 - `apipgen.config.ts`
 - `apipgen.config.js`
@@ -164,6 +164,17 @@ function parser(configRead) {
 function compiler(configRead) {
   // ...
 }
+```
+## CLI
+
+目前 apipgen 支持以下脚本命令：
+
+```sh
+  --pipe <pipeline>  The compilation pipeline used supports npm package (add the prefix apipgen -) | local path
+  --input <source>   The incoming string resolves to a uri or json path.
+  --outfile <path>   Apipgen output file options
+  -h, --help         Display this message
+  -v, --version      Display version number
 ```
 
 ## Other

@@ -14,9 +14,10 @@ export function varName(string_: string | string[]) {
   if (Array.isArray(string_))
     string_ = string_.filter(Boolean).join('/')
 
-  string_ = pascalCase(string_)
   // 过一遍中文转拼音，没有中文转化之后无变化
   string_ = transliterate(string_ as string).replace(/\s+/g, '')
+  // 转换为大驼峰
+  string_ = pascalCase(string_)
   // 过滤非英文字符
   string_ = string_.replace(/[^\dA-Za-z]+/g, '')
   // 转换为大驼峰

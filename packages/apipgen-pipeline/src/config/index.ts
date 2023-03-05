@@ -22,11 +22,6 @@ export function readConfig(config: ApiPipeline.Config) {
       type: true,
       namespace: true,
     },
-    isTypescript && isGenerateType && {
-      names: ['Response'],
-      value: importTypePath,
-      type: true,
-    },
   ]
 
   const variables: (StatementVariable | false)[] = [

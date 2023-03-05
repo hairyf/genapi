@@ -1,9 +1,10 @@
+import ora from 'ora'
 import type ApiPipeline from './typings'
 import { inPipeline } from './utils'
 
 export async function openPipeWebClientGenerator(config: ApiPipeline.Config | ApiPipeline.Config[]) {
   const configs: ApiPipeline.Config[] = Array.isArray(config) ? config : [config]
-  // const spinner = ora('Generate API File...\n').start()
+  const spinner = ora('Generate API File...\n').start()
 
   const process = configs.map((config) => {
     const pipeline = inPipeline(config.pipeline || 'swag-axios-ts')
@@ -14,8 +15,8 @@ export async function openPipeWebClientGenerator(config: ApiPipeline.Config | Ap
 
   await Promise.all(process)
 
-  // spinner.succeed()
-  // spinner.clear()
+  spinner.succeed()
+  spinner.clear()
 }
 
 export * from './config'

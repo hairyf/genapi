@@ -34,7 +34,8 @@ export function transformParameters(parameters: StatementField[], options: Param
   const { configRead, syntax, interfaces, description, responseType } = options
   const typeOutput = configRead.outputs.find(v => v.type === 'typings')!
   const isGenerateType = configRead.config.output?.type !== false
-
+  const TypeNamespace = syntax === 'ecmascript' ? `import('${typeOutput?.import}')` : 'Types'
+  const spaceResponseType = `${TypeNamespace}.Response<${spliceTypeSpace(responseType)}>`
   for (const parameter of parameters || []) {
     if (!parameter.type)
       continue
@@ -48,19 +49,17 @@ export function transformParameters(parameters: StatementField[], options: Param
     parameter.required = true
   }
 
-  if (isGenerateType) {
-    const genericType = `import("${typeOutput?.import}").Response<${spliceTypeSpace(responseType)}>`
-    description.push(`@return {${genericType}}`)
-  }
+  if (isGenerateType && syntax === 'ecmascript')
+    description.push(`@return {${spaceResponseType}}`)
 
   function spliceTypeSpace(name: string) {
     const someType = interfaces.map(v => v.name).includes(name.replace('[]', ''))
     if (isGenerateType && someType)
-      return syntax === 'ecmascript' ? `import("${typeOutput.import}").${name}` : `Types.${name}`
+      return `${TypeNamespace}.${name}`
     return name
   }
 
-  return { spliceTypeSpace }
+  return { spaceResponseType }
 }
 
 export function transformDefinitions(definitions: Definitions, { interfaces }: DefinitionTransformOptions) {

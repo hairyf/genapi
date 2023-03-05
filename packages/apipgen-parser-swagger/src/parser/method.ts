@@ -3,7 +3,7 @@ import type { Parameter } from 'openapi-specification-types'
 import camelCase from 'lodash/camelCase'
 import type { PathMethod } from '../traverse'
 import type { InSchemas, LiteralField } from '../utils'
-import { fillParameters, isRequiredParameter, signAnyInter, toUndefField, varName } from '../utils'
+import { isRequiredParameter, signAnyInter, toUndefField, varName } from '../utils'
 import { parseParameterFiled } from './parameter'
 import { parseSchemaType } from './schema'
 
@@ -14,9 +14,7 @@ export type { InSchemas }
  * @param param
  * @returns
  */
-export function parseMethodParameters({ method, parameters, options, path }: PathMethod, schemas?: InSchemas) {
-  parameters = fillParameters(options, parameters)
-
+export function parseMethodParameters({ method, parameters, path }: PathMethod, schemas?: InSchemas) {
   const requestConfigs = {
     body: [] as StatementField[],
     formData: [] as StatementField[],

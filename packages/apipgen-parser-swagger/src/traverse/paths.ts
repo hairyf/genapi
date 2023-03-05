@@ -10,13 +10,17 @@ export interface PathMethod {
 
 export function traversePaths(paths: Paths, callback: (options: PathMethod) => void) {
   for (const [path, _others] of Object.entries(paths)) {
-    const { parameters = [], ...methods } = _others
+    let { parameters = [], ...methods } = _others
+
     forIn(methods, (options, method) => {
+      parameters = parameters.filter((item) => {
+        return !options.parameters?.some(v => v.name === item.name)
+      })
       callback({
         path,
         method,
         options,
-        parameters,
+        parameters: [...parameters, ...options.parameters],
       })
     })
   }

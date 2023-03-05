@@ -7,6 +7,7 @@ import {
   parseMethodParameters,
   transformDefinitions,
   transformParameters,
+  transformUrlSyntax,
   traversePaths,
 } from '@apipgen/swag-parser'
 
@@ -50,9 +51,9 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       body: 'data',
       query: 'params',
     })
-    const { name, description, url, responseType } = parseMethodMetadata(config)
 
-    options.unshift('url')
+    let { name, description, url, responseType } = parseMethodMetadata(config)
+
     options.push(['...', 'config'])
     interfaces.push(...attachInters)
     parameters.push({
@@ -60,14 +61,17 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       type: 'AxiosRequestConfig',
       required: false,
     })
+    if (configRead.config.baseURL)
+      options.unshift('baseURL')
 
-    const { spliceTypeSpace } = transformParameters(parameters, {
+    const { spaceResponseType } = transformParameters(parameters, {
       syntax: 'typescript',
       configRead,
       description,
       interfaces,
       responseType,
     })
+    url = transformUrlSyntax(url)
 
     functions.push({
       export: true,
@@ -75,8 +79,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       description,
       parameters,
       body: [
-        url.includes('$') ? `const url = \`${url}\`;` : `const url = "${url}"`,
-        `return http.request<Response<${spliceTypeSpace(responseType)}>>({ ${literalFieldsToString(options)} })`,
+        `return http.${config.method}<${spaceResponseType}>(${url},{ ${literalFieldsToString(options)} })`,
       ],
     })
   })

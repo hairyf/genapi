@@ -60,7 +60,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     })
     options.push(['...', 'config'])
 
-    const { spliceTypeSpace } = transformParameters(parameters, {
+    const { spaceResponseType } = transformParameters(parameters, {
       syntax: 'typescript',
       configRead,
       description,
@@ -83,7 +83,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
         `const response = await fetch(${url}, { 
           ${literalFieldsToString(options)} 
         })`,
-        `return response.json() as Promise<Response<${spliceTypeSpace(responseType)}>>`,
+        `return response.json() as Promise<${spaceResponseType}>`,
       ],
     })
   })

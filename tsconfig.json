@@ -13,6 +13,9 @@
     "lib": [
       "esnext",
       "dom"
+    ],
+    "types": [
+      "vitest/globals"
     ]
   },
   "exclude": [
