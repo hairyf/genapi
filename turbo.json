@@ -9,7 +9,7 @@
     "test": {
       "inputs": ["src/**/*.tsx", "src/**/*.ts", "__tests__/**/*.ts", "__tests__/**/*.tsx"]
     },
-    "publish": {
+    "publish:pre": {
       "dependsOn": ["build", "test", "lint"]
     }
   }

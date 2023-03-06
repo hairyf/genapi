@@ -8,7 +8,7 @@
   },
   "scripts": {
     "release": "changeset && changeset version",
-    "publish:ci": "turbo run publish",
+    "publish:ci": "turbo run publish:pre && pnpm publish -r",
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage"
