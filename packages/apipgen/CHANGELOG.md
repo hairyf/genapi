@@ -1,5 +1,13 @@
 # apipgen
 
+## 0.3.5
+
+### Patch Changes
+
+- 31d1c73: feat: add apipgen jiti support and update swag all packages
+  - apipgen-swag-axios-js@0.1.4
+  - apipgen-swag-axios-ts@0.1.4
+
 ## 0.3.4
 
 ### Patch Changes
