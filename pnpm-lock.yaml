@@ -137,13 +137,11 @@ importers:
     specifiers:
       '@apipgen/pipeline': workspace:*
       '@apipgen/swag-parser': workspace:*
-      apipgen: workspace:*
       openapi-specification-types: ^0.0.1
     dependencies:
       '@apipgen/pipeline': link:../apipgen-pipeline
       '@apipgen/swag-parser': link:../apipgen-parser-swagger
     devDependencies:
-      apipgen: link:../apipgen
       openapi-specification-types: 0.0.1
     publishDirectory: dist
 
@@ -151,13 +149,11 @@ importers:
     specifiers:
       '@apipgen/pipeline': workspace:*
       '@apipgen/swag-parser': workspace:*
-      apipgen: workspace:*
       openapi-specification-types: ^0.0.1
     dependencies:
       '@apipgen/pipeline': link:../apipgen-pipeline
       '@apipgen/swag-parser': link:../apipgen-parser-swagger
     devDependencies:
-      apipgen: link:../apipgen
       openapi-specification-types: 0.0.1
     publishDirectory: dist
 
@@ -165,13 +161,11 @@ importers:
     specifiers:
       '@apipgen/pipeline': workspace:*
       '@apipgen/swag-parser': workspace:*
-      apipgen: workspace:*
       openapi-specification-types: ^0.0.1
     dependencies:
       '@apipgen/pipeline': link:../apipgen-pipeline
       '@apipgen/swag-parser': link:../apipgen-parser-swagger
     devDependencies:
-      apipgen: link:../apipgen
       openapi-specification-types: 0.0.1
     publishDirectory: dist
 
@@ -179,13 +173,11 @@ importers:
     specifiers:
       '@apipgen/pipeline': workspace:*
       '@apipgen/swag-parser': workspace:*
-      apipgen: workspace:*
       openapi-specification-types: ^0.0.1
     dependencies:
       '@apipgen/pipeline': link:../apipgen-pipeline
       '@apipgen/swag-parser': link:../apipgen-parser-swagger
     devDependencies:
-      apipgen: link:../apipgen
       openapi-specification-types: 0.0.1
     publishDirectory: dist
 
@@ -193,13 +185,11 @@ importers:
     specifiers:
       '@apipgen/pipeline': workspace:*
       '@apipgen/swag-parser': workspace:*
-      apipgen: workspace:*
       openapi-specification-types: ^0.0.1
     dependencies:
       '@apipgen/pipeline': link:../apipgen-pipeline
       '@apipgen/swag-parser': link:../apipgen-parser-swagger
     devDependencies:
-      apipgen: link:../apipgen
       openapi-specification-types: 0.0.1
     publishDirectory: dist
 
@@ -207,13 +197,11 @@ importers:
     specifiers:
       '@apipgen/pipeline': workspace:*
       '@apipgen/swag-parser': workspace:*
-      apipgen: workspace:*
       openapi-specification-types: ^0.0.1
     dependencies:
       '@apipgen/pipeline': link:../apipgen-pipeline
       '@apipgen/swag-parser': link:../apipgen-parser-swagger
     devDependencies:
-      apipgen: link:../apipgen
       openapi-specification-types: 0.0.1
     publishDirectory: dist
 
@@ -221,13 +209,11 @@ importers:
     specifiers:
       '@apipgen/pipeline': workspace:*
       '@apipgen/swag-parser': workspace:*
-      apipgen: workspace:*
       openapi-specification-types: ^0.0.1
     dependencies:
       '@apipgen/pipeline': link:../apipgen-pipeline
       '@apipgen/swag-parser': link:../apipgen-parser-swagger
     devDependencies:
-      apipgen: link:../apipgen
       openapi-specification-types: 0.0.1
     publishDirectory: dist
 
@@ -235,13 +221,11 @@ importers:
     specifiers:
       '@apipgen/pipeline': workspace:*
       '@apipgen/swag-parser': workspace:*
-      apipgen: workspace:*
       openapi-specification-types: ^0.0.1
     dependencies:
       '@apipgen/pipeline': link:../apipgen-pipeline
       '@apipgen/swag-parser': link:../apipgen-parser-swagger
     devDependencies:
-      apipgen: link:../apipgen
       openapi-specification-types: 0.0.1
     publishDirectory: dist
 

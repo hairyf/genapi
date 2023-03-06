@@ -17,8 +17,10 @@
     "@apipgen/swag-parser": "workspace:*"
   },
   "devDependencies": {
-    "apipgen": "workspace:*",
     "openapi-specification-types": "^0.0.1"
+  },
+  "peerDependencies": {
+    "apipgen": "latest"
   },
   "keywords": [],
   "author": "",
