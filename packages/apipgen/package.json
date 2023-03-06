@@ -15,23 +15,23 @@
     "main": "index.js",
     "types": "./index.d.ts"
   },
+  "bin": {
+    "apipgen": "./bin/index.js"
+  },
   "scripts": {
     "build": "ptsup --dts --meta --clean",
     "lint": "eslint ./"
   },
-  "bin": {
-    "apipgen": "./bin/index.js"
-  },
   "dependencies": {
+    "apipgen-swag-axios-js": "workspace:*",
+    "apipgen-swag-axios-ts": "workspace:*",
     "cac": "^6.7.14",
     "chalk": "^5.2.0",
     "fs-extra": "^11.1.0",
     "lodash": "^4.17.21",
     "ora": "^5",
     "p-pipe": "^3",
-    "unconfig": "^0.3.7",
-    "apipgen-swag-axios-ts": "workspace:*",
-    "apipgen-swag-axios-js": "workspace:*"
+    "unconfig": "^0.3.7"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",

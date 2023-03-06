@@ -3,6 +3,9 @@
   "private": true,
   "author": "Hairy",
   "license": "ISC",
+  "bin": {
+    "apipgen": "./bin/index.js"
+  },
   "scripts": {
     "release": "changeset && changeset version",
     "publish:ci": "turbo run publish:pre && pnpm publish -r",
@@ -10,8 +13,8 @@
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage"
   },
-  "bin": {
-    "apipgen": "./bin/index.js"
+  "dependencies": {
+    "vite": "^4.1.4"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.35.2",
@@ -33,8 +36,5 @@
     "turbo": "^1.8.3",
     "typescript": "^4.9.5",
     "vitest": "^0.29.2"
-  },
-  "dependencies": {
-    "vite": "^4.1.4"
   }
 }

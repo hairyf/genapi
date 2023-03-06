@@ -2,6 +2,9 @@
   "name": "apipgen-swag-axios-js",
   "version": "0.1.3",
   "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
   "main": "src/index.ts",
   "scripts": {
     "build": "ptsup -r src --dts --meta --clean",
@@ -12,17 +15,14 @@
     "main": "index.js",
     "types": "./index.d.ts"
   },
-  "dependencies": {
-    "@apipgen/swag-parser": "workspace:*",
-    "@apipgen/pipeline": "workspace:*"
-  },
-  "devDependencies": {
-    "openapi-specification-types": "^0.0.1"
-  },
   "peerDependencies": {
     "apipgen": "latest"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+    "@apipgen/pipeline": "workspace:*",
+    "@apipgen/swag-parser": "workspace:*"
+  },
+  "devDependencies": {
+    "openapi-specification-types": "^0.0.1"
+  }
 }

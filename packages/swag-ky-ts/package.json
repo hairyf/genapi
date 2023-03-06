@@ -2,6 +2,9 @@
   "name": "apipgen-swag-ky-ts",
   "version": "0.0.4",
   "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
   "main": "src/index.ts",
   "scripts": {
     "build": "ptsup -r src --dts --meta --clean",
@@ -12,17 +15,14 @@
     "main": "index.js",
     "types": "./index.d.ts"
   },
+  "peerDependencies": {
+    "apipgen": "latest"
+  },
   "dependencies": {
     "@apipgen/pipeline": "workspace:*",
     "@apipgen/swag-parser": "workspace:*"
   },
   "devDependencies": {
     "openapi-specification-types": "^0.0.1"
-  },
-  "peerDependencies": {
-    "apipgen": "latest"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  }
 }
