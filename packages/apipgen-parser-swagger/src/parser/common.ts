@@ -11,6 +11,6 @@ export function parseHeaderCommits(source: OpenAPISpecificationV2) {
     `@description ${source.info.description}`,
     source.swagger && `@swagger ${source.swagger}`,
     `@version ${source.info.version}`,
-  ]
+  ].filter(Boolean)
   return comments
 }

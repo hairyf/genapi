@@ -1,6 +1,7 @@
 import type { Schema } from 'openapi-specification-types'
 import isArray from 'lodash/isArray'
-import { useRefMap, varName } from '../utils'
+import uniq from 'lodash/uniq'
+import { spliceEnumType, useRefMap, varName } from '../utils'
 
 /**
  * parse schema to type
@@ -23,14 +24,20 @@ export function parseSchemaType(propertie: Schema): string {
   if (!propertie.type)
     return 'any'
 
-  if (propertie.type === 'array')
-    return `${parseSchemaType(propertie.items!)}[]`
+  if (propertie.type === 'array') {
+    if (propertie.items?.enum)
+      return ['string', spliceEnumType(propertie.items.enum)].filter(Boolean).join(' | ')
+
+    let itemsType = parseSchemaType(propertie.items!)
+    itemsType = itemsType.includes('|') ? `(${itemsType})` : itemsType
+    return `${itemsType}[]`
+  }
 
   if (propertie.type === 'boolean')
     return propertie.type
 
   if (isArray(propertie.type))
-    return propertie.type.map(type => parseSchemaType({ type })).join(' | ')
+    return uniq(propertie.type.map(type => parseSchemaType({ type }))).join(' | ')
 
   if (['integer', 'long', 'float', 'byte', 'TypesLong'].includes(propertie.type))
     return 'number'

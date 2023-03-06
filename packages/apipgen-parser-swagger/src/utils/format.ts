@@ -43,9 +43,9 @@ export function useRefMap(ref: string) {
 export function spliceEnumDescription(name: string, enums: string[] = []) {
   if (!enums?.length)
     return ''
-  const em1 = `?${name}=${enums?.join(',') || 'a,b,c'}`
+  const em1 = `${name} '${enums?.join(',') || 'a,b,c'}'`
   const em2 = enums?.map(i => `${name}=${i}`).join('&') || `${name}=a&${name}=b`
-  return `@param ${em1} | ${em2}`
+  return `@param ${em1} | '${em2}'`
 }
 
 /**
@@ -54,7 +54,9 @@ export function spliceEnumDescription(name: string, enums: string[] = []) {
  * @returns
  */
 export function spliceEnumType(enums: string[] = []) {
-  if (enums.length > 0)
-    return `(${enums.map(v => `"${v}"`).join(' | ')})[]`
-  return 'string'
+  if (!enums.length)
+    return ''
+  let stringTypes = enums.map(v => `'${v}'`).join(' | ')
+  stringTypes = stringTypes.includes('|') ? `(${stringTypes})` : stringTypes
+  return `${stringTypes}[]`
 }

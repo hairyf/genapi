@@ -78,7 +78,7 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
   return config
 }
 
-export function parseMethodMetadata({ method, options: meta, path }: PathMethod) {
+export function parseMethodMetadata({ method, path, responses, options: meta }: PathMethod) {
   const comments = [
     meta.summary && `@summary ${meta.summary}`,
     meta.description && `@description ${meta.description}`,
@@ -89,7 +89,7 @@ export function parseMethodMetadata({ method, options: meta, path }: PathMethod)
 
   const name = camelCase(`${method}/${path}`)
   const url = `${path.replace(/({)/g, '${paths.')}`
-  const responseType = meta.responses['200'] ? parseSchemaType(meta.responses['200']) : 'void'
+  const responseType = responses['200'] ? parseSchemaType(responses['200']) : 'void'
 
   return { description: comments.filter(Boolean), name, url, responseType, body: [] as string[] }
 }

@@ -1,6 +1,6 @@
 import type { StatementField } from 'apipgen/typings'
 import type { Parameter } from 'openapi-specification-types'
-import { spliceEnumDescription, spliceEnumType } from '../utils'
+import { spliceEnumDescription } from '../utils'
 import { parseSchemaType } from './schema'
 
 /**
@@ -19,18 +19,15 @@ export function parseParameterFiled(parameter: Parameter) {
   if (field.description)
     field.description = `@description ${field.description}`
 
-  if (['formData', 'body', 'header', 'path'].includes(parameter.in))
-    field.type = parseSchemaType(parameter)
-  if (parameter.in === 'query') {
-    if (parameter.type !== 'array') {
-      field.type = parseSchemaType(parameter)
-    }
-    else {
-      const enums = spliceEnumDescription(parameter.name, parameter.items?.enum)
-      field.description = [field.description || '', enums].filter(Boolean)
-      field.type = `string | ${spliceEnumType(parameter.items?.enum)}`
-    }
+  if (parameter.in === 'query' && parameter.type === 'array') {
+    const enums = spliceEnumDescription(parameter.name, parameter.items?.enum)
+    field.description = [field.description || '', enums].filter(Boolean)
   }
 
+  if (['formData', 'body', 'header', 'path', 'query'].includes(parameter.in))
+    field.type = parseSchemaType(parameter)
+
+  if (!field.description)
+    delete field.description
   return field
 }
