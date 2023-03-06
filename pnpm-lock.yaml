@@ -85,7 +85,6 @@ importers:
     specifiers:
       '@types/fs-extra': ^11.0.1
       '@types/lodash': ^4.14.191
-      apipgen: workspace:*
       fs-extra: ^11.1.0
       lodash: ^4.17.21
       openapi-specification-types: ^0.0.1
@@ -102,14 +101,12 @@ importers:
     devDependencies:
       '@types/fs-extra': 11.0.1
       '@types/lodash': 4.14.191
-      apipgen: link:../apipgen
     publishDirectory: dist
 
   packages/apipgen-pipeline:
     specifiers:
       '@types/fs-extra': ^11.0.1
       '@types/lodash': ^4.14.191
-      apipgen: workspace:*
       fs-extra: ^11.1.0
       got: 11.8.5
       lodash: ^4.17.21
@@ -130,7 +127,6 @@ importers:
     devDependencies:
       '@types/fs-extra': 11.0.1
       '@types/lodash': 4.14.191
-      apipgen: link:../apipgen
     publishDirectory: dist
 
   packages/swag-axios-js:
