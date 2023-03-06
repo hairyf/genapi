@@ -16,7 +16,7 @@
     "types": "./index.d.ts"
   },
   "peerDependencies": {
-    "apipgen": "latest"
+    "apipgen": "*"
   },
   "dependencies": {
     "@apipgen/pipeline": "workspace:*",
