@@ -7,7 +7,7 @@ export function inPipeline(pipe: string): ApiPipeline.Pipeline | undefined {
   const inputs = [`apipgen-${pipe}`, absolutePath(pipe)]
 
   for (const input of inputs) {
-    const inputModule = require(input)
+    const inputModule = require('jiti')(__filename)(input)
     const pipeline = inputModule.default || inputModule
     if (pipeline)
       return pipeline
