@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "prepublishOnly": "npm run build",
-    "build": "ptsup -r src --dts --meta --clean"
+    "build": "ptsup -r src --dts --meta --clean",
+    "lint": "eslint ./"
   },
   "publishConfig": {
     "access": "public",

@@ -16,8 +16,8 @@
     "types": "./index.d.ts"
   },
   "scripts": {
-    "prepublishOnly": "npm run build",
-    "build": "ptsup --dts --meta --clean"
+    "build": "ptsup --dts --meta --clean",
+    "lint": "eslint ./"
   },
   "bin": {
     "apipgen": "./bin/index.js"

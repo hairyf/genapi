@@ -9,6 +9,8 @@ API generator, which is used to convert OpenApi (v2~v3) and other input sources 
 - `swag-fetch-js` (npm install apipgen-swag-fetch-js)
 - `swag-ky-ts` (npm install apipgen-swag-ky-ts)
 - `swag-ky-js` (npm install apipgen-swag-ky-js)
+- `swag-got-js` (npm install apipgen-swag-got-js)
+- `swag-got-js` (npm install apipgen-swag-got-js)
 
 ## ⚙️ Install
 

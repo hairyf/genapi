@@ -10,6 +10,8 @@ API 生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS AP
 - `swag-fetch-js` (npm install apipgen-swag-fetch-js)
 - `swag-ky-ts` (npm install apipgen-swag-ky-ts)
 - `swag-ky-js` (npm install apipgen-swag-ky-js)
+- `swag-got-js` (npm install apipgen-swag-got-js)
+- `swag-got-js` (npm install apipgen-swag-got-js)
 
 ## ⚙️ Install
 
