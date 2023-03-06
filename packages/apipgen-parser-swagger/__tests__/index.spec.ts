@@ -14,8 +14,7 @@ describe('apipgen:swag-parser', () => {
   it('traverse', () => {
     traversePaths({ '/pet': MockOpenAPIPath } as any, (_config) => {
       const pathClose = { ...MockOpenAPIPath.post }
-      delete (pathClose as any).parameters
-
+      Reflect.deleteProperty(pathClose, 'parameters')
       expect(_config).toEqual({
         path: '/pet',
         method: 'post',
