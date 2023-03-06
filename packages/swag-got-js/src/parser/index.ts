@@ -60,12 +60,17 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     interfaces.push(...attachInters)
     parameters.push({
       name: 'config',
-      type: 'import(\'ky\').Options',
+      type: 'import(\'got\').OptionsOfTextResponseBody',
       required: false,
     })
     options.push(['...', 'config'])
     if (configRead.config.baseURL)
       options.unshift(['prefixUrl', 'baseURL'])
+
+    for (const parameter of parameters) {
+      if (parameter.type === 'FormData')
+        parameter.type = 'any'
+    }
 
     transformParameters(parameters, {
       syntax: 'ecmascript',

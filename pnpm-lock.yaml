@@ -12,16 +12,20 @@ importers:
       apipgen-swag-axios-ts: workspace:*
       apipgen-swag-fetch-js: workspace:*
       apipgen-swag-fetch-ts: workspace:*
+      apipgen-swag-got-js: workspace:*
+      apipgen-swag-got-ts: workspace:*
       apipgen-swag-ky-js: workspace:*
       apipgen-swag-ky-ts: workspace:*
       esbuild: ^0.17.10
       esbuild-register: ^3.4.2
       eslint: ^8.34.0
+      got: 11.8.5
       ptsup: ^0.3.1
       typescript: ^4.9.5
       vite: ^4.1.4
       vitest: ^0.29.2
     dependencies:
+      got: 11.8.5
       vite: 4.1.4_@types+node@18.14.3
     devDependencies:
       '@antfu/eslint-config': 0.35.3_ycpbpc6yetojsgtrx3mwntkhsu
@@ -32,6 +36,8 @@ importers:
       apipgen-swag-axios-ts: link:packages/swag-axios-ts
       apipgen-swag-fetch-js: link:packages/swag-fetch-js
       apipgen-swag-fetch-ts: link:packages/swag-fetch-ts
+      apipgen-swag-got-js: link:packages/swag-got-js
+      apipgen-swag-got-ts: link:packages/swag-got-ts
       apipgen-swag-ky-js: link:packages/swag-ky-js
       apipgen-swag-ky-ts: link:packages/swag-ky-ts
       esbuild: 0.17.10
@@ -170,6 +176,34 @@ importers:
     publishDirectory: dist
 
   packages/swag-fetch-ts:
+    specifiers:
+      '@apipgen/pipeline': workspace:*
+      '@apipgen/swag-parser': workspace:*
+      apipgen: workspace:*
+      openapi-specification-types: ^0.0.1
+    dependencies:
+      '@apipgen/pipeline': link:../apipgen-pipeline
+      '@apipgen/swag-parser': link:../apipgen-parser-swagger
+    devDependencies:
+      apipgen: link:../apipgen
+      openapi-specification-types: 0.0.1
+    publishDirectory: dist
+
+  packages/swag-got-js:
+    specifiers:
+      '@apipgen/pipeline': workspace:*
+      '@apipgen/swag-parser': workspace:*
+      apipgen: workspace:*
+      openapi-specification-types: ^0.0.1
+    dependencies:
+      '@apipgen/pipeline': link:../apipgen-pipeline
+      '@apipgen/swag-parser': link:../apipgen-parser-swagger
+    devDependencies:
+      apipgen: link:../apipgen
+      openapi-specification-types: 0.0.1
+    publishDirectory: dist
+
+  packages/swag-got-ts:
     specifiers:
       '@apipgen/pipeline': workspace:*
       '@apipgen/swag-parser': workspace:*

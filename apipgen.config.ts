@@ -1,7 +1,7 @@
 import { defineConfig } from 'apipgen'
 
 const config = defineConfig({
-  pipeline: 'swag-axios-ts',
+  pipeline: 'swag-got-ts',
   input: {
     uri: 'https://petstore.swagger.io/v2/swagger.json',
   },

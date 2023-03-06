@@ -22,6 +22,8 @@
     "apipgen-swag-axios-ts": "workspace:*",
     "apipgen-swag-fetch-js": "workspace:*",
     "apipgen-swag-fetch-ts": "workspace:*",
+    "apipgen-swag-got-js": "workspace:*",
+    "apipgen-swag-got-ts": "workspace:*",
     "apipgen-swag-ky-js": "workspace:*",
     "apipgen-swag-ky-ts": "workspace:*",
     "esbuild": "^0.17.10",

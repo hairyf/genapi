@@ -60,20 +60,26 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     interfaces.push(...attachInters)
     parameters.push({
       name: 'config',
-      type: 'import(\'ky\').Options',
+      type: 'OptionsOfTextResponseBody',
       required: false,
     })
     options.push(['...', 'config'])
     if (configRead.config.baseURL)
       options.unshift(['prefixUrl', 'baseURL'])
 
-    transformParameters(parameters, {
-      syntax: 'ecmascript',
+    for (const parameter of parameters) {
+      if (parameter.type === 'FormData')
+        parameter.type = 'any'
+    }
+
+    const { spaceResponseType } = transformParameters(parameters, {
+      syntax: 'typescript',
       configRead,
       description,
       interfaces,
       responseType,
     })
+
     transformBodyStringify('body', { options, parameters })
     transformQueryParams('query', { optionKey: 'searchParams', options })
     url = transformUrlSyntax(url)
@@ -85,10 +91,10 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       description,
       parameters,
       body: [
-        `const response = await http(${url}, {
+        `const response = http.${config.method}(${url}, {
           ${literalFieldsToString(options)}
         })`,
-        'return response.json()',
+        `return response.json<${spaceResponseType}>()`,
       ],
     })
   })
