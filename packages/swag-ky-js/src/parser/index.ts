@@ -75,7 +75,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       responseType,
     })
     transformBodyStringify('body', { options, parameters })
-    transformQueryParams('query', { key: 'searchParams', options })
+    transformQueryParams('query', { optionKey: 'searchParams', options })
     url = transformUrlSyntax(url)
 
     functions.push({

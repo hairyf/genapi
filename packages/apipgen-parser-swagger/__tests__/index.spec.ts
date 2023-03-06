@@ -1,7 +1,9 @@
 /* eslint-disable no-template-curly-in-string */
-import { parseHeaderCommits, parseMethodMetadata, parseMethodParameters, parseParameterFiled, parseSchemaType, spliceEnumDescription, spliceEnumType, traversePaths, useRefMap, varName } from '../src'
+import type ApiPipeline from 'apipgen/typings'
+import type { LiteralField } from '../src'
+import { parseHeaderCommits, parseMethodMetadata, parseMethodParameters, parseParameterFiled, parseSchemaType, spliceEnumDescription, spliceEnumType, transformParameters, transformQueryParams, traversePaths, useRefMap, varName } from '../src'
 import { V2Souce } from './mock'
-import { packMethodPath } from './utils'
+import { packMethodPath, packSpaceResponseType } from './utils'
 
 describe('apipgen:swag-parser', () => {
   it('format All', () => {
@@ -153,5 +155,79 @@ describe('apipgen:swag-parser', () => {
     expect(parseSchemaType({ type: ['string', 'integer'] })).toBe('string | number')
     expect(parseSchemaType({ type: ['string', 'dateTime'] })).toBe('string')
     expect(parseSchemaType({ type: 'array', items: { type: ['string', 'integer'] } })).toBe('(string | number)[]')
+  })
+
+  it('transform Parameters Ecmascript', () => {
+    const parameters = [
+      { name: 'data', type: 'FormData', required: true },
+      { name: 'paths', type: 'PostPetPetIdUploadImagePath', required: true },
+    ]
+    const interfaces = [
+      {
+        name: 'PostPetPetIdUploadImagePath',
+        properties: [
+          { name: 'petId', type: 'number', required: false },
+        ],
+        export: true,
+      },
+    ]
+    const description = [] as string[]
+    const configRead: Partial<ApiPipeline.ConfigRead> = {
+      outputs: [
+        { path: '', root: '', type: 'typings', import: './index.type' },
+      ],
+    }
+    transformParameters(parameters, {
+      syntax: 'ecmascript',
+      configRead: configRead as any,
+      description,
+      interfaces,
+      responseType: 'void',
+    })
+    expect(description).toEqual([
+      '@param {FormData} data',
+      '@param {import(\'./index.type\').PostPetPetIdUploadImagePath} paths',
+      '@return {import(\'./index.type\').Response<void>}',
+    ])
+  })
+  it('transform Parameters Namespace', () => {
+    const interfaces = [
+      {
+        name: 'Pet',
+        properties: [
+          { name: 'id', type: 'number', required: true },
+        ],
+        export: true,
+      },
+      {
+        name: 'Per',
+        properties: [
+          { name: 'id', type: 'number', required: true },
+        ],
+        export: true,
+      },
+    ]
+    expect(packSpaceResponseType(interfaces, 'Pet[]')).toBe('Types.Response<Types.Pet[]>')
+    expect(packSpaceResponseType(interfaces, 'Per | Pet')).toBe('Types.Response<Types.Per | Types.Pet>')
+    expect(packSpaceResponseType(interfaces, '(Per | Pet)[]')).toBe('Types.Response<(Types.Per | Types.Pet)[]>')
+    expect(packSpaceResponseType(interfaces, '(string | Pet)[]')).toBe('Types.Response<(string | Types.Pet)[]>')
+  })
+
+  it('transform Query Params', () => {
+    const options: LiteralField[] = ['query']
+    const body: string[] = []
+
+    transformQueryParams('query', {
+      options,
+      optionKey: 'searchParams',
+    })
+    expect(options).toEqual([['searchParams', 'new URLSearchParams(Object.entries(query))']])
+
+    const url = transformQueryParams('query', {
+      options: ['query'],
+      body,
+    })
+    expect(body).toEqual(['const _query_ = `?${new URLSearchParams(Object.entries(query)).toString()}`'])
+    expect(url).toBe('${_query_}')
   })
 })

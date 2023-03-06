@@ -9,9 +9,9 @@ export interface ParameterTransformOptions {
 }
 export function transformParameters(parameters: StatementField[], options: ParameterTransformOptions) {
   const { configRead, syntax, interfaces, description, responseType } = options
-  const typeOutput = configRead.outputs.find(v => v.type === 'typings')!
-  const isGenerateType = configRead.config.output?.type !== false
-  const TypeNamespace = syntax === 'ecmascript' ? `import('${typeOutput?.import}')` : 'Types'
+  const typeImport = configRead.outputs.find(v => v.type === 'typings')?.import
+  const isGenerateType = configRead.outputs.map(v => v.type).includes('typings')
+  const TypeNamespace = syntax === 'ecmascript' ? `import('${typeImport}')` : 'Types'
   const spaceResponseType = `${TypeNamespace}.Response<${spliceTypeSpace(responseType)}>`
   for (const parameter of parameters || []) {
     if (!parameter.type)
@@ -29,11 +29,23 @@ export function transformParameters(parameters: StatementField[], options: Param
   if (isGenerateType && syntax === 'ecmascript')
     description.push(`@return {${spaceResponseType}}`)
 
-  function spliceTypeSpace(name: string) {
+  function splitTypeSpaces(name: string) {
+    const _name = name
+      .replace(/[\[\]()]/g, '')
+      .split('|')
+      .map(v => v.trim())
+      .map(spliceTypeSpace).join(' | ')
+    if (name.includes('('))
+      return `(${_name})`
+    return _name
+  }
+  function spliceTypeSpace(name: string): string {
+    if (name.includes('|') && !name.includes('[]'))
+      return splitTypeSpaces(name)
+    if (name.includes('|') && name.includes('[]'))
+      return `${splitTypeSpaces(name)}[]`
     const someType = interfaces.map(v => v.name).includes(name.replace('[]', ''))
-    if (isGenerateType && someType)
-      return `${TypeNamespace}.${name}`
-    return name
+    return (isGenerateType && someType) ? `${TypeNamespace}.${name}` : name
   }
 
   return { spaceResponseType }

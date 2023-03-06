@@ -4,8 +4,8 @@ import type { LiteralField } from '../utils'
 
 export interface QueryUrlTransformOptions {
   body?: string[]
-  key?: string
   url?: string
+  optionKey?: string
   options: LiteralField[]
 }
 
@@ -16,9 +16,10 @@ export interface BaseUrlSyntaxTransformOptions {
 export interface BaseUrlTransformOptions {
   configRead: ApiPipeline.ConfigRead
 }
-export function transformQueryParams(name: string, { body, options, key, url }: QueryUrlTransformOptions) {
-  if (key) {
-    const searchParams = [key, `new URLSearchParams(Object.entries(${name}))`] as LiteralField
+export function transformQueryParams(name: string, { body, options, optionKey, url }: QueryUrlTransformOptions) {
+  url = url || ''
+  if (optionKey) {
+    const searchParams = [optionKey, `new URLSearchParams(Object.entries(${name}))`] as LiteralField
     if (options.includes(name))
       options.splice(options.findIndex(v => v === name), 1, searchParams)
   }
