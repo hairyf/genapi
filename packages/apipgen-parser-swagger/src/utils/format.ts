@@ -60,3 +60,9 @@ export function spliceEnumType(enums: string[] = []) {
   stringTypes = stringTypes.includes('|') ? `(${stringTypes})` : stringTypes
   return `${stringTypes}[]`
 }
+
+export function varFiled(name: string) {
+  if (/[^A-Za-z]/g.test(name))
+    name = `'${name}'`
+  return name
+}

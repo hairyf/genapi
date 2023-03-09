@@ -1,6 +1,6 @@
 import type { StatementField } from 'apipgen/typings'
 import type { Parameter } from 'openapi-specification-types'
-import { spliceEnumDescription } from '../utils'
+import { spliceEnumDescription, varFiled } from '../utils'
 import { parseSchemaType } from './schema'
 
 /**
@@ -10,7 +10,7 @@ import { parseSchemaType } from './schema'
  */
 export function parseParameterFiled(parameter: Parameter) {
   const field: StatementField = {
-    name: parameter.name,
+    name: varFiled(parameter.name),
     type: '',
     required: parameter.required,
     description: parameter.description ?? '',

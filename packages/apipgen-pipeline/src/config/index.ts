@@ -1,5 +1,5 @@
 import path from 'path'
-import type { ApiPipeline, StatementImported, StatementVariable } from 'apipgen'
+import type { ApiPipeline, StatementImported } from 'apipgen'
 import type { StatementTypeAlias } from 'apipgen/typings'
 
 export function readConfig(config: ApiPipeline.Config) {
@@ -21,15 +21,6 @@ export function readConfig(config: ApiPipeline.Config) {
       value: importTypePath,
       type: true,
       namespace: true,
-    },
-  ]
-
-  const variables: (StatementVariable | false)[] = [
-    !!config.baseURL && {
-      export: true,
-      flag: 'const',
-      name: 'baseURL',
-      value: config.baseURL,
     },
   ]
 
@@ -67,7 +58,7 @@ export function readConfig(config: ApiPipeline.Config) {
     outputs,
     graphs: {
       imports: imports.filter(Boolean) as StatementImported[],
-      variables: variables.filter(Boolean) as StatementVariable[],
+      variables: [],
       comments: [],
       functions: [],
       interfaces: [],

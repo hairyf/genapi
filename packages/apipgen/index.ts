@@ -13,10 +13,16 @@ export async function openPipeWebClientGenerator(config: ApiPipeline.Config | Ap
     return pipeline(config)
   })
 
-  await Promise.all(process)
-
-  spinner.succeed()
-  spinner.clear()
+  try {
+    await Promise.all(process)
+    spinner.succeed()
+    spinner.clear()
+  }
+  catch (error: any) {
+    spinner.clear()
+    spinner.fail('Generate API File Error')
+    console.error(error)
+  }
 }
 
 export * from './config'

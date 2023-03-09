@@ -1,7 +1,7 @@
 import type { StatementInterface } from 'apipgen/typings'
 import type { Definitions, Schema } from 'openapi-specification-types'
 import { parseSchemaType } from '../parser'
-import { varName } from '../utils'
+import { varFiled, varName } from '../utils'
 
 export interface DefinitionTransformOptions {
   interfaces: StatementInterface[]
@@ -21,11 +21,9 @@ export function transformDefinitions(definitions: Definitions, { interfaces }: D
       propertie.required = definition?.required?.some(v => v === name)
       if (propertie.description)
         propertie.description = `@description ${propertie.description}`
-      if (/[^A-Za-z]/g.test(name))
-        name = `['${name}']`
 
       return {
-        name,
+        name: varFiled(name),
         type: parseSchemaType(propertie),
         description: propertie.description,
         required: propertie.required,

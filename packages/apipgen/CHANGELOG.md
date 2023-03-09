@@ -1,5 +1,13 @@
 # apipgen
 
+## 0.3.7
+
+### Patch Changes
+
+- fix: filed name syntax parse error
+  - apipgen-swag-axios-js@0.1.6
+  - apipgen-swag-axios-ts@0.1.6
+
 ## 0.3.6
 
 ### Patch Changes
