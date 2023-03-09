@@ -1,5 +1,12 @@
 # @apipgen/swag-parser
 
+## 0.1.4
+
+### Patch Changes
+
+- chore: update definitions parse
+  - apipgen@0.3.6
+
 ## 0.1.3
 
 ### Patch Changes

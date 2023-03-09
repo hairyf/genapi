@@ -1,5 +1,13 @@
 # apipgen-swag-ky-js
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies
+  - @apipgen/swag-parser@0.1.4
+  - apipgen@0.3.6
+
 ## 0.0.5
 
 ### Patch Changes

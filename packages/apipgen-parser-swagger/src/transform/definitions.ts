@@ -21,6 +21,9 @@ export function transformDefinitions(definitions: Definitions, { interfaces }: D
       propertie.required = definition?.required?.some(v => v === name)
       if (propertie.description)
         propertie.description = `@description ${propertie.description}`
+      if (/[^A-Za-z]/g.test(name))
+        name = `['${name}']`
+
       return {
         name,
         type: parseSchemaType(propertie),
