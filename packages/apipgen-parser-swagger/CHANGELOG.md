@@ -1,5 +1,12 @@
 # @apipgen/swag-parser
 
+## 0.1.6
+
+### Patch Changes
+
+- fix: type number is parse schema any
+  - apipgen@0.3.8
+
 ## 0.1.5
 
 ### Patch Changes

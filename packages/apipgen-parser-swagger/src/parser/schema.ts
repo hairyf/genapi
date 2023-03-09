@@ -39,7 +39,7 @@ export function parseSchemaType(propertie: Schema): string {
   if (isArray(propertie.type))
     return uniq(propertie.type.map(type => parseSchemaType({ type }))).join(' | ')
 
-  if (['integer', 'long', 'float', 'byte', 'TypesLong'].includes(propertie.type))
+  if (['integer', 'long', 'float', 'byte', 'TypesLong', 'number'].includes(propertie.type))
     return 'number'
 
   if (['byte', 'binary', 'date', 'dateTime', 'password', 'TypesString', 'string'].includes(propertie.type))
