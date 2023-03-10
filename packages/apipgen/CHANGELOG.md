@@ -1,5 +1,12 @@
 # apipgen
 
+## 0.3.9
+
+### Patch Changes
+
+- apipgen-swag-axios-js@0.1.8
+- apipgen-swag-axios-ts@0.1.8
+
 ## 0.3.8
 
 ### Patch Changes

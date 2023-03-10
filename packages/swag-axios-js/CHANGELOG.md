@@ -1,5 +1,13 @@
 # apipgen-swag-js
 
+## 0.1.8
+
+### Patch Changes
+
+- Updated dependencies
+  - @apipgen/swag-parser@0.1.7
+  - apipgen@0.3.9
+
 ## 0.1.7
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @apipgen/swag-parser
 
+## 0.1.7
+
+### Patch Changes
+
+- fix: transform parameters return type error
+  - apipgen@0.3.9
+
 ## 0.1.6
 
 ### Patch Changes

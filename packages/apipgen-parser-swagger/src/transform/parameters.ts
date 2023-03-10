@@ -26,8 +26,8 @@ export function transformParameters(parameters: StatementField[], options: Param
     parameter.required = true
   }
 
-  if (isGenerateType && syntax === 'ecmascript')
-    description.push(`@return {${spaceResponseType}}`)
+  if (isGenerateType && syntax === 'ecmascript' && !description.some(des => des.startsWith('@return')))
+    description.push(`@return {Promise<${spaceResponseType}>}`)
 
   function splitTypeSpaces(name: string) {
     const _name = name
