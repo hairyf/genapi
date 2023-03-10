@@ -10,7 +10,7 @@ export interface QueryUrlTransformOptions {
 }
 
 export interface BaseUrlSyntaxTransformOptions {
-  baseURL?: string
+  baseURL?: string | false
 }
 
 export interface BaseUrlTransformOptions {
@@ -38,7 +38,10 @@ export function transformUrlSyntax(url: string, { baseURL }: BaseUrlSyntaxTransf
 }
 
 export function transformBaseURL(source: OpenAPISpecificationV2, { configRead }: BaseUrlTransformOptions) {
-  if (!configRead.config.baseURL && source.schemes.length && source.host) {
+  if (configRead.config.baseURL === false)
+    return
+
+  if (!configRead.config.baseURL && source.schemes?.length && source.host) {
     const prefix = source.schemes.includes('https') ? 'https://' : 'http://'
     configRead.config.baseURL = `"${prefix}${source.host}${source.basePath}/"`
   }

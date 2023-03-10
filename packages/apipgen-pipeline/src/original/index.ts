@@ -11,6 +11,15 @@ export async function original(configRead: ApiPipeline.ConfigRead) {
   if (!configRead.source)
     throw new Error('Please enter source')
 
+  if (!configRead.source.schemes?.length) {
+    const schemes: string[] = []
+    if (configRead.inputs.uri?.startsWith('https://'))
+      schemes.push('https', 'http')
+    if (configRead.inputs.uri?.startsWith('http://'))
+      schemes.push('http')
+    configRead.source.schemes = schemes
+  }
+
   return configRead
 }
 

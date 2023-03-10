@@ -1,5 +1,14 @@
 # apipgen
 
+## 0.3.10
+
+### Patch Changes
+
+- chore: fix transform return type error
+- Updated dependencies
+  - apipgen-swag-axios-js@0.1.9
+  - apipgen-swag-axios-ts@0.1.9
+
 ## 0.3.9
 
 ### Patch Changes

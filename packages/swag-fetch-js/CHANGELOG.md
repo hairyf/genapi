@@ -1,5 +1,14 @@
 # apipgen-swag-fetch-js
 
+## 0.1.10
+
+### Patch Changes
+
+- Updated dependencies
+  - @apipgen/swag-parser@0.1.8
+  - @apipgen/pipeline@0.1.5
+  - apipgen@0.3.10
+
 ## 0.1.9
 
 ### Patch Changes

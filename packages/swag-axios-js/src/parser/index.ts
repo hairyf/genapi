@@ -68,14 +68,17 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     if (configRead.config.baseURL)
       options.unshift('baseURL')
 
-    transformParameters(parameters, {
+    const { spaceResponseType } = transformParameters(parameters, {
       syntax: 'ecmascript',
+      returnType: false,
       configRead,
       description,
       interfaces,
       responseType,
     })
     url = transformUrlSyntax(url)
+
+    description.push(`@return {import('axios').AxiosResponse<${spaceResponseType}>}`)
 
     functions.push({
       export: true,

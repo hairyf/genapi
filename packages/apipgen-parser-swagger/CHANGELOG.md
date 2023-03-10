@@ -1,5 +1,13 @@
 # @apipgen/swag-parser
 
+## 0.1.8
+
+### Patch Changes
+
+- chore: fix transform return type error
+- Updated dependencies
+  - apipgen@0.3.10
+
 ## 0.1.7
 
 ### Patch Changes

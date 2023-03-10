@@ -6,9 +6,10 @@ export interface ParameterTransformOptions {
   description: string[]
   responseType: string
   syntax: 'typescript' | 'ecmascript'
+  returnType?: boolean
 }
 export function transformParameters(parameters: StatementField[], options: ParameterTransformOptions) {
-  const { configRead, syntax, interfaces, description, responseType } = options
+  const { configRead, syntax, interfaces, description, responseType, returnType = true } = options
   const typeImport = configRead.outputs.find(v => v.type === 'typings')?.import
   const isGenerateType = configRead.outputs.map(v => v.type).includes('typings')
   const TypeNamespace = syntax === 'ecmascript' ? `import('${typeImport}')` : 'Types'
@@ -26,7 +27,7 @@ export function transformParameters(parameters: StatementField[], options: Param
     parameter.required = true
   }
 
-  if (isGenerateType && syntax === 'ecmascript' && !description.some(des => des.startsWith('@return')))
+  if (isGenerateType && syntax === 'ecmascript' && returnType)
     description.push(`@return {Promise<${spaceResponseType}>}`)
 
   function splitTypeSpaces(name: string) {

@@ -67,8 +67,9 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     if (configRead.config.baseURL)
       options.unshift(['prefixUrl', 'baseURL'])
 
-    transformParameters(parameters, {
+    const { spaceResponseType } = transformParameters(parameters, {
       syntax: 'ecmascript',
+      returnType: false,
       configRead,
       description,
       interfaces,
@@ -77,6 +78,8 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     transformBodyStringify('body', { options, parameters })
     transformQueryParams('query', { optionKey: 'searchParams', options })
     url = transformUrlSyntax(url)
+
+    description.push(`@return {import('ky').KyResponse<${spaceResponseType}>}`)
 
     functions.push({
       export: true,

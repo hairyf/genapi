@@ -37,7 +37,7 @@ namespace ApiPipeline {
 
   export interface Meta {
     /** The current interface base URL, which can be used for the definition of env variables */
-    baseURL?: string
+    baseURL?: string | false
     /** Import type of makefile */
     import?: {
       http?: string

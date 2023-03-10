@@ -1,5 +1,15 @@
 # apipgen-swag-ky-js
 
+## 0.0.10
+
+### Patch Changes
+
+- chore: fix transform return type error
+- Updated dependencies
+  - @apipgen/swag-parser@0.1.8
+  - @apipgen/pipeline@0.1.5
+  - apipgen@0.3.10
+
 ## 0.0.9
 
 ### Patch Changes

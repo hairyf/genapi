@@ -1,5 +1,13 @@
 # @apipgen/pipeline
 
+## 0.1.5
+
+### Patch Changes
+
+- chore: fix transform return type error
+- Updated dependencies
+  - apipgen@0.3.10
+
 ## 0.1.4
 
 ### Patch Changes
