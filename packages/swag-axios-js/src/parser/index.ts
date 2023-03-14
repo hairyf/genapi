@@ -79,7 +79,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     })
     url = transformUrlSyntax(url)
 
-    description.push(`@return {import('axios').AxiosResponse<${spaceResponseType}>}`)
+    description.push(`@return {Promise<import('axios').AxiosResponse<${spaceResponseType}>>}`)
 
     functions.push({
       export: true,

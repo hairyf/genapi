@@ -1,5 +1,12 @@
 # apipgen-swag-js
 
+## 0.1.11
+
+### Patch Changes
+
+- fix: all js swag parse return not promise
+  - apipgen@0.3.12
+
 ## 0.1.10
 
 ### Patch Changes

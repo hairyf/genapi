@@ -79,7 +79,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     transformQueryParams('query', { optionKey: 'searchParams', options })
     url = transformUrlSyntax(url)
 
-    description.push(`@return {import('ky').KyResponse<${spaceResponseType}>}`)
+    description.push(`@return {Promise<import('ky').KyResponse<${spaceResponseType}>>}`)
 
     functions.push({
       export: true,
