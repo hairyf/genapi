@@ -1,3 +1,4 @@
+import { exit } from 'process'
 import ora from 'ora'
 import type ApiPipeline from './typings'
 import { inPipeline } from './utils'
@@ -22,6 +23,7 @@ export async function openPipeWebClientGenerator(config: ApiPipeline.Config | Ap
     spinner.clear()
     spinner.fail('Generate API File Error')
     console.error(error)
+    exit()
   }
 }
 

@@ -1,5 +1,14 @@
 # apipgen
 
+## 0.3.11
+
+### Patch Changes
+
+- fix: swag axios request method error and error exit cmd
+- Updated dependencies
+  - apipgen-swag-axios-js@0.1.10
+  - apipgen-swag-axios-ts@0.1.10
+
 ## 0.3.10
 
 ### Patch Changes
