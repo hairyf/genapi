@@ -49,7 +49,7 @@ namespace ApiPipeline {
      */
     responseType?: string | {
       /**
-       * External generic type definition
+       * External generic type definition for js type commit
        *
        * @template `Promise<AxiosResponse<{__type__}>>`
        *
