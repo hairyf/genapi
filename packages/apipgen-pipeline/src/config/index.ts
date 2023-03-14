@@ -6,9 +6,12 @@ export function readConfig(config: ApiPipeline.Config) {
   config.import = config.import || {}
   config.output = config.output || {}
   config.output.main = config.output.main || 'src/api/index.ts'
-  config.responseType = config.responseType || 'T'
+  config.responseType = config.responseType || {}
+
   if (config.output?.type !== false)
     config.output.type = config.output.type || config.output.main.replace(/\.ts|\.js/g, '.type.ts')
+  if (typeof config.responseType === 'string')
+    config.responseType = { infer: config.responseType }
 
   const userRoot = process.cwd()
   const isTypescript = config.output.main.endsWith('.ts')
@@ -32,8 +35,8 @@ export function readConfig(config: ApiPipeline.Config) {
     },
   ]
 
-  const typings: StatementTypeAlias[] = [
-    { export: true, name: 'Response<T>', value: config.responseType || 'T' },
+  const typings: (StatementTypeAlias | boolean)[] = [
+    !!config.responseType.infer && { export: true, name: 'Infer<T>', value: config.responseType.infer! },
   ]
 
   if (config.output.type !== false) {
@@ -62,7 +65,8 @@ export function readConfig(config: ApiPipeline.Config) {
       comments: [],
       functions: [],
       interfaces: [],
-      typings,
+      typings: typings.filter(Boolean) as StatementTypeAlias[],
+      response: config.responseType,
     },
   }
 
