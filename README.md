@@ -1,6 +1,6 @@
 # API Pipeline Generator
 
-> [English](./README.md) | 中文
+> [English](./README_EN.md) | 中文
 
 API 生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS API，目前支持一下管道：
 
