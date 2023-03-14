@@ -1,5 +1,13 @@
 # @apipgen/pipeline
 
+## 0.1.6
+
+### Patch Changes
+
+- 🦋 apipgen@0.3.10
+- Updated dependencies
+  - apipgen@0.3.11
+
 ## 0.1.5
 
 ### Patch Changes

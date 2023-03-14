@@ -1,5 +1,14 @@
 # apipgen
 
+## 0.3.11
+
+### Patch Changes
+
+- 🦋 apipgen@0.3.10
+- Updated dependencies
+  - apipgen-swag-axios-js@0.1.10
+  - apipgen-swag-axios-ts@0.1.10
+
 ## 0.3.10
 
 ### Patch Changes
