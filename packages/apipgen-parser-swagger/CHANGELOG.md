@@ -1,5 +1,21 @@
 # @apipgen/swag-parser
 
+## 0.1.10
+
+### Patch Changes
+
+- Merge branch 'main' of https://github.com/TuiMao233/apipgen
+- Updated dependencies
+  - apipgen@0.3.13
+
+## 0.1.9
+
+### Patch Changes
+
+- 🦋 apipgen@0.3.10
+- Updated dependencies
+  - apipgen@0.3.11
+
 ## 0.1.8
 
 ### Patch Changes

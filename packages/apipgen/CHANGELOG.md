@@ -1,5 +1,14 @@
 # apipgen
 
+## 0.3.13
+
+### Patch Changes
+
+- Merge branch 'main' of https://github.com/TuiMao233/apipgen
+- Updated dependencies
+  - apipgen-swag-axios-js@0.1.12
+  - apipgen-swag-axios-ts@0.1.11
+
 ## 0.3.12
 
 ### Patch Changes

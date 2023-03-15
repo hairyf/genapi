@@ -1,5 +1,24 @@
 # apipgen-swag-got-ts
 
+## 0.0.8
+
+### Patch Changes
+
+- Merge branch 'main' of https://github.com/TuiMao233/apipgen
+- Updated dependencies
+  - @apipgen/swag-parser@0.1.10
+  - @apipgen/pipeline@0.1.7
+  - apipgen@0.3.13
+
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies
+  - @apipgen/swag-parser@0.1.9
+  - @apipgen/pipeline@0.1.6
+  - apipgen@0.3.11
+
 ## 0.0.6
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # apipgen-swag-axios-ts
 
+## 0.1.11
+
+### Patch Changes
+
+- Updated dependencies
+  - @apipgen/swag-parser@0.1.10
+  - @apipgen/pipeline@0.1.7
+  - apipgen@0.3.13
+
 ## 0.1.10
 
 ### Patch Changes

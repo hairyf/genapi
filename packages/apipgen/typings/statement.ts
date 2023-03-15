@@ -101,3 +101,8 @@ export interface StatementTypeAlias {
   name: string
   value: string
 }
+
+export interface StatementResponse {
+  generic?: string
+  infer?: string
+}

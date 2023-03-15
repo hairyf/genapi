@@ -1,4 +1,4 @@
-import type { StatementFunction, StatementImported, StatementInterface, StatementTypeAlias, StatementVariable } from './statement'
+import type { StatementFunction, StatementImported, StatementInterface, StatementResponse, StatementTypeAlias, StatementVariable } from './statement'
 
 namespace ApiPipeline {
   export interface Output {
@@ -44,10 +44,25 @@ namespace ApiPipeline {
       type?: string
     }
     /**
-     * Type conversion of response body
+     * type conversion of response body
      * @template `T extends { data?: infer V } ? V : void`
      */
-    responseType?: string
+    responseType?: string | {
+      /**
+       * External generic type definition for js type commit
+       *
+       * @template `Promise<AxiosResponse<{__type__}>>`
+       *
+       * @default {__type__}
+       */
+      generic?: string
+      /**
+       * type conversion of response body
+       *
+       * @template `T extends { data?: infer V } ? V : void`
+       */
+      infer?: string
+    }
     /** Mandatory parameters optional */
     paramsPartial?: boolean
   }
@@ -88,6 +103,8 @@ namespace ApiPipeline {
      * all request interfaces
      */
     interfaces: StatementInterface[]
+
+    response: StatementResponse
   }
   export interface ConfigRead<Config = ApiPipeline.Config> {
     /**

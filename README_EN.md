@@ -1,5 +1,5 @@
 # API Pipeline Generator
-> [中文](./README_CN.md) | English
+> [中文](./README.md) | English
 
 API generator, which is used to convert OpenApi (v2~v3) and other input sources into TS/JS APIs, and currently supports axios pipeline
 

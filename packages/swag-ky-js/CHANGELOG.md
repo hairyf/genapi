@@ -1,5 +1,15 @@
 # apipgen-swag-ky-js
 
+## 0.0.12
+
+### Patch Changes
+
+- Merge branch 'main' of https://github.com/TuiMao233/apipgen
+- Updated dependencies
+  - @apipgen/swag-parser@0.1.10
+  - @apipgen/pipeline@0.1.7
+  - apipgen@0.3.13
+
 ## 0.0.11
 
 ### Patch Changes
