@@ -65,6 +65,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       name: 'config',
       required: false,
     })
+    options.unshift('url')
     options.unshift(['method', `"${config.method}"`])
     if (configRead.config.baseURL)
       options.unshift('baseURL')
@@ -86,7 +87,8 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       description,
       parameters,
       body: [
-        `return http.request(${url}, { ${literalFieldsToString(options)} })`,
+        `const url = ${url}`,
+        `return http.request({ ${literalFieldsToString(options)} })`,
       ],
     })
   })

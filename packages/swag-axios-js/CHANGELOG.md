@@ -1,5 +1,15 @@
 # apipgen-swag-js
 
+## 0.2.0
+
+### Minor Changes
+
+- fix: swag-axios params error
+
+### Patch Changes
+
+- apipgen@0.3.14
+
 ## 0.1.12
 
 ### Patch Changes

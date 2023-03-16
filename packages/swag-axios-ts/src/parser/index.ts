@@ -66,6 +66,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       type: 'AxiosRequestConfig',
       required: false,
     })
+    options.unshift('url')
     options.unshift(['method', `"${config.method}"`])
     if (configRead.config.baseURL)
       options.unshift('baseURL')
@@ -85,7 +86,8 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       description,
       parameters,
       body: [
-        `return http.request<${spaceResponseType}>(${url},{ ${literalFieldsToString(options)} })`,
+        `const url = ${url}`,
+        `return http.request<${spaceResponseType}>({ ${literalFieldsToString(options)} })`,
       ],
     })
   })
