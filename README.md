@@ -38,13 +38,6 @@ yarn add apipgen --dev
 import { defineConfig } from 'apipgen'
 
 export default defineConfig({
-  /**
-   * 使用的编译处理管道，支持 npm 包（添加前缀apipgen-）或本地路径
-   *
-   * 默认支持 swag-axios-ts|swag-axios-js|swag-fetch-ts|swag-fetch-js
-   * @default 'swag-axios-ts'
-   */
-  pipeline: 'swag-axios-ts',
   // 输入源(swagger url 或 swagger json)以及输出源
   // 如果有多个源，可以使用 server 字段
   input: 'http://...api-docs',
@@ -62,7 +55,7 @@ export default defineConfig({
 
 ```sh
 # run apipgen
-pnpm apipgen
+pnpm apipgen --pipe swag-axios-ts
 ```
 
 ![cli-case](public/case.gif)

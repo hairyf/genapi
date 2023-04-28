@@ -37,13 +37,6 @@ Currently, the CLI option is not provided, and the output content is determined 
 import { defineConfig } from 'apipgen'
 
 export default defineConfig({
-  /**
-   * 使用的编译 pipeline 支持 npm 包（添加前缀apipgen-）或本地路径
-   *
-   * 默认支持 swag-axios-ts|swag-axios-js|swag-fetch-ts|swag-fetch-js
-   * @default 'swag-axios-ts'
-   */
-  pipeline: 'swag-axios-ts',
   // your input source and output file (swagger api url or json)
   // if you have multiple sources, you can use 'server'
   input: 'http://...api-docs',
@@ -61,7 +54,7 @@ export default defineConfig({
 
 ```sh
 # run apipgen
-pnpm apipgen
+pnpm apipgen --pipe swag-axios-ts
 ```
 
 ![cli-case](public/case.gif)
