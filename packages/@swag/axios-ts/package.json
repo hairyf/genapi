@@ -1,10 +1,6 @@
 {
   "name": "@genapi/swag-axios-ts",
   "version": "1.0.0",
-  "description": "",
-  "author": "",
-  "license": "ISC",
-  "keywords": [],
   "main": "src/index.ts",
   "scripts": {
     "build": "ptsup -r src --dts --meta --clean",
