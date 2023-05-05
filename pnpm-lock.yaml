@@ -66,6 +66,41 @@ importers:
         specifier: ^0.29.2
         version: 0.29.2
 
+  packages/@genapi/cli:
+    dependencies:
+      '@genapi/config':
+        specifier: workspace:*
+        version: link:../config
+      '@genapi/core':
+        specifier: workspace:*
+        version: link:../core
+      cac:
+        specifier: ^6.7.14
+        version: 6.7.14
+      chalk:
+        specifier: ^5.2.0
+        version: 5.2.0
+      fs-extra:
+        specifier: ^11.1.0
+        version: 11.1.0
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      unconfig:
+        specifier: ^0.3.7
+        version: 0.3.7
+    devDependencies:
+      '@types/fs-extra':
+        specifier: ^11.0.1
+        version: 11.0.1
+      '@types/lodash':
+        specifier: ^4.14.191
+        version: 4.14.191
+      '@types/node':
+        specifier: ^18.14.0
+        version: 18.14.3
+    publishDirectory: dist
+
   packages/@genapi/config:
     publishDirectory: dist
 
@@ -291,7 +326,7 @@ importers:
         version: link:../apipgen-pipeline/dist
       '@apipgen/swag-parser':
         specifier: workspace:*
-        version: link:../apipgen-parser-swagger/dist
+        version: link:../apipgen-parser-swagger
       apipgen:
         specifier: '*'
         version: link:../apipgen/dist
@@ -308,7 +343,7 @@ importers:
         version: link:../apipgen-pipeline/dist
       '@apipgen/swag-parser':
         specifier: workspace:*
-        version: link:../apipgen-parser-swagger/dist
+        version: link:../apipgen-parser-swagger
       apipgen:
         specifier: '*'
         version: link:../apipgen/dist
@@ -325,7 +360,7 @@ importers:
         version: link:../apipgen-pipeline/dist
       '@apipgen/swag-parser':
         specifier: workspace:*
-        version: link:../apipgen-parser-swagger/dist
+        version: link:../apipgen-parser-swagger
       apipgen:
         specifier: '*'
         version: link:../apipgen/dist
@@ -342,7 +377,7 @@ importers:
         version: link:../apipgen-pipeline/dist
       '@apipgen/swag-parser':
         specifier: workspace:*
-        version: link:../apipgen-parser-swagger/dist
+        version: link:../apipgen-parser-swagger
       apipgen:
         specifier: '*'
         version: link:../apipgen/dist
@@ -359,7 +394,7 @@ importers:
         version: link:../apipgen-pipeline/dist
       '@apipgen/swag-parser':
         specifier: workspace:*
-        version: link:../apipgen-parser-swagger/dist
+        version: link:../apipgen-parser-swagger
       apipgen:
         specifier: '*'
         version: link:../apipgen/dist
@@ -376,7 +411,7 @@ importers:
         version: link:../apipgen-pipeline/dist
       '@apipgen/swag-parser':
         specifier: workspace:*
-        version: link:../apipgen-parser-swagger/dist
+        version: link:../apipgen-parser-swagger
       apipgen:
         specifier: '*'
         version: link:../apipgen/dist
@@ -393,7 +428,7 @@ importers:
         version: link:../apipgen-pipeline/dist
       '@apipgen/swag-parser':
         specifier: workspace:*
-        version: link:../apipgen-parser-swagger/dist
+        version: link:../apipgen-parser-swagger
       apipgen:
         specifier: '*'
         version: link:../apipgen/dist
@@ -410,7 +445,7 @@ importers:
         version: link:../apipgen-pipeline/dist
       '@apipgen/swag-parser':
         specifier: workspace:*
-        version: link:../apipgen-parser-swagger/dist
+        version: link:../apipgen-parser-swagger
       apipgen:
         specifier: '*'
         version: link:../apipgen/dist

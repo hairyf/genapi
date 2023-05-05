@@ -1,0 +1,32 @@
+{
+  "name": "apipgen",
+  "version": "0.3.14",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "directory": "dist",
+    "main": "index.js",
+    "types": "./index.d.ts",
+    "linkDirectory": false
+  },
+  "bin": {
+    "apipgen": "./bin/index.js"
+  },
+  "scripts": {
+    "build": "ptsup src --dts --meta --clean",
+    "lint": "eslint ./"
+  },
+  "dependencies": {
+    "@genapi/config": "workspace:*",
+    "@genapi/core": "workspace:*",
+    "cac": "^6.7.14",
+    "chalk": "^5.2.0",
+    "fs-extra": "^11.1.0",
+    "lodash": "^4.17.21",
+    "unconfig": "^0.3.7"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1",
+    "@types/lodash": "^4.14.191",
+    "@types/node": "^18.14.0"
+  }
+}

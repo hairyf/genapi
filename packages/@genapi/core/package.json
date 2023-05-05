@@ -4,7 +4,7 @@
   "description": "Generator Api Config",
   "author": "hairyf",
   "license": "MIT",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "publishConfig": {
     "directory": "dist",
     "main": "index.js",
