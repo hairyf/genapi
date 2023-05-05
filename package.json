@@ -5,7 +5,7 @@
   "license": "ISC",
   "scripts": {
     "release": "changeset && changeset version",
-    "publish:ci": "turbo run publish:pre && pnpm publish -r",
+    "publish:ci": "turbo run publish:pre && pnpm publish -r --access public",
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage"

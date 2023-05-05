@@ -73,7 +73,6 @@ namespace ApiPipeline {
   }
 
   export interface Graphs {
-
     /**
      * all comments
      */

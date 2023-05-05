@@ -3,7 +3,6 @@
   "version": "0.4.0",
   "main": "src/index.ts",
   "publishConfig": {
-    "access": "public",
     "directory": "dist",
     "main": "index.js",
     "types": "./index.d.ts",

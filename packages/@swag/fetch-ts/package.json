@@ -6,7 +6,6 @@
     "lint": "eslint ./"
   },
   "publishConfig": {
-    "access": "public",
     "directory": "dist",
     "main": "index.js",
     "types": "./index.d.ts",

@@ -2,10 +2,6 @@
   "name": "@genapi/tests",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "build": "ptsup src --dts --meta --clean",
-    "lint": "eslint ./"
-  },
   "dependencies": {
     "@genapi/cli": "workspace:*",
     "@genapi/config": "workspace:*",
