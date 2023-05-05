@@ -1,4 +1,4 @@
-import type { StatementField, StatementInterface } from '@genapi/config'
+import type { StatementField, StatementInterface } from 'apipgen'
 import type { Parameter } from 'openapi-specification-types'
 import camelCase from 'lodash/camelCase'
 import type { PathMethod } from '../traverse'

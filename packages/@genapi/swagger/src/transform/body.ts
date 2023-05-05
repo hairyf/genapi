@@ -1,4 +1,4 @@
-import type { StatementField } from '@genapi/config'
+import type { StatementField } from 'apipgen'
 import type { LiteralField } from '../utils'
 
 export interface BodyJsonTransformOptions {

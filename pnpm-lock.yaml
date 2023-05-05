@@ -129,6 +129,38 @@ importers:
         version: 4.14.191
     publishDirectory: dist
 
+  packages/@genapi/swagger:
+    dependencies:
+      apipgen:
+        specifier: '*'
+        version: link:../../apipgen/dist
+      fs-extra:
+        specifier: ^11.1.0
+        version: 11.1.0
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      openapi-specification-types:
+        specifier: ^0.0.1
+        version: 0.0.1
+      pascal-case:
+        specifier: ^3.1.2
+        version: 3.1.2
+      transliteration:
+        specifier: ^2.3.5
+        version: 2.3.5
+      ts-factory-extra:
+        specifier: ^0.0.4
+        version: 0.0.4
+    devDependencies:
+      '@types/fs-extra':
+        specifier: ^11.0.1
+        version: 11.0.1
+      '@types/lodash':
+        specifier: ^4.14.191
+        version: 4.14.191
+    publishDirectory: dist
+
   packages/apipgen:
     dependencies:
       apipgen-swag-axios-js:
@@ -181,9 +213,12 @@ importers:
 
   packages/apipgen-parser-swagger:
     dependencies:
-      apipgen:
+      '@genapi/config':
+        specifier: workspace:*
+        version: link:../@genapi/config
+      '@genapi/core':
         specifier: '*'
-        version: link:../apipgen/dist
+        version: link:../@genapi/core
       fs-extra:
         specifier: ^11.1.0
         version: 11.1.0

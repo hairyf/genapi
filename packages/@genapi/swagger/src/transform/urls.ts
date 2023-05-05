@@ -1,4 +1,4 @@
-import type { ApiPipeline } from '@genapi/config'
+import type { ApiPipeline } from 'apipgen'
 import type { OpenAPISpecificationV2 } from 'openapi-specification-types'
 import type { LiteralField } from '../utils'
 

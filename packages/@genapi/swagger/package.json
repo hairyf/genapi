@@ -1,6 +1,10 @@
 {
   "name": "@apipgen/swag-parser",
   "version": "0.1.10",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
   "main": "src/index.ts",
   "scripts": {
     "build": "ptsup -r src --dts --meta --clean",
@@ -10,14 +14,12 @@
     "access": "public",
     "directory": "dist",
     "main": "index.js",
-    "types": "./index.d.ts",
-    "linkDirectory": false
+    "types": "./index.d.ts"
   },
   "peerDependencies": {
-    "@genapi/core": "*"
+    "apipgen": "*"
   },
   "dependencies": {
-    "@genapi/config": "workspace:*",
     "fs-extra": "^11.1.0",
     "lodash": "^4.17.21",
     "openapi-specification-types": "^0.0.1",

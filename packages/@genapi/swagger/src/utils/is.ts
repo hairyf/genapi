@@ -1,4 +1,4 @@
-import type { StatementField } from '@genapi/config'
+import type { StatementField } from 'apipgen'
 
 /**
   * 判断当前 parameters 是否存在必选

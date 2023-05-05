@@ -1,4 +1,4 @@
-import type { StatementInterface } from '@genapi/config'
+import type { StatementInterface } from 'apipgen/typings'
 import type { Definitions, Schema } from 'openapi-specification-types'
 import { parseSchemaType } from '../parser'
 import { varFiled, varName } from '../utils'

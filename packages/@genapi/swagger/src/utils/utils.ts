@@ -1,4 +1,4 @@
-import type { StatementField } from '@genapi/config'
+import type { StatementField } from 'apipgen'
 import type { Method, Parameter } from 'openapi-specification-types'
 
 export interface InSchemas {

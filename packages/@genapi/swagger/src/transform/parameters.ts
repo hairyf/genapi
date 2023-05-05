@@ -1,4 +1,4 @@
-import type { ApiPipeline, StatementField, StatementInterface } from '@genapi/config'
+import type { ApiPipeline, StatementField, StatementInterface } from 'apipgen'
 
 export interface ParameterTransformOptions {
   configRead: ApiPipeline.ConfigRead

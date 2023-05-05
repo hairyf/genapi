@@ -1,4 +1,4 @@
-import type { StatementField } from '@genapi/config'
+import type { StatementField } from 'apipgen/typings'
 import type { Parameter } from 'openapi-specification-types'
 import { spliceEnumDescription, varFiled } from '../utils'
 import { parseSchemaType } from './schema'
