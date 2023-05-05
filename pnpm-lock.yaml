@@ -99,8 +99,8 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       got:
-        specifier: 11.8.5
-        version: 11.8.5
+        specifier: 11.8.6
+        version: 11.8.6
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -3019,8 +3019,8 @@ packages:
       get-intrinsic: 1.2.0
     dev: true
 
-  /got@11.8.5:
-    resolution: {integrity: sha512-o0Je4NvQObAuZPHLFoRSkdG2lTgtcynqymzg2Vupdx6PorhaT5MCbIyXG6d4D94kk8ZG57QeosgdiqfJWhEhlQ==}
+  /got@11.8.6:
+    resolution: {integrity: sha512-6tfZ91bOr7bOXnK7PRDCGBLa1H4U080YHNaAQ2KsMGlLEzRbk44nsZF2E1IeRc3vtJHPVbKCYgdFbaGO2ljd8g==}
     engines: {node: '>=10.19.0'}
     dependencies:
       '@sindresorhus/is': 4.6.0
