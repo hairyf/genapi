@@ -15,7 +15,7 @@ export type PipelineFlow = (configRead: ApiPipeline.ConfigRead) => ApiPipeline.C
 export type PipelineDest = (configRead: ApiPipeline.ConfigRead) => void
 
 /**
- * create apipgen pipeline process
+ * create genapi pipeline process
  * @param readConfig read config pa
  * @param original get the source according to config
  * @param parser resolve source as available data

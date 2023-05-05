@@ -26,7 +26,3 @@ export async function openPipeWebClientGenerator(config: ApiPipeline.Config | Ap
     exit()
   }
 }
-
-export * from './config'
-export * from './typings'
-export * from './pipeline'

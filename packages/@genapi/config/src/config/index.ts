@@ -1,7 +1,7 @@
 import type { ApiPipeline } from '../types'
 
 /**
- * use apipgen.config.ts|.. file options
+ * use genapi.config.ts|.. file options
  * @param config
  */
 export function defineConfig(config: ApiPipeline.Config): ApiPipeline.Config

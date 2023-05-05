@@ -15,7 +15,7 @@ namespace ApiPipeline {
   }
   export interface PreInputs {
     /**
-     * apipgen input pipe source
+     * genapi input pipe source
      * @description
      * the incoming string resolves to a uri.
      *
@@ -27,7 +27,7 @@ namespace ApiPipeline {
   }
   export interface PreOutput {
     /**
-     * apipgen output file options
+     * genapi output file options
      */
     output?: {
       main?: string
@@ -69,7 +69,7 @@ namespace ApiPipeline {
 
   export interface Config extends PreInputs, PreOutput, Meta {
     /**
-     * The compilation pipeline used supports npm package (add the prefix apipgen -) | local path
+     * The compilation pipeline used supports npm package (add the prefix @genapi/ or genapi-) | local path
      * @default 'swag-axios-ts'
      */
     pipeline?: string

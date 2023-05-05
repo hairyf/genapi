@@ -1,0 +1,31 @@
+{
+  "name": "@genapi/swag-got-js",
+  "version": "0.0.8",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "ptsup -r src --dts --meta --clean",
+    "lint": "eslint ./"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist",
+    "main": "index.js",
+    "types": "./index.d.ts",
+    "linkDirectory": false
+  },
+  "peerDependencies": {
+    "@genapi/core": "*"
+  },
+  "dependencies": {
+    "@genapi/config": "workspace:*",
+    "@genapi/pipeline": "workspace:*",
+    "@genapi/swag-parser": "workspace:*"
+  },
+  "devDependencies": {
+    "openapi-specification-types": "^0.0.1"
+  }
+}

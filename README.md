@@ -6,21 +6,21 @@ API 生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS AP
 
 - `swag-axios-ts`
 - `swag-axios-js`
-- `swag-fetch-ts` (npm install apipgen-swag-fetch-ts)
-- `swag-fetch-js` (npm install apipgen-swag-fetch-js)
-- `swag-ky-ts` (npm install apipgen-swag-ky-ts)
-- `swag-ky-js` (npm install apipgen-swag-ky-js)
-- `swag-got-js` (npm install apipgen-swag-got-js)
-- `swag-got-js` (npm install apipgen-swag-got-js)
+- `swag-fetch-ts`
+- `swag-fetch-js`
+- `swag-ky-ts`
+- `swag-ky-js`
+- `swag-got-js`
+- `swag-got-js`
 
 ## ⚙️ Install
 
 在项目文件夹中本地安装：
 
 ```bash
-pnpm add apipgen -D
+pnpm add @genapi/cli @genapi/swag-axios-ts -D
 # Or Yarn
-yarn add apipgen --dev
+yarn add @genapi/cli @genapi/swag-axios-ts --dev
 ```
 
 > 您也可以全局安装，但不建议这样做。
@@ -29,13 +29,13 @@ yarn add apipgen --dev
 
 由 CLI | 配置文件确定输入/出内容。目前支持以下配置文件：
 
-- `apipgen.config.ts`
-- `apipgen.config.js`
-- `apipgen.config.cjs`
-- `apipgen.config.json`
+- `genapi.config.ts`
+- `genapi.config.js`
+- `genapi.config.cjs`
+- `genapi.config.json`
 
 ```ts
-import { defineConfig } from 'apipgen'
+import { defineConfig } from '@genapi/config'
 
 export default defineConfig({
   // 输入源(swagger url 或 swagger json)以及输出源
@@ -54,8 +54,8 @@ export default defineConfig({
 ```
 
 ```sh
-# run apipgen
-pnpm apipgen --pipe swag-axios-ts
+# run genapi
+pnpm@genapi/ or genapi--pipe swag-axios-ts
 ```
 
 ![cli-case](public/case.gif)
@@ -103,15 +103,15 @@ export default defineConfig({
 })
 ```
 
-Run `apipgen`
+Run `genapi`
 
 ![swag-axios-js](public/swag-axios-js.png)
 
 ## Pipeline
 
-apipgen 由特殊的处理管道运作，从输入 config 到最终 dest 输出文件作为一个完整管道，而每个管道都可以相互复用并重组。
+genapi 由特殊的处理管道运作，从输入 config 到最终 dest 输出文件作为一个完整管道，而每个管道都可以相互复用并重组。
 
-apipgen 在定义配置时传入 `pipeline` 参数支持 npm 包（前缀 apipgen-） 和本地路径。
+genapi 在定义配置时传入 `pipeline` 参数支持 npm 包（前缀 `@genapi/` 或 `genapi-`） 和本地路径。
 
 ```ts
 export default defineConfig({
@@ -119,16 +119,16 @@ export default defineConfig({
 })
 ```
 
-管道中由 `apipgen` 提供的 `pipeline` 方法定义。
+管道中由 `genapi` 提供的 `pipeline` 方法定义。
 
 ```ts
 // custom-pipe.ts
 
-// 使用 apipgen 提供的 pipeline 创建 API 管道生成器
-import { pipeline } from 'apipgen'
+// 使用 genapi 提供的 pipeline 创建 API 管道生成器
+import { pipeline } from '@genapi/core'
 
 // 每个管道都暴露了对应方法，可以进行复用并重组
-import { dest, generate, original } from 'apipgen-swag-axios-ts'
+import { dest, generate, original } from '@genapi/swag-axios-ts'
 
 function myCustomPipe(config) {
   const process = pipeline(
@@ -162,20 +162,12 @@ function compiler(configRead) {
 ```
 ## CLI
 
-目前 apipgen 支持以下脚本命令：
+目前 genapi 支持以下脚本命令：
 
 ```sh
-  --pipe <pipeline>  The compilation pipeline used supports npm package (add the prefix apipgen -) | local path
+  --pipe <pipeline>  The compilation pipeline used supports npm package (prefix @genapi/ or genapi-) | local path
   --input <source>   The incoming string resolves to a uri or json path.
-  --outfile <path>   Apipgen output file options
+  --outfile <path>   genapi output file options
   -h, --help         Display this message
   -v, --version      Display version number
 ```
-
-## Other
-
-你应该能从这个列表上知道 apipgen 还能做什么（sorry 我太懒。
-
-- import（导入 API 中的相关字段别名 - http 或 type）
-
-- paramsPartial（强制所有参数为可选）

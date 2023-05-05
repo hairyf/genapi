@@ -1,15 +1,16 @@
 {
-  "name": "apipgen",
+  "name": "@genapi/cli",
   "version": "0.3.14",
   "main": "src/index.ts",
   "publishConfig": {
+    "access": "public",
     "directory": "dist",
     "main": "index.js",
     "types": "./index.d.ts",
     "linkDirectory": false
   },
   "bin": {
-    "apipgen": "./bin/index.js"
+    "genapi": "./bin/index.js"
   },
   "scripts": {
     "build": "ptsup src --dts --meta --clean",

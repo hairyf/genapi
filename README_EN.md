@@ -5,21 +5,21 @@ API generator, which is used to convert OpenApi (v2~v3) and other input sources 
 
 - `swag-axios-ts`
 - `swag-axios-js`
-- `swag-fetch-ts` (npm install apipgen-swag-fetch-ts)
-- `swag-fetch-js` (npm install apipgen-swag-fetch-js)
-- `swag-ky-ts` (npm install apipgen-swag-ky-ts)
-- `swag-ky-js` (npm install apipgen-swag-ky-js)
-- `swag-got-js` (npm install apipgen-swag-got-js)
-- `swag-got-js` (npm install apipgen-swag-got-js)
+- `swag-fetch-ts`
+- `swag-fetch-js`
+- `swag-ky-ts`
+- `swag-ky-js`
+- `swag-got-js`
+- `swag-got-js`
 
 ## ⚙️ Install
 
 Install it locally in your project folder:
 
 ```bash
-pnpm add apipgen -D
+pnpm add @genapi/cli @genapi/swag-axios-ts -D
 # Or Yarn
-yarn add apipgen --dev
+yarn add @genapi/cli @genapi/swag-axios-ts --dev
 ```
 
 You can also install it globally but it's not recommended.
@@ -28,13 +28,13 @@ You can also install it globally but it's not recommended.
 
 Currently, the CLI option is not provided, and the output content is determined by the config file. Currently, the following config files are supported:
 
-- `apipgen.config.ts`
-- `apipgen.config.js`
-- `apipgen.config.cjs`
-- `apipgen.config.json`
+- `genapi.config.ts`
+- `genapi.config.js`
+- `genapi.config.cjs`
+- `genapi.config.json`
 
 ```ts
-import { defineConfig } from 'apipgen'
+import { defineConfig } from '@genapi/config'
 
 export default defineConfig({
   // your input source and output file (swagger api url or json)
@@ -53,8 +53,8 @@ export default defineConfig({
 ```
 
 ```sh
-# run apipgen
-pnpm apipgen --pipe swag-axios-ts
+# run genapi
+pnpm@genapi/ or genapi--pipe swag-axios-ts
 ```
 
 ![cli-case](public/case.gif)
@@ -102,13 +102,13 @@ export default defineConfig({
 })
 ```
 
-Run `apipgen`
+Run `genapi`
 
 ![swag-axios-js](public/swag-axios-js.png)
 
 ## Pipeline
 
-When defining the configuration, apipgen passes in the 'pipeline' parameter to support the npm package (prefix `apipgen-`) and local path.
+When defining the configuration, genapi passes in the 'pipeline' parameter to support the npm package (prefix `@genapi/` and `genapi-`) and local path.
 
 ```ts
 export default defineConfig({
@@ -116,16 +116,16 @@ export default defineConfig({
 })
 ```
 
-pipeline is defined by the `pipeline` method provided by `apipgen`.
+pipeline is defined by the `pipeline` method provided by `genapi`.
 
 ```ts
 // custom-pipe.ts
 
-// create an API pipeline generator using the pipeline provided by apipgen
-import { pipeline } from 'apipgen'
+// create an API pipeline generator using the pipeline provided by genapi
+import { pipeline } from '@genapi/core'
 
 // each pipeline exposes corresponding methods, which can be reused and reorganized
-import { dest, generate, original } from 'apipgen-swag-axios-ts'
+import { dest, generate, original } from '@genapi/swag-axios-ts'
 
 function myCustomPipe(config) {
   const process = pipeline(
@@ -157,9 +157,3 @@ function compiler(configRead) {
   // ...
 }
 ```
-## Other
-
-Sorry, I'm too lazy. You should know what else apipgen can do from this list.
-
-- import (import related field aliases in the makefile - http or type)
-- paramsPartial (force all parameters to be optional)

@@ -4,7 +4,7 @@ import { cwd } from 'process'
 import type { ApiPipeline } from '@genapi/config'
 
 export function inPipeline(pipe: string): ApiPipeline.Pipeline | undefined {
-  const inputs = [`apipgen-${pipe}`, absolutePath(pipe)]
+  const inputs = [`@genapi/${pipe}`, `genapi-${pipe}`, absolutePath(pipe)]
 
   for (const input of inputs) {
     const inputModule = require('jiti')(__filename)(input)

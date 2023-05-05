@@ -1,5 +1,5 @@
 {
-  "name": "@apipgen/pipeline",
+  "name": "@genapi/pipeline",
   "version": "0.1.7",
   "main": "src/index.ts",
   "scripts": {
@@ -14,7 +14,7 @@
     "linkDirectory": false
   },
   "peerDependencies": {
-    "apipgen": "*"
+    "@genapi/core": "*"
   },
   "dependencies": {
     "@genapi/config": "workspace:*",

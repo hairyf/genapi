@@ -1,10 +1,10 @@
 {
-  "name": "apipgen-workspace",
+  "name": "@genapi/workspace",
   "private": true,
   "author": "Hairy",
   "license": "ISC",
   "bin": {
-    "apipgen": "./bin/index.js"
+    "genapi": "./bin/index.js"
   },
   "scripts": {
     "release": "changeset && changeset version",
@@ -19,16 +19,17 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.35.2",
     "@changesets/cli": "^2.22.0",
+    "@genapi/cli": "workspace:*",
+    "@genapi/config": "workspace:*",
+    "@genapi/swag-axios-js": "workspace:*",
+    "@genapi/swag-axios-ts": "workspace:*",
+    "@genapi/swag-fetch-js": "workspace:*",
+    "@genapi/swag-fetch-ts": "workspace:*",
+    "@genapi/swag-got-js": "workspace:*",
+    "@genapi/swag-got-ts": "workspace:*",
+    "@genapi/swag-ky-js": "workspace:*",
+    "@genapi/swag-ky-ts": "workspace:*",
     "@types/node": "^18.14.0",
-    "apipgen": "workspace:*",
-    "apipgen-swag-axios-js": "workspace:*",
-    "apipgen-swag-axios-ts": "workspace:*",
-    "apipgen-swag-fetch-js": "workspace:*",
-    "apipgen-swag-fetch-ts": "workspace:*",
-    "apipgen-swag-got-js": "workspace:*",
-    "apipgen-swag-got-ts": "workspace:*",
-    "apipgen-swag-ky-js": "workspace:*",
-    "apipgen-swag-ky-ts": "workspace:*",
     "esbuild": "^0.17.10",
     "esbuild-register": "^3.4.2",
     "eslint": "^8.34.0",

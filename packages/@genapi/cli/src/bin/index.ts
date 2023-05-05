@@ -5,12 +5,12 @@ import type { ApiPipeline } from '@genapi/config'
 import { openPipeWebClientGenerator } from '@genapi/core'
 import { pack, parseOptions, parseServers } from '../utils'
 
-const cli = cac('apipgen')
+const cli = cac('genapi')
 
 cli
-  .option('--pipe <pipeline>', 'The compilation pipeline used supports npm package (add the prefix apipgen -) | local path')
+  .option('--pipe <pipeline>', 'The compilation pipeline used supports npm package (add the prefix genapi -) | local path')
   .option('--input <source>', 'The incoming string resolves to a uri or json path.')
-  .option('--outfile <path>', 'Apipgen output file options')
+  .option('--outfile <path>', 'genapi output file options')
 
 pack(cli)
 
@@ -23,7 +23,7 @@ async function actionApiGenerator() {
 
   const { config } = await loadConfig<ApiPipeline.DefineConfig>({
     sources: {
-      files: 'apipgen.config',
+      files: 'genapi.config',
       rewrite: config => merge(parseOptions(options), config),
     },
   })
