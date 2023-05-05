@@ -3,9 +3,14 @@ import type { ApiPipeline, StatementImported, StatementTypeAlias } from '@genapi
 
 export function readConfig(config: ApiPipeline.Config) {
   config.import = config.import || {}
+
+  config.responseType = config.responseType || {}
+
+  if (typeof config.output === 'string')
+    config.output = { main: config.output }
+
   config.output = config.output || {}
   config.output.main = config.output.main || 'src/api/index.ts'
-  config.responseType = config.responseType || {}
 
   if (config.output?.type !== false)
     config.output.type = config.output.type || config.output.main.replace(/\.ts|\.js/g, '.type.ts')

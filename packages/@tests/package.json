@@ -1,0 +1,26 @@
+{
+  "name": "@genapi/tests",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "ptsup src --dts --meta --clean",
+    "lint": "eslint ./"
+  },
+  "dependencies": {
+    "@genapi/cli": "workspace:*",
+    "@genapi/config": "workspace:*",
+    "@genapi/swag-axios-js": "workspace:*",
+    "@genapi/swag-axios-ts": "workspace:*",
+    "@genapi/swag-fetch-js": "workspace:*",
+    "@genapi/swag-fetch-ts": "workspace:*",
+    "@genapi/swag-got-js": "workspace:*",
+    "@genapi/swag-got-ts": "workspace:*",
+    "@genapi/swag-ky-js": "workspace:*",
+    "@genapi/swag-ky-ts": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^18.14.0",
+    "esbuild": "^0.17.10",
+    "esbuild-register": "^3.4.2"
+  }
+}

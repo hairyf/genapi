@@ -14,45 +14,6 @@ importers:
       '@changesets/cli':
         specifier: ^2.22.0
         version: 2.22.0
-      '@genapi/cli':
-        specifier: workspace:*
-        version: link:packages/@genapi/cli
-      '@genapi/config':
-        specifier: workspace:*
-        version: link:packages/@genapi/config
-      '@genapi/swag-axios-js':
-        specifier: workspace:*
-        version: link:packages/@swag/axios-js
-      '@genapi/swag-axios-ts':
-        specifier: workspace:*
-        version: link:packages/@swag/axios-ts
-      '@genapi/swag-fetch-js':
-        specifier: workspace:*
-        version: link:packages/@swag/fetch-js
-      '@genapi/swag-fetch-ts':
-        specifier: workspace:*
-        version: link:packages/@swag/fetch-ts
-      '@genapi/swag-got-js':
-        specifier: workspace:*
-        version: link:packages/@swag/got-js
-      '@genapi/swag-got-ts':
-        specifier: workspace:*
-        version: link:packages/@swag/got-ts
-      '@genapi/swag-ky-js':
-        specifier: workspace:*
-        version: link:packages/@swag/ky-js
-      '@genapi/swag-ky-ts':
-        specifier: workspace:*
-        version: link:packages/@swag/ky-ts
-      '@types/node':
-        specifier: ^18.14.0
-        version: 18.14.0
-      esbuild:
-        specifier: ^0.17.10
-        version: 0.17.10
-      esbuild-register:
-        specifier: ^3.4.2
-        version: 3.4.2(esbuild@0.17.10)
       eslint:
         specifier: ^8.34.0
         version: 8.34.0
@@ -361,6 +322,49 @@ importers:
         specifier: ^0.0.1
         version: 0.0.1
     publishDirectory: dist
+
+  packages/@tests:
+    dependencies:
+      '@genapi/cli':
+        specifier: workspace:*
+        version: link:../@genapi/cli
+      '@genapi/config':
+        specifier: workspace:*
+        version: link:../@genapi/config
+      '@genapi/swag-axios-js':
+        specifier: workspace:*
+        version: link:../@swag/axios-js
+      '@genapi/swag-axios-ts':
+        specifier: workspace:*
+        version: link:../@swag/axios-ts
+      '@genapi/swag-fetch-js':
+        specifier: workspace:*
+        version: link:../@swag/fetch-js
+      '@genapi/swag-fetch-ts':
+        specifier: workspace:*
+        version: link:../@swag/fetch-ts
+      '@genapi/swag-got-js':
+        specifier: workspace:*
+        version: link:../@swag/got-js
+      '@genapi/swag-got-ts':
+        specifier: workspace:*
+        version: link:../@swag/got-ts
+      '@genapi/swag-ky-js':
+        specifier: workspace:*
+        version: link:../@swag/ky-js
+      '@genapi/swag-ky-ts':
+        specifier: workspace:*
+        version: link:../@swag/ky-ts
+    devDependencies:
+      '@types/node':
+        specifier: ^18.14.0
+        version: 18.14.0
+      esbuild:
+        specifier: ^0.17.10
+        version: 0.17.10
+      esbuild-register:
+        specifier: ^3.4.2
+        version: 3.4.2(esbuild@0.17.10)
 
 packages:
 

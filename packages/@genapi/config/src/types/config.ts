@@ -29,10 +29,7 @@ namespace ApiPipeline {
     /**
      * genapi output file options
      */
-    output?: {
-      main?: string
-      type?: string | false
-    }
+    output?: string | { main?: string; type?: string | false }
   }
 
   export interface Meta {
