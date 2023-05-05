@@ -1,10 +1,10 @@
 {
-  "name": "@genapi/config",
+  "name": "@genapi/core",
   "version": "0.3.14",
   "description": "Generator Api Config",
   "author": "hairyf",
   "license": "MIT",
-  "main": "src/index.ts",
+  "main": "index.ts",
   "publishConfig": {
     "directory": "dist",
     "main": "index.js",
@@ -13,5 +13,12 @@
   "scripts": {
     "build": "ptsup --dts --meta --clean",
     "lint": "eslint ./"
+  },
+  "dependencies": {
+    "@genapi/config": "workspace:*",
+    "jiti": "^1.17.1",
+    "ora": "^5",
+    "p-pipe": "^3",
+    "unconfig": "^0.3.7"
   }
 }
