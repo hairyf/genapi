@@ -23,4 +23,5 @@
     "esbuild": "^0.17.10",
     "esbuild-register": "^3.4.2"
   }
+
 }
