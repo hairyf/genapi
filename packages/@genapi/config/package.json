@@ -1,0 +1,17 @@
+{
+  "name": "@genapi/config",
+  "version": "0.3.14",
+  "description": "Generator Api Config",
+  "author": "hairyf",
+  "license": "MIT",
+  "main": "index.ts",
+  "publishConfig": {
+    "directory": "dist",
+    "main": "index.js",
+    "types": "./index.d.ts"
+  },
+  "scripts": {
+    "build": "ptsup --dts --meta --clean",
+    "lint": "eslint ./"
+  }
+}
