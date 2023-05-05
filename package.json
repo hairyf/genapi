@@ -3,9 +3,6 @@
   "private": true,
   "author": "Hairy",
   "license": "ISC",
-  "bin": {
-    "genapi": "./bin/index.js"
-  },
   "scripts": {
     "release": "changeset && changeset version",
     "publish:ci": "turbo run publish:pre && pnpm publish -r",
@@ -19,19 +16,6 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.35.2",
     "@changesets/cli": "^2.22.0",
-    "@genapi/cli": "workspace:*",
-    "@genapi/config": "workspace:*",
-    "@genapi/swag-axios-js": "workspace:*",
-    "@genapi/swag-axios-ts": "workspace:*",
-    "@genapi/swag-fetch-js": "workspace:*",
-    "@genapi/swag-fetch-ts": "workspace:*",
-    "@genapi/swag-got-js": "workspace:*",
-    "@genapi/swag-got-ts": "workspace:*",
-    "@genapi/swag-ky-js": "workspace:*",
-    "@genapi/swag-ky-ts": "workspace:*",
-    "@types/node": "^18.14.0",
-    "esbuild": "^0.17.10",
-    "esbuild-register": "^3.4.2",
     "eslint": "^8.34.0",
     "ptsup": "^0.3.1",
     "turbo": "^1.8.3",
