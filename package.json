@@ -1,8 +1,7 @@
 {
   "name": "@genapi/workspace",
   "private": true,
-  "author": "Hairy",
-  "license": "ISC",
+  "packageManager": "pnpm@8.1.1",
   "scripts": {
     "release": "changeset && changeset version",
     "publish:ci": "turbo run publish:pre && pnpm publish -r --access public",
