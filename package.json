@@ -1,7 +1,7 @@
 {
   "name": "@genapi/workspace",
   "private": true,
-  "packageManager": "pnpm@8.1.1",
+  "packageManager": "pnpm@8.4.0",
   "scripts": {
     "release": "changeset && changeset version",
     "publish:ci": "turbo run publish:pre && pnpm publish -r --access public",
