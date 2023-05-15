@@ -19,5 +19,6 @@
   },
   "devDependencies": {
     "openapi-specification-types": "^0.0.1"
-  }
+  },
+  "version": null
 }

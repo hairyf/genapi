@@ -1,6 +1,6 @@
 {
   "name": "@genapi/tests",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "dependencies": {
     "@genapi/cli": "workspace:*",
@@ -19,5 +19,4 @@
     "esbuild": "^0.17.10",
     "esbuild-register": "^3.4.2"
   }
-
 }

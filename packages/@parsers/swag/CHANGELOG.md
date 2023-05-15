@@ -1,5 +1,14 @@
 # @genapi/swag-parser
 
+## 1.0.1
+
+### Patch Changes
+
+- release 0.4.1
+- Updated dependencies
+  - @genapi/config@0.4.1
+  - @genapi/core@0.4.1
+
 ## 1.0.0
 
 ### Minor Changes
