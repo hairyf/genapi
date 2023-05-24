@@ -1,4 +1,4 @@
-import { join } from 'path'
+import { join } from 'node:path'
 import fs from 'fs-extra'
 import type { CAC } from 'cac'
 import merge from 'lodash/merge'
@@ -15,7 +15,7 @@ export function pack(cli: CAC) {
   cli.help()
 }
 
-export const isNetworkUrl = (str: string) => {
+export function isNetworkUrl(str: string) {
   return /^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(str)
 }
 

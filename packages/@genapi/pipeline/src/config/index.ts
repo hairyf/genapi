@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 import type { ApiPipeline, StatementImported, StatementTypeAlias } from '@genapi/config'
 
 export function readConfig(config: ApiPipeline.Config) {

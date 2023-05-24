@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import path from 'path'
-import { cwd } from 'process'
+import path from 'node:path'
+import { cwd } from 'node:process'
 import type { ApiPipeline } from '@genapi/config'
 
 export function inPipeline(pipe: string): ApiPipeline.Pipeline | undefined {

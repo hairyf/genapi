@@ -1,4 +1,4 @@
-import { exit } from 'process'
+import { exit } from 'node:process'
 import ora from 'ora'
 import type { ApiPipeline } from '@genapi/config'
 import { inPipeline } from '../utils'
