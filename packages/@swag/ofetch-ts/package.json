@@ -1,0 +1,24 @@
+{
+  "name": "@genapi/swag-ofetch-ts",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "ptsup -r src --dts --meta --clean",
+    "lint": "eslint ./"
+  },
+  "publishConfig": {
+    "directory": "dist",
+    "main": "index.js",
+    "types": "./index.d.ts",
+    "linkDirectory": false
+  },
+  "dependencies": {
+    "@genapi/config": "workspace:*",
+    "@genapi/core": "*",
+    "@genapi/pipeline": "workspace:*",
+    "@genapi/swag-parser": "workspace:*"
+  },
+  "devDependencies": {
+    "openapi-specification-types": "^0.0.1"
+  }
+}

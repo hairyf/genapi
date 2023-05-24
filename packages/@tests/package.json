@@ -12,7 +12,9 @@
     "@genapi/swag-got-js": "workspace:*",
     "@genapi/swag-got-ts": "workspace:*",
     "@genapi/swag-ky-js": "workspace:*",
-    "@genapi/swag-ky-ts": "workspace:*"
+    "@genapi/swag-ky-ts": "workspace:*",
+    "@genapi/swag-ofetch-js": "workspace:*",
+    "@genapi/swag-ofetch-ts": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^18.14.0",
