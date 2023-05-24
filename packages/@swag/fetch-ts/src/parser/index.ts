@@ -1,10 +1,11 @@
 import type { ApiPipeline, StatementFunction, StatementInterface } from '@genapi/config'
-import type { OpenAPISpecificationV2, Paths } from 'openapi-specification-types'
+import type { Paths } from 'openapi-specification-types'
 import {
   literalFieldsToString,
   parseHeaderCommits,
   parseMethodMetadata,
   parseMethodParameters,
+  parseOpenAPISpecification32,
   transformBaseURL,
   transformBodyStringify,
   transformDefinitions,
@@ -21,8 +22,7 @@ export interface PathsTransformOptions {
 }
 
 export function parser(configRead: ApiPipeline.ConfigRead) {
-  const source = configRead.source as OpenAPISpecificationV2
-
+  const source = parseOpenAPISpecification32(configRead.source)
   const comments = parseHeaderCommits(source)
 
   const interfaces: StatementInterface[] = []

@@ -1,5 +1,6 @@
 {
   "name": "@genapi/swag-fetch-ts",
+  "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
     "build": "ptsup -r src --dts --meta --clean",
@@ -19,6 +20,5 @@
   },
   "devDependencies": {
     "openapi-specification-types": "^0.0.1"
-  },
-  "version": null
+  }
 }

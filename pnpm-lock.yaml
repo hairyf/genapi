@@ -323,6 +323,49 @@ importers:
         version: 0.0.1
     publishDirectory: dist
 
+  packages/@swag/ofetch-js:
+    dependencies:
+      '@genapi/config':
+        specifier: workspace:*
+        version: link:../../@genapi/config
+      '@genapi/core':
+        specifier: '*'
+        version: link:../../@genapi/core
+      '@genapi/pipeline':
+        specifier: workspace:*
+        version: link:../../@genapi/pipeline
+      '@genapi/swag-parser':
+        specifier: workspace:*
+        version: link:../../@parsers/swag
+    devDependencies:
+      ofetch:
+        specifier: ^1.0.1
+        version: 1.0.1
+      openapi-specification-types:
+        specifier: ^0.0.1
+        version: 0.0.1
+    publishDirectory: dist
+
+  packages/@swag/ofetch-ts:
+    dependencies:
+      '@genapi/config':
+        specifier: workspace:*
+        version: link:../../@genapi/config
+      '@genapi/core':
+        specifier: '*'
+        version: link:../../@genapi/core
+      '@genapi/pipeline':
+        specifier: workspace:*
+        version: link:../../@genapi/pipeline
+      '@genapi/swag-parser':
+        specifier: workspace:*
+        version: link:../../@parsers/swag
+    devDependencies:
+      openapi-specification-types:
+        specifier: ^0.0.1
+        version: 0.0.1
+    publishDirectory: dist
+
   packages/@tests:
     dependencies:
       '@genapi/cli':
@@ -355,6 +398,12 @@ importers:
       '@genapi/swag-ky-ts':
         specifier: workspace:*
         version: link:../@swag/ky-ts
+      '@genapi/swag-ofetch-js':
+        specifier: workspace:*
+        version: link:../@swag/ofetch-js
+      '@genapi/swag-ofetch-ts':
+        specifier: workspace:*
+        version: link:../@swag/ofetch-ts
     devDependencies:
       '@types/node':
         specifier: ^18.14.0
@@ -2123,6 +2172,10 @@ packages:
   /defu@6.1.2:
     resolution: {integrity: sha512-+uO4+qr7msjNNWKYPHqN/3+Dx3NFkmIzayk2L1MyZQlvgZb/J1A0fo410dpKrN2SnqFjt8n4JL8fDJE0wIgjFQ==}
 
+  /destr@1.2.2:
+    resolution: {integrity: sha512-lrbCJwD9saUQrqUfXvl6qoM+QN3W7tLV5pAOs+OqOmopCCz/JkE05MHedJR1xfk4IAnZuJXPVuN5+7jNA2ZCiA==}
+    dev: true
+
   /detect-indent@6.1.0:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
     engines: {node: '>=8'}
@@ -3797,6 +3850,10 @@ packages:
       lower-case: 2.0.2
       tslib: 2.5.0
 
+  /node-fetch-native@1.1.1:
+    resolution: {integrity: sha512-9VvspTSUp2Sxbl+9vbZTlFGq9lHwE8GDVVekxx6YsNd1YH59sb3Ba8v3Y3cD8PkLNcileGGcA21PFjVl0jzDaw==}
+    dev: true
+
   /normalize-package-data@2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
     dependencies:
@@ -3843,6 +3900,14 @@ packages:
       call-bind: 1.0.2
       define-properties: 1.2.0
       es-abstract: 1.21.2
+    dev: true
+
+  /ofetch@1.0.1:
+    resolution: {integrity: sha512-icBz2JYfEpt+wZz1FRoGcrMigjNKjzvufE26m9+yUiacRQRHwnNlGRPiDnW4op7WX/MR6aniwS8xw8jyVelF2g==}
+    dependencies:
+      destr: 1.2.2
+      node-fetch-native: 1.1.1
+      ufo: 1.1.2
     dev: true
 
   /once@1.4.0:
