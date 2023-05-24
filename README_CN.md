@@ -12,6 +12,8 @@ API 生成器，用于将 OpenApi（v2~v3）和其他输入源转换为 TS/JS AP
 - `swag-ky-js`
 - `swag-got-js`
 - `swag-got-js`
+- `swag-ofetch-js`
+- `swag-ofetch-js`
 
 ## ⚙️ Install
 
@@ -35,7 +37,7 @@ yarn add @genapi/cli @genapi/swag-axios-ts --dev
 - `genapi.config.json`
 
 ```ts
-import { defineConfig } from '@genapi/config'
+import { defineConfig } from '@genapi/cli'
 
 export default defineConfig({
   // 输入源(swagger url 或 swagger json)以及输出源
@@ -54,8 +56,7 @@ export default defineConfig({
 ```
 
 ```sh
-# run genapi
-pnpm@genapi/ or genapi--pipe swag-axios-ts
+genapi --pipe swag-axios-ts
 ```
 
 ![cli-case](public/case.gif)

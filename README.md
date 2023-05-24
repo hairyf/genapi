@@ -12,6 +12,8 @@ API generator, which is used to convert OpenApi (v2~v3) and other input sources 
 - `swag-ky-js`
 - `swag-got-js`
 - `swag-got-js`
+- `swag-ofetch-js`
+- `swag-ofetch-js`
 
 ## ⚙️ Install
 
@@ -35,7 +37,7 @@ Currently, the CLI option is not provided, and the output content is determined 
 - `genapi.config.json`
 
 ```ts
-import { defineConfig } from '@genapi/config'
+import { defineConfig } from '@genapi/cli'
 
 export default defineConfig({
   // your input source and output file (swagger api url or json)
@@ -54,8 +56,7 @@ export default defineConfig({
 ```
 
 ```sh
-# run genapi
-pnpm@genapi/ or genapi--pipe swag-axios-ts
+genapi --pipe swag-axios-ts
 ```
 
 ![cli-case](public/case.gif)
