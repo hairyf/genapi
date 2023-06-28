@@ -156,8 +156,8 @@ importers:
         specifier: ^2.3.5
         version: 2.3.5
       ts-factory-extra:
-        specifier: ^0.0.4
-        version: 0.0.4
+        specifier: ^0.0.5
+        version: 0.0.5
     devDependencies:
       '@types/fs-extra':
         specifier: ^11.0.1
@@ -4716,12 +4716,6 @@ packages:
     resolution: {integrity: sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==}
     engines: {node: '>=8'}
     dev: true
-
-  /ts-factory-extra@0.0.4:
-    resolution: {integrity: sha512-gZMC1o2bpJ6Tz91D6uu9gdE8yGzIBcsRiJsIAC0H6lEeePpCx8jA9bmgGwYbZ6eBhJIjgx6FvsTcYyEK6FOFSA==}
-    dependencies:
-      typescript: 4.9.5
-    dev: false
 
   /ts-factory-extra@0.0.5:
     resolution: {integrity: sha512-FulKH2js0nDJQ4FRxA8tz5Vw6v0syvZyjfIqlzMWWQCm+9OUu8kbGdBwAVlBRY8kUfw9TtuxFXbFpxH4Lls7gw==}
