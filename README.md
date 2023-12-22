@@ -56,7 +56,7 @@ export default defineConfig({
 ```
 
 ```sh
-genapi --pipe swag-axios-ts
+npx genapi --pipe swag-axios-ts
 ```
 
 ![cli-case](public/case.gif)
