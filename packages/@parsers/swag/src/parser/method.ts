@@ -89,7 +89,8 @@ export function parseMethodMetadata({ method, path, responses, options: meta }: 
 
   const name = camelCase(`${method}/${path}`)
   const url = `${path.replace(/({)/g, '${paths.')}`
-  const responseType = responses['200'] ? parseSchemaType(responses['200']) : 'void'
+  const responseSchema = responses['200']?.content?.['application/json']?.schema || responses['200']
+  const responseType = responseSchema ? parseSchemaType(responseSchema) : 'void'
 
   return { description: comments.filter(Boolean), name, url, responseType, body: [] as string[] }
 }

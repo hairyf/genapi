@@ -21,8 +21,8 @@ export function parseOpenAPISpecification32(source: OpenAPISpecificationV2 | Ope
   if (source.openapi?.startsWith('3')) {
     const target = source as OpenAPISpecificationV3
     change.swagger = target.openapi
-    change.host = target.servers[0].url
-    change.basePath = target.servers[0].url
+    change.host = target.servers[0]?.url
+    change.basePath = target.servers[0]?.url
     change.schemes = target.servers.map(v => v.url)
     change.info = target.info
     change.paths = target.paths
