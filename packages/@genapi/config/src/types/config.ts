@@ -24,7 +24,7 @@ namespace ApiPipeline {
      *
      * `{ json }` json can pass in path/object
      */
-    input: string | { uri: string } | { json: string | Record<string, string> }
+    input: string | { uri: string } | { json: string | Record<string, any> }
   }
   export interface PreOutput {
     /**

@@ -12,6 +12,12 @@ export function readConfig(config: ApiPipeline.Config) {
   config.output = config.output || {}
   config.output.main = config.output.main || 'src/api/index.ts'
 
+  if (typeof config.baseURL === 'string') {
+    config.baseURL = config.baseURL.endsWith('/"')
+      ? config.baseURL = `${config.baseURL.slice(0, config.baseURL.length - 2)}"`
+      : config.baseURL
+  }
+
   if (config.output?.type !== false)
     config.output.type = config.output.type || config.output.main.replace(/\.ts|\.js/g, '.type.ts')
   if (typeof config.responseType === 'string')
