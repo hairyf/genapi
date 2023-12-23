@@ -1,5 +1,14 @@
 # @genapi/cli
 
+## 0.5.1
+
+### Patch Changes
+
+- swagger v3 genapi response and url error
+- Updated dependencies
+  - @genapi/config@0.5.1
+  - @genapi/core@0.5.1
+
 ## 0.5.0
 
 ### Minor Changes
