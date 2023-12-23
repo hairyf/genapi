@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import type { StatementFunction, StatementImported, StatementInterface, StatementResponse, StatementTypeAlias, StatementVariable } from './statement'
 
 namespace ApiPipeline {
