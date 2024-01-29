@@ -17,7 +17,7 @@
     "@genapi/swag-ofetch-ts": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^18.14.0",
+    "@types/node": "^20.0.0",
     "esbuild": "^0.18.0",
     "esbuild-register": "^3.4.2"
   }
