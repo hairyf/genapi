@@ -19,7 +19,7 @@ export interface BaseUrlTransformOptions {
 export function transformQueryParams(name: string, { body, options, optionKey, url }: QueryUrlTransformOptions) {
   url = url || ''
   if (optionKey) {
-    const searchParams = [optionKey, `new URLSearchParams(Object.entries(${name}))`] as LiteralField
+    const searchParams = [optionKey, `new URLSearchParams(Object.entries(${name} || {}))`] as LiteralField
     if (options.includes(name))
       options.splice(options.findIndex(v => v === name), 1, searchParams)
   }
