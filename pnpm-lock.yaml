@@ -147,8 +147,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       openapi-specification-types:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.3
+        version: 0.0.3
       pascal-case:
         specifier: ^3.1.2
         version: 3.1.2
@@ -183,8 +183,8 @@ importers:
         version: link:../../@parsers/swag
     devDependencies:
       openapi-specification-types:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.3
+        version: 0.0.3
     publishDirectory: dist
 
   packages/@swag/axios-ts:
@@ -203,8 +203,8 @@ importers:
         version: link:../../@parsers/swag
     devDependencies:
       openapi-specification-types:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.3
+        version: 0.0.3
     publishDirectory: dist
 
   packages/@swag/fetch-js:
@@ -223,8 +223,8 @@ importers:
         version: link:../../@parsers/swag
     devDependencies:
       openapi-specification-types:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.3
+        version: 0.0.3
     publishDirectory: dist
 
   packages/@swag/fetch-ts:
@@ -243,8 +243,8 @@ importers:
         version: link:../../@parsers/swag
     devDependencies:
       openapi-specification-types:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.3
+        version: 0.0.3
     publishDirectory: dist
 
   packages/@swag/got-js:
@@ -263,8 +263,8 @@ importers:
         version: link:../../@parsers/swag
     devDependencies:
       openapi-specification-types:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.3
+        version: 0.0.3
     publishDirectory: dist
 
   packages/@swag/got-ts:
@@ -283,8 +283,8 @@ importers:
         version: link:../../@parsers/swag
     devDependencies:
       openapi-specification-types:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.3
+        version: 0.0.3
     publishDirectory: dist
 
   packages/@swag/ky-js:
@@ -303,8 +303,8 @@ importers:
         version: link:../../@parsers/swag
     devDependencies:
       openapi-specification-types:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.3
+        version: 0.0.3
     publishDirectory: dist
 
   packages/@swag/ky-ts:
@@ -323,8 +323,8 @@ importers:
         version: link:../../@parsers/swag
     devDependencies:
       openapi-specification-types:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.3
+        version: 0.0.3
     publishDirectory: dist
 
   packages/@swag/ofetch-js:
@@ -346,8 +346,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       openapi-specification-types:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.3
+        version: 0.0.3
     publishDirectory: dist
 
   packages/@swag/ofetch-ts:
@@ -366,8 +366,8 @@ importers:
         version: link:../../@parsers/swag
     devDependencies:
       openapi-specification-types:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.3
+        version: 0.0.3
     publishDirectory: dist
 
   packages/@tests:
@@ -3563,19 +3563,11 @@ packages:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
     dev: true
 
-  /fsevents@2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
-    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
-    os: [darwin]
-    requiresBuild: true
-    optional: true
-
   /fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /function-bind@1.1.1:
@@ -4604,8 +4596,8 @@ packages:
       mimic-fn: 4.0.0
     dev: true
 
-  /openapi-specification-types@0.0.1:
-    resolution: {integrity: sha512-KChSN8df2T5G/e3rvzsGf+zZRQTZJy6H7M1R2syXkdrL1taNCp8bKKn8DaaT6WzzM1iESiVx8YlECgcX6d0A6w==}
+  /openapi-specification-types@0.0.3:
+    resolution: {integrity: sha512-2pGoJRYcfP7NJ9+TT7M3RgkSTxs0H3oIVU8Hd34Tsr/JfyBGzbj2LHl4ygvsLpKnblIGzUMLhaF5jwDn2Q9TBA==}
 
   /optionator@0.9.1:
     resolution: {integrity: sha512-74RlY5FCnhq4jRxVUPKDaRwrVNXMqsGsiW6AJw4XK8hmtm10wC0ypZBLw5IIp85NZMr91+qd1RvvENwg7jjRFw==}
@@ -5116,7 +5108,7 @@ packages:
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
 
   /rollup@4.9.6:
     resolution: {integrity: sha512-05lzkCS2uASX0CiLFybYfVkwNbKZG5NFQ6Go0VWyogFTXXbR039UVsegViTntkk4OglHBdF54ccApXRRuXRbsg==}
@@ -5709,7 +5701,7 @@ packages:
       resolve: 1.22.2
       rollup: 3.21.5
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: false
 
   /vite@5.0.12:

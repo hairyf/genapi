@@ -19,6 +19,6 @@
     "@genapi/swag-parser": "workspace:*"
   },
   "devDependencies": {
-    "openapi-specification-types": "^0.0.1"
+    "openapi-specification-types": "^0.0.3"
   }
 }
