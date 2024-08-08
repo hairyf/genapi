@@ -1,5 +1,11 @@
 # @genapi/config
 
+## 0.5.2
+
+### Patch Changes
+
+- support paths request body field
+
 ## 0.5.1
 
 ### Patch Changes

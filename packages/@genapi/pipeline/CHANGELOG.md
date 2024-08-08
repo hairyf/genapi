@@ -1,5 +1,14 @@
 # @genapi/pipeline
 
+## 2.0.2
+
+### Patch Changes
+
+- support paths request body field
+- Updated dependencies
+  - @genapi/config@0.5.2
+  - @genapi/core@0.5.2
+
 ## 2.0.1
 
 ### Patch Changes
