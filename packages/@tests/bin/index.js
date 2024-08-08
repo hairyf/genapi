@@ -1,1 +1,1 @@
-import "@genapi/cli/src/bin/index.ts"
+import '@genapi/cli/src/bin/index.ts'

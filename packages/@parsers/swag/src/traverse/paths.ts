@@ -39,7 +39,7 @@ function extendsRequestBody(parameters: Parameter[], requestBody?: RequestBody) 
       parameters.push({
         required: requestBody.required,
         in: 'formData',
-        name: name,
+        name,
         description: requestBody.description,
         ...properties[name],
       })
@@ -55,6 +55,5 @@ function extendsRequestBody(parameters: Parameter[], requestBody?: RequestBody) 
       in: 'body',
       name: 'body',
     })
-    return
   }
 }
