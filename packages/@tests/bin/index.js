@@ -1,3 +1,1 @@
-#!/usr/bin/env node
-require('esbuild-register')
-require('@genapi/cli/src/bin/index.ts')
+import "@genapi/cli/src/bin/index.ts"

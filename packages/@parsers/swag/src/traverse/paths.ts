@@ -1,5 +1,5 @@
 import forIn from 'lodash/forIn'
-import type { Method, Parameter, Paths, Responses } from 'openapi-specification-types'
+import type { Method, Parameter, Paths, RequestBody, Responses } from 'openapi-specification-types'
 
 export interface PathMethod {
   path: string
@@ -18,7 +18,7 @@ export function traversePaths(paths: Paths, callback: (options: PathMethod) => v
         return !options.parameters?.some(v => v.name === item.name)
       })
       parameters = [...parameters, ...(options.parameters || [])]
-
+      extendsRequestBody(parameters, options.requestBody)
       callback({
         responses: options.responses,
         path,
@@ -27,5 +27,34 @@ export function traversePaths(paths: Paths, callback: (options: PathMethod) => v
         parameters,
       })
     })
+  }
+}
+
+function extendsRequestBody(parameters: Parameter[], requestBody?: RequestBody) {
+  if (!requestBody)
+    return
+  if (requestBody.content['multipart/form-data']) {
+    const properties = requestBody.content['multipart/form-data'].schema.properties!
+    for (const name in Object.keys(properties)) {
+      parameters.push({
+        required: requestBody.required,
+        in: 'formData',
+        name: name,
+        description: requestBody.description,
+        ...properties[name],
+      })
+    }
+    return
+  }
+
+  if (requestBody.content['application/json']) {
+    parameters.push({
+      ...requestBody.content['application/json'],
+      description: requestBody.description,
+      required: requestBody.required,
+      in: 'body',
+      name: 'body',
+    })
+    return
   }
 }

@@ -28,7 +28,7 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
     parameters: [] as StatementField[],
     interfaces: [] as StatementInterface[],
   }
-
+  
   for (const parameter of parameters)
     requestConfigs[parameter.in].push(parseParameterFiled(parameter))
 
@@ -89,6 +89,7 @@ export function parseMethodMetadata({ method, path, responses, options: meta }: 
 
   const name = camelCase(`${method}/${path}`)
   const url = `${path.replace(/({)/g, '${paths.')}`
+  // @ts-ignore
   const responseSchema = responses['200']?.content?.['application/json']?.schema || responses['200']
   const responseType = responseSchema ? parseSchemaType(responseSchema) : 'void'
 
