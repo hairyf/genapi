@@ -1,7 +1,6 @@
 import type { ApiPipeline, StatementFunction, StatementInterface } from '@genapi/config'
 import type { Paths } from 'openapi-specification-types'
 import {
-  LiteralField,
   literalFieldsToString,
   parseHeaderCommits,
   parseMethodMetadata,
@@ -49,7 +48,6 @@ export function parser(configRead: ApiPipeline.ConfigRead) {
 
   return configRead
 }
-
 
 export function transformPaths(paths: Paths, { configRead, functions, interfaces }: PathsTransformOptions) {
   traversePaths(paths, (config) => {

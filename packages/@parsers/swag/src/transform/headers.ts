@@ -8,10 +8,10 @@ export interface HeadersTransformOptions {
 
 export function transformHeaderOptions(name: string, { parameters, options }: HeadersTransformOptions) {
   const applicationJSONFields = [
-    `'Content-Type': 'application/json'`
+    '\'Content-Type\': \'application/json\'',
   ]
   const applicationDataFields = [
-    `'Content-Type': 'multipart/form-data'`
+    '\'Content-Type\': \'multipart/form-data\'',
   ]
   const parameter = parameters.find(v => v.name === name)
 
@@ -20,10 +20,10 @@ export function transformHeaderOptions(name: string, { parameters, options }: He
 
   const headersParamIndex = parameters.findIndex(p => p.name === 'headers')
 
-  if (headersParamIndex != -1) {
+  if (headersParamIndex !== -1) {
     applicationDataFields.push('...headers')
     applicationJSONFields.push('...headers')
-    options.splice(headersParamIndex-1, 1)
+    options.splice(headersParamIndex - 1, 1)
   }
 
   if (parameter?.type === 'FormData')
