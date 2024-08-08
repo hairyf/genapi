@@ -62,16 +62,16 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
 
   function increaseBodyParameter(name: string, properties: StatementField[]) {
     config.parameters.push({
-      name,
-      type: properties[0].type,
       required: properties[0].required,
+      type: properties[0].type,
+      name,
     })
   }
   function increaseFromDataParameter(name: string) {
     config.parameters.push({
-      name,
       type: 'FormData',
       required: true,
+      name,
     })
   }
 

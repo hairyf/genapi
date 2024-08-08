@@ -9,6 +9,7 @@ import {
   transformBaseURL,
   transformBodyStringify,
   transformDefinitions,
+  transformHeaderOptions,
   transformParameters,
   transformQueryParams,
   transformUrlSyntax,
@@ -67,6 +68,9 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       type: 'RequestInit',
       required: false,
     })
+
+    transformHeaderOptions('body', { options, parameters })
+
     options.push(['...', 'config'])
 
     transformParameters(parameters, {

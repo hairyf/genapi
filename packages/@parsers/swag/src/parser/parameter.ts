@@ -10,10 +10,10 @@ import { parseSchemaType } from './schema'
  */
 export function parseParameterFiled(parameter: Parameter) {
   const field: StatementField = {
+    description: parameter.description ?? '',
+    required: parameter.required,
     name: varFiled(parameter.name),
     type: '',
-    required: parameter.required,
-    description: parameter.description ?? '',
   }
 
   if (field.description)

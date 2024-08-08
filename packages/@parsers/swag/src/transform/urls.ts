@@ -25,8 +25,8 @@ export function transformQueryParams(name: string, { body, options, optionKey, u
   }
   else if (options.includes(name)) {
     options.splice(options.findIndex(v => v === name), 1)
-    body?.push(`const _${name}_ = \`?\${new URLSearchParams(Object.entries(${name} || {})).toString()}\``)
-    url += `\${_${name}_}`
+    body?.push(`const ${name}str = new URLSearchParams(Object.entries(${name} || {}))`)
+    url += `?\${${name}str}`
   }
   return url || ''
 }
