@@ -1,5 +1,11 @@
 # @genapi/swag-fetch-ts
 
+## 1.1.5
+
+### Patch Changes
+
+- c
+
 ## 1.1.4
 
 ### Patch Changes

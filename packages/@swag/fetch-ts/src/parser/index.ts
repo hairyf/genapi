@@ -64,7 +64,12 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       required: false,
     })
 
+    if (config.method.toLowerCase() !== 'get') {
+      options.unshift(['method', `"${config.method}"`])
+    }
+
     transformHeaderOptions('body', { options, parameters })
+
 
     options.push(['...', 'config'])
 
