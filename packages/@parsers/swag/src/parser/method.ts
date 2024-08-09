@@ -89,11 +89,11 @@ export function parseMethodMetadata({ method, path, responses, options: meta }: 
 
   const name = camelCase(`${method}/${path}`)
   const url = `${path.replace(/({)/g, '${paths.')}`
-  const responseSchema = 
+  const responseSchema
   // @ts-expect-error
-  responses.default?.content?.['application/json']?.schema 
+  = responses.default?.content?.['application/json']?.schema
   // @ts-expect-error
-  || responses['200']?.content?.['application/json']?.schema 
+  || responses['200']?.content?.['application/json']?.schema
   || responses['200']
   const responseType = responseSchema ? parseSchemaType(responseSchema) : 'void'
 

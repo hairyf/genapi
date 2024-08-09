@@ -1,5 +1,11 @@
 # @genapi/config
 
+## 0.5.4
+
+### Patch Changes
+
+- c
+
 ## 0.5.3
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @genapi/core
 
+## 0.5.4
+
+### Patch Changes
+
+- c
+- Updated dependencies
+  - @genapi/config@0.5.4
+
 ## 0.5.3
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @genapi/swag-ky-ts
 
+## 1.1.4
+
+### Patch Changes
+
+- c
+- Updated dependencies
+  - @genapi/config@0.5.4
+  - @genapi/core@0.5.4
+  - @genapi/pipeline@2.0.4
+  - @genapi/swag-parser@1.1.4
+
 ## 1.1.3
 
 ### Patch Changes
