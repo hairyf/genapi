@@ -56,7 +56,7 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
     if (['header', 'path', 'query'].includes(inType)) {
       const typeName = varName([method, path, inType])
       config.interfaces.push({ name: typeName, properties, export: true })
-      config.parameters.push({ name, type: typeName, required: isRequiredParameter(properties) })
+      config.parameters.push({ name, type: typeName, required: inType === 'path' || isRequiredParameter(properties) })
     }
   }
 

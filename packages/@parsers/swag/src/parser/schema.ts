@@ -9,6 +9,8 @@ import { spliceEnumType, useRefMap, varName } from '../utils'
  * @returns
  */
 export function parseSchemaType(propertie: Schema): string {
+  if (!propertie)
+    return 'any'
   if (propertie.originalRef)
     return varName(propertie.originalRef)
 
