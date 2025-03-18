@@ -1,5 +1,16 @@
 # @genapi/swag-fetch-js
 
+## 1.1.6
+
+### Patch Changes
+
+- changeset'
+- Updated dependencies
+  - @genapi/config@0.5.5
+  - @genapi/core@0.5.5
+  - @genapi/pipeline@2.0.5
+  - @genapi/swag-parser@1.1.5
+
 ## 1.1.5
 
 ### Patch Changes

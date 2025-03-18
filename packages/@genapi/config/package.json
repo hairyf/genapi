@@ -1,6 +1,6 @@
 {
   "name": "@genapi/config",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "main": "src/index.ts",
   "publishConfig": {
     "directory": "dist",

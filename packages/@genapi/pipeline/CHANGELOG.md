@@ -1,5 +1,14 @@
 # @genapi/pipeline
 
+## 2.0.5
+
+### Patch Changes
+
+- changeset'
+- Updated dependencies
+  - @genapi/config@0.5.5
+  - @genapi/core@0.5.5
+
 ## 2.0.4
 
 ### Patch Changes
