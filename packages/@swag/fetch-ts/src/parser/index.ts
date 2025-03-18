@@ -1,7 +1,6 @@
 import type { ApiPipeline, StatementFunction, StatementInterface } from '@genapi/config'
 import type { Paths } from 'openapi-specification-types'
 import {
-  literalFieldsToString,
   parseHeaderCommits,
   parseMethodMetadata,
   parseMethodParameters,
@@ -9,6 +8,7 @@ import {
   transformBaseURL,
   transformBodyStringify,
   transformDefinitions,
+  transformFetchBody,
   transformHeaderOptions,
   transformParameters,
   transformQueryParams,
@@ -82,7 +82,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     transformBodyStringify('body', { options, parameters })
     url = transformQueryParams('query', { body, options, url })
     url = transformUrlSyntax(url, { baseURL: configRead.config.baseURL })
-
+    const fetch = transformFetchBody(url, options, spaceResponseType)
     functions.push({
       export: true,
       async: true,
@@ -91,10 +91,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       parameters,
       body: [
         ...body,
-        `const response = await fetch(${url}, { 
-          ${literalFieldsToString(options)} 
-        })`,
-        `return response.json() as Promise<${spaceResponseType}>`,
+        ...fetch,
       ],
     })
   })

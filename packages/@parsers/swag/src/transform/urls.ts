@@ -1,6 +1,6 @@
 import type { ApiPipeline } from '@genapi/config'
 import type { OpenAPISpecificationV2 } from 'openapi-specification-types'
-import type { LiteralField } from '../utils'
+import { type LiteralField, literalFieldsToString } from '../utils'
 
 export interface QueryUrlTransformOptions {
   body?: string[]
@@ -75,4 +75,43 @@ export function transformBaseURL(source: OpenAPISpecificationV2, { configRead }:
       value: configRead.config.baseURL,
     })
   }
+}
+
+export function transformFetchBody(url: string, options: LiteralField[], spaceResponseType: string) {
+  const bodies = {
+    json: [
+      `const response = await fetch(${url}, { 
+        ${literalFieldsToString(options)} 
+      })`,
+      `return response.json() as Promise<${spaceResponseType}>`,
+    ],
+    text: [
+      `const response = await fetch(${url}, { 
+        ${literalFieldsToString(options)} 
+      })`,
+      'return response.text() as Promise<string>',
+    ],
+    none: [
+      `const response = await fetch(${url}, { 
+        ${literalFieldsToString(options)} 
+      })`,
+      'return response',
+    ],
+    void: [
+      `await fetch(${url}, {
+        ${literalFieldsToString(options)} 
+      })`,
+    ],
+  }
+
+  if (spaceResponseType === 'void')
+    return bodies.void
+
+  if (spaceResponseType === 'string' || spaceResponseType === 'number')
+    return bodies.text
+
+  if (spaceResponseType === 'any')
+    return bodies.none
+
+  return bodies.json
 }
