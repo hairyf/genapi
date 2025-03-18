@@ -1,5 +1,22 @@
 # @genapi/tests
 
+## 0.1.7
+
+### Patch Changes
+
+- changeset
+- Updated dependencies
+  - @genapi/swag-fetch-ts@1.1.7
+  - @genapi/swag-axios-js@1.1.6
+  - @genapi/swag-axios-ts@1.1.6
+  - @genapi/swag-fetch-js@1.1.7
+  - @genapi/swag-got-js@1.1.6
+  - @genapi/swag-got-ts@1.1.6
+  - @genapi/swag-ky-js@1.1.6
+  - @genapi/swag-ky-ts@1.1.6
+  - @genapi/swag-ofetch-js@1.1.6
+  - @genapi/swag-ofetch-ts@1.1.6
+
 ## 0.1.6
 
 ### Patch Changes

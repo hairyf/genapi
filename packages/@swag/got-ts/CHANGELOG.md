@@ -1,5 +1,12 @@
 # @genapi/swag-got-ts
 
+## 1.1.6
+
+### Patch Changes
+
+- Updated dependencies
+  - @genapi/swag-parser@1.1.6
+
 ## 1.1.5
 
 ### Patch Changes

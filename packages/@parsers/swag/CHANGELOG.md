@@ -1,5 +1,11 @@
 # @genapi/swag-parser
 
+## 1.1.6
+
+### Patch Changes
+
+- changeset
+
 ## 1.1.5
 
 ### Patch Changes
