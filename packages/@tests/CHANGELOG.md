@@ -1,5 +1,12 @@
 # @genapi/tests
 
+## 0.1.8
+
+### Patch Changes
+
+- Updated dependencies
+  - @genapi/swag-fetch-ts@1.1.8
+
 ## 0.1.7
 
 ### Patch Changes
