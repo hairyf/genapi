@@ -27,7 +27,5 @@ export function transformHeaderOptions(name: string, { parameters, options }: He
   }
 
   if (parameter?.type === 'FormData')
-    options.unshift(['headers', `{ ${applicationDataFields} }`])
-  else
-    options.unshift(['headers', `{ ${applicationJSONFields} }`])
+    options.splice(headersParamIndex, 1, [name, `{ ${applicationDataFields} }`])
 }
