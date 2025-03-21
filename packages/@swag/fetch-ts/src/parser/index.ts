@@ -9,7 +9,6 @@ import {
   transformBodyStringify,
   transformDefinitions,
   transformFetchBody,
-  transformHeaderOptions,
   transformParameters,
   transformQueryParams,
   transformUrlSyntax,
@@ -67,7 +66,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
     if (config.method.toLowerCase() !== 'get')
       options.unshift(['method', `"${config.method}"`])
 
-    transformHeaderOptions('body', { options, parameters })
+    // transformHeaderOptions('body', { options, parameters })
 
     options.push(['...', 'config'])
 
