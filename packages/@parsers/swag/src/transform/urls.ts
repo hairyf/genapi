@@ -34,28 +34,10 @@ export function transformQueryParams(name: string, { body, options, optionKey, u
 export function transformUrlSyntax(url: string, { baseURL }: BaseUrlSyntaxTransformOptions = {}) {
   if (baseURL)
     url = `\${baseURL}${url}`
-
   if (!url.includes('$'))
     return `'${url}'`
-
-  if (url.includes('}/'))
+  else
     return `\`${url}\``
-
-  const values = url.split(/\/\$/g).map(v => v.split('}/').map((v) => {
-    if (v.startsWith('{')) {
-      v = `$${v}`
-      if (!v.endsWith('}'))
-        v = `${v}}`
-    }
-    return v
-  })).flatMap(v => v)
-    .map(v => v.startsWith('$')
-      ? v.replace('$', '')
-        .replace('{', '')
-        .replace('}', '')
-      : `'${v}'`)
-
-  return `[${values.join(', ')}].filter(Boolean).join('/')`
 }
 
 export function transformBaseURL(source: OpenAPISpecificationV2, { configRead }: BaseUrlTransformOptions) {

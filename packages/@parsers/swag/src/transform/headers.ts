@@ -18,14 +18,16 @@ export function transformHeaderOptions(name: string, { parameters, options }: He
   if (!parameter)
     return
 
-  const headersParamIndex = parameters.findIndex(p => p.name === 'headers')
+  const headersOptionsIndex = options.findIndex(p => p === 'headers')
 
-  if (headersParamIndex !== -1) {
+  if (headersOptionsIndex !== -1) {
     applicationDataFields.push('...headers')
     applicationJSONFields.push('...headers')
-    options.splice(headersParamIndex - 1, 1)
+    options.splice(headersOptionsIndex, 1)
   }
 
   if (parameter?.type === 'FormData')
-    options.splice(headersParamIndex, 1, [name, `{ ${applicationDataFields} }`])
+    options.unshift(['headers', `{ ${applicationDataFields} }`])
+  else
+    options.unshift(['headers', `{ ${applicationJSONFields} }`])
 }
