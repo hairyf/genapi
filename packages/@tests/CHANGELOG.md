@@ -1,5 +1,24 @@
 # @genapi/tests
 
+## 0.1.10
+
+### Patch Changes
+
+- chore: update all
+- Updated dependencies
+  - @genapi/cli@0.5.6
+  - @genapi/config@0.5.6
+  - @genapi/swag-axios-js@1.1.7
+  - @genapi/swag-axios-ts@1.1.7
+  - @genapi/swag-fetch-js@1.1.8
+  - @genapi/swag-fetch-ts@1.1.10
+  - @genapi/swag-got-js@1.1.7
+  - @genapi/swag-got-ts@1.1.7
+  - @genapi/swag-ky-js@1.1.7
+  - @genapi/swag-ky-ts@1.1.7
+  - @genapi/swag-ofetch-js@1.1.7
+  - @genapi/swag-ofetch-ts@1.1.7
+
 ## 0.1.9
 
 ### Patch Changes

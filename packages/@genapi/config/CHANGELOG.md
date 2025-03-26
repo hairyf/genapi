@@ -1,5 +1,11 @@
 # @genapi/config
 
+## 0.5.6
+
+### Patch Changes
+
+- chore: update all
+
 ## 0.5.5
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @genapi/swag-got-ts
 
+## 1.1.7
+
+### Patch Changes
+
+- chore: update all
+- Updated dependencies
+  - @genapi/config@0.5.6
+  - @genapi/core@0.5.6
+  - @genapi/pipeline@2.0.6
+  - @genapi/swag-parser@1.1.7
+
 ## 1.1.6
 
 ### Patch Changes

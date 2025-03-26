@@ -1,5 +1,14 @@
 # @genapi/pipeline
 
+## 2.0.6
+
+### Patch Changes
+
+- chore: update all
+- Updated dependencies
+  - @genapi/config@0.5.6
+  - @genapi/core@0.5.6
+
 ## 2.0.5
 
 ### Patch Changes
