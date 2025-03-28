@@ -8,7 +8,7 @@ export function inPipeline(pipe: string | ApiPipeline.Pipeline): ApiPipeline.Pip
   if (typeof pipe === 'function')
     return pipe as ApiPipeline.Pipeline
 
-  const inputs = [`@genapi/preset/${pipe}`, `genapi-${pipe}`, absolutePath(pipe)]
+  const inputs = [`@genapi/presets/${pipe}`, `genapi-${pipe}`, absolutePath(pipe)]
 
   for (const input of inputs) {
     try {
