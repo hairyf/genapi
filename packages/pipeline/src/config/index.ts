@@ -67,7 +67,7 @@ export function config(userConfig: ApiPipeline.Config) {
     Object.assign(inputs, userConfig.input)
 
   const configRead: ApiPipeline.ConfigRead<Required<ApiPipeline.Config>> = {
-    config: config as any,
+    config: userConfig as Required<ApiPipeline.Config>,
     inputs,
     outputs,
     graphs: {
