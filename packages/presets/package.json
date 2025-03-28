@@ -33,43 +33,43 @@
       ".": "./dist/index.mjs",
       "./swag-axios-js": {
         "types": "./dist/axios/js/index.d.ts",
-        "import": "./dist/axios/js/index.js"
+        "default": "./dist/axios/js/index.mjs"
       },
       "./swag-axios-ts": {
         "types": "./dist/axios/ts/index.d.ts",
-        "import": "./dist/axios/ts/index.js"
+        "default": "./dist/axios/ts/index.mjs"
       },
       "./swag-fetch-js": {
         "types": "./dist/fetch/js/index.d.ts",
-        "import": "./dist/fetch/js/index.js"
+        "default": "./dist/fetch/js/index.mjs"
       },
       "./swag-fetch-ts": {
         "types": "./dist/fetch/ts/index.d.ts",
-        "import": "./dist/fetch/ts/index.js"
+        "default": "./dist/fetch/ts/index.mjs"
       },
       "./swag-got-js": {
         "types": "./dist/got/js/index.d.ts",
-        "import": "./dist/got/js/index.js"
+        "default": "./dist/got/js/index.mjs"
       },
       "./swag-got-ts": {
         "types": "./dist/got/ts/index.d.ts",
-        "import": "./dist/got/ts/index.js"
+        "default": "./dist/got/ts/index.mjs"
       },
       "./swag-ky-js": {
         "types": "./dist/ky/js/index.d.ts",
-        "import": "./dist/ky/js/index.js"
+        "default": "./dist/ky/js/index.mjs"
       },
       "./swag-ky-ts": {
         "types": "./dist/ky/ts/index.d.ts",
-        "import": "./dist/ky/ts/index.js"
+        "default": "./dist/ky/ts/index.mjs"
       },
       "./swag-ofetch-js": {
         "types": "./dist/ofetch/js/index.d.ts",
-        "import": "./dist/ofetch/js/index.js"
+        "default": "./dist/ofetch/js/index.mjs"
       },
       "./swag-ofetch-ts": {
         "types": "./dist/ofetch/ts/index.d.ts",
-        "import": "./dist/ofetch/ts/index.js"
+        "default": "./dist/ofetch/ts/index.mjs"
       }
     }
   },
