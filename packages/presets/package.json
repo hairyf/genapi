@@ -73,6 +73,7 @@
       }
     }
   },
+  "files": ["dist"],
   "scripts": {
     "build": "tsup",
     "prepublishOnly": "nr build",

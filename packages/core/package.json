@@ -33,10 +33,7 @@
   "bin": {
     "genapi": "./bin/index.dev.mjs"
   },
-  "files": [
-    "bin",
-    "dist"
-  ],
+  "files": ["bin", "dist"],
   "scripts": {
     "build": "tsup"
   },
