@@ -32,13 +32,7 @@ API generator that converts OpenAPI (v2~v3) and other input sources into TypeScr
 
 ```bash
 # pnpm
-pnpm add @genapi/core -D
-
-# npm
-npm install @genapi/core --save-dev
-
-# yarn
-yarn add @genapi/core --dev
+npm i @genapi/core @genapi/presets -D
 ```
 
 > You can also install it globally but it's not recommended.

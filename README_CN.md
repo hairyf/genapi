@@ -30,13 +30,7 @@ API生成器，用于将OpenAPI（v2~v3）和其他输入源转换为TypeScript/
 
 ```bash
 # pnpm
-pnpm add @genapi/core -D
-
-# npm
-npm install @genapi/core --save-dev
-
-# yarn
-yarn add @genapi/core --dev
+npm i @genapi/core @genapi/presets -D
 ```
 
 > 你也可以全局安装，但不推荐这样做。
