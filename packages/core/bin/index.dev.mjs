@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+'use strict'
+
 import { register } from 'tsx/esm/api'
 
 // Register tsx enhancement
