@@ -104,8 +104,11 @@ export default defineConfig({
 使用任何`js`管道生成带有类型的JavaScript文件:
 
 ```ts
+import { defineConfig } from '@genapi/core'
+import { axios } from '@genapi/presets'
+
 export default defineConfig({
-  pipeline: 'swag-axios-js',
+  pipeline: axios.js,
   input: {
     uri: 'https://petstore.swagger.io/v2/swagger.json',
   },

@@ -106,8 +106,11 @@ export default defineConfig({
 Use any `js` pipeline to generate JavaScript files with types:
 
 ```ts
+import { defineConfig } from '@genapi/core'
+import { axios } from '@genapi/presets'
+
 export default defineConfig({
-  pipeline: 'swag-axios-js',
+  pipeline: axios.js,
   input: {
     uri: 'https://petstore.swagger.io/v2/swagger.json',
   },
