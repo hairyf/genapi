@@ -44,10 +44,11 @@ npm i @genapi/core @genapi/presets -D
 - `genapi.config.json`
 
 ```ts
-import { defineConfig } from '@genapi/cli'
+import { defineConfig } from '@genapi/core'
+import { axios } from '@genapi/presets'
 
 export default defineConfig({
-  pipeline: 'swag-axios-js',
+  pipeline: axios.ts,
   // 你的输入源（swagger api url或json）
   input: 'http://example.com/api-docs',
   output: {

@@ -46,10 +46,11 @@ Create a configuration file in your project root:
 - `genapi.config.json`
 
 ```ts
-import { defineConfig } from '@genapi/cli'
+import { defineConfig } from '@genapi/core'
+import { axios } from '@genapi/presets'
 
 export default defineConfig({
-  pipeline: 'swag-axios-js',
+  pipeline: axios.ts,
   // your input source (swagger api url or json)
   input: 'http://example.com/api-docs',
   output: {

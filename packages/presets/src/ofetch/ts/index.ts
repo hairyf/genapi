@@ -17,4 +17,10 @@ function openapiPipeline(userConfig: ApiPipeline.Config) {
 }
 export { compiler, config, dest, generate, original, parser }
 
+openapiPipeline.config = config
+openapiPipeline.original = original
+openapiPipeline.parser = parser
+openapiPipeline.compiler = compiler
+openapiPipeline.generate = generate
+openapiPipeline.dest = dest
 export default openapiPipeline

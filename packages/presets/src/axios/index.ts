@@ -1,2 +1,2 @@
-export * as js from './js'
-export * as ts from './ts'
+export { default as js } from './js'
+export { default as ts } from './ts'
