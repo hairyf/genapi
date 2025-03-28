@@ -1,7 +1,7 @@
 {
   "name": "@genapi/core",
   "type": "module",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "author": "Hairyf <wwu710632@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/hairyf/genapi#readme",
