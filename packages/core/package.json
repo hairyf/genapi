@@ -1,0 +1,57 @@
+{
+  "name": "@genapi/core",
+  "type": "module",
+  "version": "0.5.5",
+  "author": "Hairyf <wwu710632@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/hairyf/genapi#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hairyf/genapi.git"
+  },
+  "bugs": "https://github.com/hairyf/genapi/issues",
+  "keywords": [
+    "genapi",
+    "parser"
+  ],
+  "main": "./src/index.ts",
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.mjs"
+      },
+      "./package.json": "./package.json"
+    },
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "bin": {
+      "genapi": "./bin/index.mjs"
+    }
+  },
+  "bin": {
+    "genapi": "./bin/index.dev.mjs"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup"
+  },
+  "dependencies": {
+    "@genapi/shared": "workspace:*",
+    "@hairy/utils": "^1.7.4",
+    "cac": "^6.7.14",
+    "chalk": "^5.2.0",
+    "fs-extra": "^11.1.0",
+    "jiti": "^1.17.1",
+    "ora": "^5",
+    "unconfig": "^0.3.7"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1",
+    "@types/node": "^18.14.0"
+  }
+}

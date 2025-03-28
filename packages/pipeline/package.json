@@ -1,0 +1,47 @@
+{
+  "name": "@genapi/pipeline",
+  "type": "module",
+  "version": "2.0.5",
+  "author": "Hairyf <wwu710632@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/hairyf/genapi#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hairyf/genapi.git"
+  },
+  "bugs": "https://github.com/hairyf/genapi/issues",
+  "keywords": [
+    "genapi",
+    "shared"
+  ],
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "publishConfig": {
+    "exports": {
+      ".": "./dist/index.mjs"
+    },
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "nr build",
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@genapi/shared": "workspace:*",
+    "fs-extra": "^11.1.0",
+    "got": "11.8.6",
+    "p-pipe": "^3",
+    "prettier": "^2.8.4",
+    "ts-factory-extra": "^0.0.5",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1"
+  }
+}

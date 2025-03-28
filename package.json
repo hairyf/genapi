@@ -1,24 +1,42 @@
 {
-  "name": "@genapi/workspace",
+  "type": "module",
+  "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@8.15.0",
+  "packageManager": "pnpm@10.4.0",
   "scripts": {
-    "release": "changeset && changeset version",
-    "publish:ci": "turbo run publish:pre && pnpm publish -r --access public",
-    "test": "vitest run",
-    "test:watch": "vitest watch",
-    "test:coverage": "vitest run --coverage"
-  },
-  "dependencies": {
-    "vite": "^4.1.4"
+    "build": "nr -r build",
+    "dev": "nr -r dev",
+    "lint": "eslint --cache .",
+    "prepublishOnly": "nr build",
+    "docs": "pnpm -C docs run docs:dev",
+    "docs:build": "pnpm -C docs run docs:build",
+    "release": "bumpp -r && pnpm -r publish",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepare": "simple-git-hooks"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.39.0",
-    "@changesets/cli": "^2.22.0",
-    "eslint": "^8.34.0",
-    "ptsup": "^0.3.1",
-    "turbo": "^1.8.3",
-    "typescript": "^5.0.0",
-    "vitest": "^1.0.0"
+    "@antfu/eslint-config": "catalog:",
+    "@antfu/ni": "catalog:",
+    "@antfu/utils": "catalog:",
+    "@types/node": "catalog:",
+    "bumpp": "catalog:",
+    "esbuild-plugin-file-path-extensions": "^2.1.4",
+    "eslint": "catalog:",
+    "lint-staged": "catalog:",
+    "pnpm": "catalog:",
+    "simple-git-hooks": "catalog:",
+    "tsup": "^8.4.0",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "unbuild": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
   }
 }

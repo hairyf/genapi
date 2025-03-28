@@ -1,48 +1,63 @@
-# API Generator
+# genapi
+
+[![npm version][npm-version-src]][npm-version-href]
+[![npm downloads][npm-downloads-src]][npm-downloads-href]
+[![bundle][bundle-src]][bundle-href]
+[![JSDocs][jsdocs-src]][jsdocs-href]
+[![License][license-src]][license-href]
 
 > [中文](./README_CN.md) | English
 
-API generator, which is used to convert OpenApi (v2~v3) and other input sources into TS/JS APIs
+API generator that converts OpenAPI (v2~v3) and other input sources into TypeScript/JavaScript APIs.
 
-- `swag-axios-ts`
-- `swag-axios-js`
-- `swag-fetch-ts`
-- `swag-fetch-js`
-- `swag-ky-ts`
-- `swag-ky-js`
-- `swag-got-js`
-- `swag-got-js`
-- `swag-ofetch-js`
-- `swag-ofetch-js`
+## Features
 
-## ⚙️ Install
+- 🚀 **Multiple HTTP Clients** - Support for various HTTP clients:
+  - `axios` - Popular promise-based HTTP client
+  - `fetch` - Native browser fetch API
+  - `ky` - Tiny and elegant HTTP client
+  - `got` - Human-friendly HTTP request library
+  - `ofetch` - A better fetch API with TypeScript support
 
-Install it locally in your project folder:
+- 🔄 **Language Support** - Generate both TypeScript and JavaScript APIs:
+  - `swag-axios-ts` / `swag-axios-js`
+  - `swag-fetch-ts` / `swag-fetch-js`
+  - `swag-ky-ts` / `swag-ky-js`
+  - `swag-got-ts` / `swag-got-js`
+  - `swag-ofetch-ts` / `swag-ofetch-js`
+
+- 🛠️ **Customizable** - Flexible pipeline system for customizing the generation process
+
+## Installation
 
 ```bash
-pnpm add @genapi/cli @genapi/swag-axios-ts -D
-# Or Yarn
-yarn add @genapi/cli @genapi/swag-axios-ts --dev
+# pnpm
+pnpm add @genapi/core -D
+
+# npm
+npm install @genapi/core --save-dev
+
+# yarn
+yarn add @genapi/core --dev
 ```
 
-You can also install it globally but it's not recommended.
+> You can also install it globally but it's not recommended.
 
-## 📖 Usage
+## Usage
 
-Currently, the CLI option is not provided, and the output content is determined by the config file. Currently, the following config files are supported:
+Create a configuration file in your project root:
 
 - `genapi.config.ts`
 - `genapi.config.js`
-- `genapi.config.cjs`
 - `genapi.config.json`
 
 ```ts
 import { defineConfig } from '@genapi/cli'
 
 export default defineConfig({
-  // your input source and output file (swagger api url or json)
-  // if you have multiple sources, you can use 'server'
-  input: 'http://...api-docs',
+  pipeline: 'swag-axios-js',
+  // your input source (swagger api url or json)
+  input: 'http://example.com/api-docs',
   output: {
     main: 'src/api/index.ts',
     type: 'src/api/index.type.ts',
@@ -55,45 +70,45 @@ export default defineConfig({
 })
 ```
 
-```sh
-npx genapi --pipe swag-axios-ts
+Then run:
+
+```bash
+npm run genapi
 ```
 
-![cli-case](public/case.gif)
+## Input Sources
 
-## Input
-
-Input supports three input sources `url|json`
+Input supports URL or JSON format:
 
 ```ts
 export default defineConfig({
   // directly pass in url
-  input: 'http://...api-docs',
-  // or
+  input: 'http://example.com/api-docs',
+  // or JSON object
   input: { /* url|json */ }
 })
 ```
 
-## Server
+## Multiple Services
 
-Maybe you have multiple services. You can use 'server' to set multiple services. Usually, other config at the top level are used as additional config
+For projects with multiple services, use the `server` configuration:
 
 ```ts
 export default defineConfig({
   // Your API baseUrl, this configuration will be passed to the axios request
-  baseUrl: 'https://...',
+  baseUrl: 'https://example.com/api',
   // all servers inherit the upper layer configuration
   server: [
-    { import: '...', output: {/* ... */} },
-    { import: '...', output: {/* ... */} },
-    { import: '...', output: {/* ... */} },
+    { input: 'http://service1/api-docs', output: { main: 'src/api/service1.ts' } },
+    { input: 'http://service2/api-docs', output: { main: 'src/api/service2.ts' } },
+    { input: 'http://service3/api-docs', output: { main: 'src/api/service3.ts' } },
   ]
 })
 ```
 
 ## swag-axios-js
 
-Use the `swag-axios-js` pipeline to generate JavaScript files with both types.
+Use any `js` pipeline to generate JavaScript files with types:
 
 ```ts
 export default defineConfig({
@@ -104,58 +119,51 @@ export default defineConfig({
 })
 ```
 
-Run `genapi`
+Run `genapi` and get:
 
 ![swag-axios-js](public/swag-axios-js.png)
 
-## Pipeline
+## Custom Pipeline
 
-When defining the configuration, genapi passes in the 'pipeline' parameter to support the npm package (prefix `@genapi/` and `genapi-`) and local path.
-
-```ts
-export default defineConfig({
-  pipeline: './custom-pipe',
-})
-```
-
-pipeline is defined by the `pipeline` method provided by `genapi`.
+Pipeline is the core of genapi. You can create custom pipelines:
 
 ```ts
-// custom-pipe.ts
-
 // create an API pipeline generator using the pipeline provided by genapi
-import { pipeline } from '@genapi/core'
-
+import pipeline, { compiler, dest, generate, original } from '@genapi/pipeline'
 // each pipeline exposes corresponding methods, which can be reused and reorganized
-import { dest, generate, original } from '@genapi/swag-axios-ts'
+import { axios } from '@genapi/presets'
 
-function myCustomPipe(config) {
-  const process = pipeline(
+export default defineConfig({
+  pipeline: pipeline(
     // read config, convert to internal config, and provide default values
-    config => readConfig(config),
+    config => axios.ts.config(config),
     // get data source
     configRead => original(configRead),
     // parse the data source as data graphs
-    configRead => parser(configRead),
+    configRead => axios.ts.parser(configRead),
     // compile data and convert it into abstract syntax tree (AST)
     configRead => compiler(configRead),
     // generate code string
     configRead => generate(configRead),
     // use outputs to output files
     configRead => dest(configRead),
-  )
-  return process(config)
-}
-
-function readConfig(config) {
-  // ...
-}
-
-function parser(configRead) {
-  // ...
-}
-
-function compiler(configRead) {
-  // ...
-}
+  ),
+})
 ```
+
+## License
+
+[MIT](./LICENSE) License © [Hairyf](https://github.com/hairyf)
+
+<!-- Badges -->
+
+[npm-version-src]: https://img.shields.io/npm/v/@genapi/core?style=flat&colorA=080f12&colorB=1fa669
+[npm-version-href]: https://npmjs.com/package/@genapi/core
+[npm-downloads-src]: https://img.shields.io/npm/dm/@genapi/core?style=flat&colorA=080f12&colorB=1fa669
+[npm-downloads-href]: https://npmjs.com/package/@genapi/core
+[bundle-src]: https://img.shields.io/bundlephobia/minzip/@genapi/core?style=flat&colorA=080f12&colorB=1fa669&label=minzip
+[bundle-href]: https://bundlephobia.com/result?p=@genapi/core
+[license-src]: https://img.shields.io/github/license/hairyf/genapi.svg?style=flat&colorA=080f12&colorB=1fa669
+[license-href]: https://github.com/hairyf/genapi/blob/main/LICENSE
+[jsdocs-src]: https://img.shields.io/badge/jsdocs-reference-080f12?style=flat&colorA=080f12&colorB=1fa669
+[jsdocs-href]: https://www.jsdocs.io/package/@genapi/core

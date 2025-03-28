@@ -1,5 +1,13 @@
-node_modules
-dist
-dist-test
+.cache
 .DS_Store
-.turbo
+.idea
+*.log
+*.tgz
+coverage
+dist
+lib-cov
+logs
+node_modules
+temp
+cache
+.eslintcache

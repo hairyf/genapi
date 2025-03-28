@@ -1,0 +1,11 @@
+{
+  "name": "playground",
+  "type": "module",
+  "dependencies": {
+    "@genapi/core": "workspace:*",
+    "@genapi/pipeline": "workspace:*",
+    "@genapi/presets": "workspace:*",
+    "@genapi/transform": "workspace:*",
+    "wpapi-to-swagger": "^0.1.0"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "name": "@genapi/presets",
+  "type": "module",
+  "version": "2.0.5",
+  "author": "Hairyf <wwu710632@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/hairyf/genapi#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hairyf/genapi.git"
+  },
+  "bugs": "https://github.com/hairyf/genapi/issues",
+  "keywords": [
+    "genapi",
+    "shared"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./swag-axios-js": "./src/axios/js/index.ts",
+    "./swag-axios-ts": "./src/axios/ts/index.ts",
+    "./swag-fetch-js": "./src/fetch/js/index.ts",
+    "./swag-fetch-ts": "./src/fetch/ts/index.ts",
+    "./swag-got-js": "./src/got/js/index.ts",
+    "./swag-got-ts": "./src/got/ts/index.ts",
+    "./swag-ky-js": "./src/ky/js/index.ts",
+    "./swag-ky-ts": "./src/ky/ts/index.ts",
+    "./swag-ofetch-js": "./src/ofetch/js/index.ts",
+    "./swag-ofetch-ts": "./src/ofetch/ts/index.ts"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": "./dist/index.mjs",
+      "./swag-axios-js": {
+        "types": "./dist/axios/js/index.d.ts",
+        "import": "./dist/axios/js/index.js"
+      },
+      "./swag-axios-ts": {
+        "types": "./dist/axios/ts/index.d.ts",
+        "import": "./dist/axios/ts/index.js"
+      },
+      "./swag-fetch-js": {
+        "types": "./dist/fetch/js/index.d.ts",
+        "import": "./dist/fetch/js/index.js"
+      },
+      "./swag-fetch-ts": {
+        "types": "./dist/fetch/ts/index.d.ts",
+        "import": "./dist/fetch/ts/index.js"
+      },
+      "./swag-got-js": {
+        "types": "./dist/got/js/index.d.ts",
+        "import": "./dist/got/js/index.js"
+      },
+      "./swag-got-ts": {
+        "types": "./dist/got/ts/index.d.ts",
+        "import": "./dist/got/ts/index.js"
+      },
+      "./swag-ky-js": {
+        "types": "./dist/ky/js/index.d.ts",
+        "import": "./dist/ky/js/index.js"
+      },
+      "./swag-ky-ts": {
+        "types": "./dist/ky/ts/index.d.ts",
+        "import": "./dist/ky/ts/index.js"
+      },
+      "./swag-ofetch-js": {
+        "types": "./dist/ofetch/js/index.d.ts",
+        "import": "./dist/ofetch/js/index.js"
+      },
+      "./swag-ofetch-ts": {
+        "types": "./dist/ofetch/ts/index.d.ts",
+        "import": "./dist/ofetch/ts/index.js"
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "nr build",
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@genapi/parser": "workspace:*",
+    "@genapi/pipeline": "workspace:*",
+    "@genapi/shared": "workspace:*",
+    "openapi-specification-types": "^0.0.3"
+  }
+}
