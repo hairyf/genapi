@@ -1,6 +1,10 @@
 {
   "name": "playground",
   "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "genapi"
+  },
   "dependencies": {
     "@genapi/core": "workspace:*",
     "@genapi/pipeline": "workspace:*",

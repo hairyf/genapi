@@ -4,8 +4,9 @@
   "private": true,
   "packageManager": "pnpm@10.4.0",
   "scripts": {
-    "build": "nr -r build",
     "dev": "nr -r dev",
+    "build": "nr -r build",
+    "play": "pnpm -C playground run dev",
     "lint": "eslint --cache .",
     "prepublishOnly": "nr build",
     "docs": "pnpm -C docs run docs:dev",
