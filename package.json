@@ -11,7 +11,7 @@
     "prepublishOnly": "nr build",
     "docs": "pnpm -C docs run docs:dev",
     "docs:build": "pnpm -C docs run docs:build",
-    "release": "bumpp -r && pnpm -r publish",
+    "release": "bumpp -r && pnpm -r publish --access public",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks"
