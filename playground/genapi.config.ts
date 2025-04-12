@@ -2,13 +2,11 @@ import { defineConfig } from '@genapi/core'
 // create an API pipeline generator using the pipeline provided by genapi
 // each pipeline exposes corresponding methods, which can be reused and reorganized
 // import pipeline from '@genapi/pipeline'
-import { axios } from '@genapi/presets'
+import { fetch } from '@genapi/presets'
 
 const config = defineConfig({
-  input: {
-    http: { url: '' },
-  },
-  pipeline: axios.ts,
+  input: 'https://petstore.swagger.io/v2/swagger.json',
+  pipeline: fetch.ts,
   import: {
     http: './index.http',
   },

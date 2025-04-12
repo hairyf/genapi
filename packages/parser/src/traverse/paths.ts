@@ -13,10 +13,15 @@ export function traversePaths(paths: Paths, callback: (options: PathMethod) => v
     let { parameters = [], ...methods } = _others
     for (const method in methods) {
       const options = methods[method as keyof typeof methods]
-      parameters = parameters.filter((item) => {
-        return !options.parameters?.some(v => v.name === item.name)
-      })
-      parameters = [...parameters, ...(options.parameters || [])]
+      const parametersMap = new Map<string, Parameter>()
+
+      for (const parameter of parameters)
+        parametersMap.set(parameter.name, parameter)
+      for (const parameter of options.parameters)
+        parametersMap.set(parameter.name, parameter)
+
+      parameters = [...parametersMap.values()]
+
       extendsRequestBody(parameters, options.requestBody)
       callback({
         responses: options.responses,
