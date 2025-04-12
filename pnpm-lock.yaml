@@ -201,7 +201,11 @@ importers:
         specifier: ^0.0.3
         version: 0.0.3
 
-  packages/shared: {}
+  packages/shared:
+    dependencies:
+      got:
+        specifier: 11.8.6
+        version: 11.8.6
 
   packages/transform:
     devDependencies:

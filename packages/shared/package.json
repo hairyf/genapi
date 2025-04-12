@@ -29,5 +29,8 @@
     "build": "tsup",
     "prepublishOnly": "nr build",
     "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "got": "11.8.6"
   }
 }

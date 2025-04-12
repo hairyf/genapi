@@ -5,7 +5,9 @@ import { defineConfig } from '@genapi/core'
 import { axios } from '@genapi/presets'
 
 const config = defineConfig({
-  input: 'https://petstore.swagger.io/v2/swagger.json',
+  input: {
+    http: { url: '' },
+  },
   pipeline: axios.ts,
   import: {
     http: './index.http',

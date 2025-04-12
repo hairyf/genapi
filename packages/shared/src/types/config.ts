@@ -1,3 +1,4 @@
+import type { OptionsOfJSONResponseBody } from 'got'
 import type {
   StatementFunction,
   StatementImported,
@@ -18,6 +19,7 @@ export namespace ApiPipeline {
   }
   export interface Inputs {
     json?: string | Record<string, string>
+    http?: OptionsOfJSONResponseBody
     uri?: string
   }
   export interface PreInputs {
@@ -30,7 +32,7 @@ export namespace ApiPipeline {
      *
      * `{ json }` json can pass in path/object
      */
-    input: string | { uri: string } | { json: string | Record<string, any> }
+    input: string | { uri: string } | { json: string | Record<string, any> } | { http: OptionsOfJSONResponseBody }
   }
   export interface PreOutput {
     /**
