@@ -26,7 +26,7 @@
   },
   "files": ["dist"],
   "scripts": {
-    "build": "tsup",
+    "build": "tsdown",
     "prepublishOnly": "nr build",
     "start": "tsx src/index.ts"
   },
