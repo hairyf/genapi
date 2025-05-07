@@ -17,7 +17,7 @@ export function traversePaths(paths: Paths, callback: (options: PathMethod) => v
 
       for (const parameter of parameters)
         parametersMap.set(parameter.name, parameter)
-      for (const parameter of options.parameters)
+      for (const parameter of (options.parameters || []))
         parametersMap.set(parameter.name, parameter)
 
       parameters = [...parametersMap.values()]
