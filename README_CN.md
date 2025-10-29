@@ -16,6 +16,7 @@ API生成器，用于将OpenAPI（v2~v3）和其他输入源转换为TypeScript/
   - `ky` - 小巧优雅的HTTP客户端
   - `got` - 人性化的HTTP请求库
   - `ofetch` - 更好的fetch API，带有TypeScript支持
+  - `uni` - `@uni-helper/uni-network` uniapp 的网络请求库
 
 - 🔄 **语言支持** - 生成TypeScript和JavaScript API:
   - `swag-axios-ts` / `swag-axios-js`
@@ -23,7 +24,7 @@ API生成器，用于将OpenAPI（v2~v3）和其他输入源转换为TypeScript/
   - `swag-ky-ts` / `swag-ky-js`
   - `swag-got-ts` / `swag-got-js`
   - `swag-ofetch-ts` / `swag-ofetch-js`
-
+  - `swag-uni-ts` / `swag-uni-js`
 - 🛠️ **可定制** - 灵活的管道系统，用于自定义生成过程
 
 ## 安装
