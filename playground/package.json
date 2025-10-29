@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "genapi"
+    "start": "genapi"
   },
   "dependencies": {
     "@genapi/core": "workspace:*",
@@ -11,5 +11,8 @@
     "@genapi/presets": "workspace:*",
     "@genapi/transform": "workspace:*",
     "wpapi-to-swagger": "^0.1.0"
+  },
+  "devDependencies": {
+    "@uni-helper/uni-network": "^0.23.0"
   }
 }

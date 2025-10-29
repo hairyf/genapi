@@ -18,6 +18,7 @@ API generator that converts OpenAPI (v2~v3) and other input sources into TypeScr
   - `ky` - Tiny and elegant HTTP client
   - `got` - Human-friendly HTTP request library
   - `ofetch` - A better fetch API with TypeScript support
+  - `uni` - `@uni-helper/uni-network` uniapp http request library
 
 - 🔄 **Language Support** - Generate both TypeScript and JavaScript APIs:
   - `swag-axios-ts` / `swag-axios-js`
@@ -25,7 +26,7 @@ API generator that converts OpenAPI (v2~v3) and other input sources into TypeScr
   - `swag-ky-ts` / `swag-ky-js`
   - `swag-got-ts` / `swag-got-js`
   - `swag-ofetch-ts` / `swag-ofetch-js`
-
+  - `swag-uni-ts` / `swag-uni-js`
 - 🛠️ **Customizable** - Flexible pipeline system for customizing the generation process
 
 ## Installation

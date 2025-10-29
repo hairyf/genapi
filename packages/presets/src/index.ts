@@ -3,6 +3,7 @@ import * as fetch from './fetch'
 import * as got from './got'
 import * as ky from './ky'
 import * as ofetch from './ofetch'
+import * as uni from './uni'
 
 export {
   axios,
@@ -10,6 +11,7 @@ export {
   got,
   ky,
   ofetch,
+  uni,
 }
 
 export default {
@@ -18,4 +20,5 @@ export default {
   got,
   ky,
   ofetch,
+  uni,
 }
