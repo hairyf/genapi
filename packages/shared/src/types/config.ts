@@ -71,6 +71,9 @@ export namespace ApiPipeline {
     }
     /** Mandatory parameters optional */
     paramsPartial?: boolean
+
+    /** Only generate type declaration files */
+    onlyDeclaration?: boolean
   }
 
   export interface Config extends PreInputs, PreOutput, Meta {
