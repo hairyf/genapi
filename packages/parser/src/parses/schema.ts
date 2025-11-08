@@ -91,7 +91,8 @@ export function parseSchemaType(propertie: Schema, interfaces: StatementInterfac
         name: field,
       }
     }
-    return `{ ${Object.entries(fields).map(([field, item]) => `${field}: ${item.type}`).join(', ')} }`
+    if (Object.keys(fields).length !== 0)
+      return `{ ${Object.entries(fields).map(([field, item]) => `${field}: ${item.type}`).join(', ')} }`
   }
   if (!propertie.type)
     return 'any'
