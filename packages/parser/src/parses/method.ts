@@ -79,7 +79,7 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
   return config
 }
 
-export function parseMethodMetadata({ method, path, responses, options: meta }: PathMethod) {
+export function parseMethodMetadata({ method, path, responses, options: meta }: PathMethod, interfaces?: StatementInterface[]) {
   const comments = [
     meta.summary && `@summary ${meta.summary}`,
     meta.description && `@description ${meta.description}`,
@@ -89,14 +89,16 @@ export function parseMethodMetadata({ method, path, responses, options: meta }: 
   ]
 
   const name = camelCase(`${method}/${path}`)
+
   const url = `${path.replace(/(\{)/g, '${paths.')}`
   const responseSchema
   // @ts-expect-error
   = responses.default?.content?.['application/json']?.schema
   // @ts-expect-error
     || responses['200']?.content?.['application/json']?.schema
+    || responses['200']?.schema
     || responses['200']
-  const responseType = responseSchema ? parseSchemaType(responseSchema) : 'void'
+  const responseType = responseSchema ? parseSchemaType(responseSchema, interfaces) : 'void'
 
   return { description: comments.filter(Boolean), name, url, responseType, body: [] as string[] }
 }

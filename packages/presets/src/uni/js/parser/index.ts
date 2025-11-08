@@ -57,7 +57,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
       body: 'data',
       query: 'params',
     })
-    let { name, description, url, responseType } = parseMethodMetadata(config)
+    let { name, description, url, responseType } = parseMethodMetadata(config, interfaces)
 
     options.push(['...', 'config'])
     interfaces.push(...attachInters)

@@ -56,7 +56,7 @@ export function transformPaths(paths: Paths, { configRead, functions, interfaces
      * function params/function options/function use interfaces
      */
     const { parameters, interfaces: attachInters, options } = parseMethodParameters(config)
-    let { name, description, url, responseType } = parseMethodMetadata(config)
+    let { name, description, url, responseType } = parseMethodMetadata(config, interfaces)
 
     interfaces.push(...attachInters)
     parameters.push({
