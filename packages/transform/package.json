@@ -1,7 +1,7 @@
 {
   "name": "@genapi/transform",
   "type": "module",
-  "version": "3.6.2",
+  "version": "3.6.3",
   "author": "Hairyf <wwu710632@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/hairyf/genapi#readme",
