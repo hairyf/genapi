@@ -39,23 +39,21 @@ export function parseSchemaType(propertie: Schema, interfaces: StatementInterfac
       const type = parseSchemaType(schema, interfaces)
       if (schema.$ref)
         base = type
-      const interfaceItem = interfaces.find(v => v.name === type)
-      if (!interfaceItem)
-        return
-      for (const property of interfaceItem.properties || []) {
+      for (const property of interfaces.find(v => v.name === type)?.properties || [])
         fields[property.name] = property
-      }
     }
     function assignProperties(properties?: Properties) {
       for (const [field, item] of Object.entries(properties || {})) {
         const type = parseSchemaType(item, interfaces)
+
         if (item.$ref || item.items?.$ref)
           base = type.replace('[]', '')
+
         if (!isMerge)
           isMerge = true
         fields[field] = {
           type,
-          required: item.required,
+          required: item.required ?? true,
           description: item.description,
           name: field,
         }
@@ -64,6 +62,7 @@ export function parseSchemaType(propertie: Schema, interfaces: StatementInterfac
 
     // generate a unique interface name
     let name = isMerge ? `AllOf${base}` : base
+
     if (isMerge) {
       let counter = 1
       while (interfaces.some(v => v.name === name)) {

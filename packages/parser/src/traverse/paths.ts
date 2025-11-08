@@ -53,7 +53,7 @@ function extendsRequestBody(parameters: Parameter[], requestBody?: RequestBody) 
 
   if (requestBody.content['application/json']) {
     parameters.push({
-      ...requestBody.content['application/json'],
+      ...requestBody.content['application/json'] as any,
       description: requestBody.description,
       required: requestBody.required,
       in: 'body',
