@@ -22,7 +22,7 @@ export function parseSchemaType(propertie: Schema, interfaces: StatementInterfac
   if (propertie.allOf) {
     const fields: Record<string, StatementField> = {}
     let base = 'Anonymous'
-
+    let isMerge = false
     // Merge all schema attributes in allOf
     for (const schema of propertie.allOf) {
       // Handling $ref references: merging properties of reference interfaces
@@ -37,19 +37,22 @@ export function parseSchemaType(propertie: Schema, interfaces: StatementInterfac
       if (!schema.$ref)
         return
       const type = parseSchemaType(schema, interfaces)
+      if (schema.$ref)
+        base = type
       const interfaceItem = interfaces.find(v => v.name === type)
       if (!interfaceItem)
         return
       for (const property of interfaceItem.properties || []) {
         fields[property.name] = property
       }
-      base = interfaceItem.name
     }
     function assignProperties(properties?: Properties) {
       for (const [field, item] of Object.entries(properties || {})) {
         const type = parseSchemaType(item, interfaces)
-        if (item.$ref)
-          base = type
+        if (item.$ref || item.items?.$ref)
+          base = type.replace('[]', '')
+        if (!isMerge)
+          isMerge = true
         fields[field] = {
           type,
           required: item.required,
@@ -60,12 +63,15 @@ export function parseSchemaType(propertie: Schema, interfaces: StatementInterfac
     }
 
     // generate a unique interface name
-    let name = `AllOf${base}`
-    let counter = 1
-    while (interfaces.some(v => v.name === name)) {
-      name = `AllOf${base}${counter++}`
+    let name = isMerge ? `AllOf${base}` : base
+    if (isMerge) {
+      let counter = 1
+      while (interfaces.some(v => v.name === name)) {
+        name = `AllOf${base}${counter++}`
+      }
     }
-    interfaces.push({ name, properties: Object.values(fields), export: true })
+    if (!interfaces.some(v => v.name === name))
+      interfaces.push({ name, properties: Object.values(fields), export: true })
     return name
   }
 
@@ -75,7 +81,18 @@ export function parseSchemaType(propertie: Schema, interfaces: StatementInterfac
   // TODO: handle additionalProperties
   if (propertie.additionalProperties)
     return `Record<string, ${parseSchemaType(propertie.additionalProperties)}>`
-
+  if (propertie.type === 'object') {
+    const fields: Record<string, StatementField> = {}
+    for (const [field, item] of Object.entries(propertie.properties || {})) {
+      fields[field] = {
+        type: parseSchemaType(item, interfaces),
+        required: item.required,
+        description: item.description,
+        name: field,
+      }
+    }
+    return `{ ${Object.entries(fields).map(([field, item]) => `${field}: ${item.type}`).join(', ')} }`
+  }
   if (!propertie.type)
     return 'any'
 
