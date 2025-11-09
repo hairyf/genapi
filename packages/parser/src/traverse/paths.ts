@@ -41,7 +41,6 @@ function extendsRequestBody(parameters: Parameter[], requestBody?: RequestBody) 
     const properties = requestBody.content['multipart/form-data'].schema.properties!
     for (const name in Object.keys(properties)) {
       parameters.push({
-        required: requestBody.required,
         in: 'formData',
         name,
         description: requestBody.description,
@@ -55,7 +54,6 @@ function extendsRequestBody(parameters: Parameter[], requestBody?: RequestBody) 
     parameters.push({
       ...requestBody.content['application/json'] as any,
       description: requestBody.description,
-      required: requestBody.required,
       in: 'body',
       name: 'body',
     })

@@ -1,7 +1,7 @@
-import type { StatementInterface } from '@genapi/shared'
 import type { StatementField } from '@genapi/shared/dist/index.mjs'
 
 import type { Properties, Schema } from 'openapi-specification-types'
+import { inject } from '@genapi/shared'
 import { isArray, uniq } from '@hairy/utils'
 import { spliceEnumType, useRefMap, varName } from '../utils'
 
@@ -9,7 +9,9 @@ import { spliceEnumType, useRefMap, varName } from '../utils'
  * parse schema to type
  * @param propertie
  */
-export function parseSchemaType(propertie: Schema, interfaces: StatementInterface[] = []): string {
+export function parseSchemaType(propertie: Schema): string {
+  const { interfaces = [] } = inject()
+
   if (!propertie)
     return 'any'
   if (propertie.originalRef)
@@ -36,7 +38,7 @@ export function parseSchemaType(propertie: Schema, interfaces: StatementInterfac
     function assignBaseProperties(schema: Schema) {
       if (!schema.$ref)
         return
-      const type = parseSchemaType(schema, interfaces)
+      const type = parseSchemaType(schema)
       if (schema.$ref)
         base = type
       for (const property of interfaces.find(v => v.name === type)?.properties || [])
@@ -44,7 +46,7 @@ export function parseSchemaType(propertie: Schema, interfaces: StatementInterfac
     }
     function assignProperties(properties?: Properties) {
       for (const [field, item] of Object.entries(properties || {})) {
-        const type = parseSchemaType(item, interfaces)
+        const type = parseSchemaType(item)
 
         if (item.$ref || item.items?.$ref)
           base = type.replace('[]', '')
@@ -75,7 +77,7 @@ export function parseSchemaType(propertie: Schema, interfaces: StatementInterfac
   }
 
   if (propertie.schema)
-    return parseSchemaType(propertie.schema, interfaces)
+    return parseSchemaType(propertie.schema)
 
   // TODO: handle additionalProperties
   if (propertie.additionalProperties)
@@ -84,7 +86,7 @@ export function parseSchemaType(propertie: Schema, interfaces: StatementInterfac
     const fields: Record<string, StatementField> = {}
     for (const [field, item] of Object.entries(propertie.properties || {})) {
       fields[field] = {
-        type: parseSchemaType(item, interfaces),
+        type: parseSchemaType(item),
         required: item.required,
         description: item.description,
         name: field,

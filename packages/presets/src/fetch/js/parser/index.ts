@@ -56,7 +56,7 @@ export function transformPaths(paths: Paths) {
       formData: 'body',
     })
 
-    let { name, description, url, responseType, body } = parseMethodMetadata(config, interfaces)
+    let { name, description, url, responseType, body } = parseMethodMetadata(config)
 
     interfaces.push(...attachInters)
     parameters.push({
