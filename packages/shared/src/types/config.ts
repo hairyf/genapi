@@ -41,6 +41,23 @@ export namespace ApiPipeline {
     output?: string | { main?: string, type?: string | false }
   }
 
+  export interface ResponseTypeOptions {
+    /**
+     * External generic type definition for js type commit
+     *
+     * @template `Promise<AxiosResponse<{__type__}>>`
+     *
+     * @default {__type__}
+     */
+    generic?: string
+    /**
+     * type conversion of response body
+     *
+     * @template `T extends { data?: infer V } ? V : void`
+     */
+    infer?: string
+  }
+
   export interface Meta {
     /** The current interface base URL, which can be used for the definition of env variables */
     baseURL?: string | false
@@ -53,24 +70,20 @@ export namespace ApiPipeline {
      * type conversion of response body
      * @template `T extends { data?: infer V } ? V : void`
      */
-    responseType?: string | {
-      /**
-       * External generic type definition for js type commit
-       *
-       * @template `Promise<AxiosResponse<{__type__}>>`
-       *
-       * @default {__type__}
-       */
-      generic?: string
-      /**
-       * type conversion of response body
-       *
-       * @template `T extends { data?: infer V } ? V : void`
-       */
-      infer?: string
-    }
-    /** Mandatory parameters optional */
-    paramsPartial?: boolean
+    responseType?: string | ResponseTypeOptions
+
+    /**
+     * Whether to generate required response body
+     *
+     * @default undefined use response.required
+     */
+    responseRequired?: boolean
+    /**
+     * Whether to generate required parameters
+     *
+     * @default undefined use parameter.required
+     */
+    parametersRequired?: boolean
 
     /** Only generate type declaration files */
     onlyDeclaration?: boolean

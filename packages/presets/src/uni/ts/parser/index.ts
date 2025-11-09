@@ -12,6 +12,7 @@ import {
   transformUrlSyntax,
   traversePaths,
 } from '@genapi/parser'
+import { inject, provide } from '@genapi/shared'
 
 export interface PathsTransformOptions {
   configRead: ApiPipeline.ConfigRead
@@ -27,19 +28,13 @@ export function parser(configRead: ApiPipeline.ConfigRead) {
   const interfaces: StatementInterface[] = []
   const functions: StatementFunction[] = []
 
-  transformBaseURL(source, {
-    configRead,
-  })
+  provide({ interfaces, functions })
 
-  transformDefinitions(source.definitions, {
-    interfaces,
-  })
+  transformBaseURL(source)
 
-  transformPaths(source.paths, {
-    configRead,
-    functions,
-    interfaces,
-  })
+  transformDefinitions(source.definitions)
+
+  transformPaths(source.paths)
 
   configRead.graphs.comments = comments
   configRead.graphs.functions = functions
@@ -48,7 +43,8 @@ export function parser(configRead: ApiPipeline.ConfigRead) {
   return configRead
 }
 
-export function transformPaths(paths: Paths, { configRead, functions, interfaces }: PathsTransformOptions) {
+export function transformPaths(paths: Paths) {
+  const { configRead, functions, interfaces } = inject()
   traversePaths(paths, (config) => {
     /**
      * function params/function options/function use interfaces

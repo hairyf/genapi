@@ -1,6 +1,7 @@
 import type { ApiPipeline, StatementImported, StatementTypeAlias } from '@genapi/shared'
 import path from 'node:path'
 import process from 'node:process'
+import { provide } from '@genapi/shared'
 
 export function config(userConfig: ApiPipeline.Config) {
   userConfig.import = userConfig.import || {}
@@ -80,6 +81,8 @@ export function config(userConfig: ApiPipeline.Config) {
       response: userConfig.responseType,
     },
   }
+
+  provide({ config: userConfig, configRead })
 
   return configRead
 }

@@ -1,6 +1,7 @@
 import type { ApiPipeline } from '@genapi/shared'
 import type { OpenAPISpecificationV2 } from 'openapi-specification-types'
 import type { LiteralField } from '../utils'
+import { inject } from '@genapi/shared'
 import { literalFieldsToString } from '../utils'
 
 export interface QueryUrlTransformOptions {
@@ -41,7 +42,9 @@ export function transformUrlSyntax(url: string, { baseURL }: BaseUrlSyntaxTransf
     return `\`${url}\``
 }
 
-export function transformBaseURL(source: OpenAPISpecificationV2, { configRead }: BaseUrlTransformOptions) {
+export function transformBaseURL(source: OpenAPISpecificationV2) {
+  const { configRead } = inject()
+
   if (configRead.config.baseURL === false)
     return
 

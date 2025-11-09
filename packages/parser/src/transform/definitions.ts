@@ -1,5 +1,6 @@
 import type { StatementInterface } from '@genapi/shared'
 import type { Definitions, Schema } from 'openapi-specification-types'
+import { inject } from '@genapi/shared'
 import { parseSchemaType } from '../parses'
 import { varFiled, varName } from '../utils'
 
@@ -7,7 +8,9 @@ export interface DefinitionTransformOptions {
   interfaces: StatementInterface[]
 }
 
-export function transformDefinitions(definitions: Definitions, { interfaces }: DefinitionTransformOptions) {
+export function transformDefinitions(definitions: Definitions) {
+  const { interfaces } = inject()
+
   for (const [name, definition] of Object.entries(definitions)) {
     const { properties = {} } = definition
 
