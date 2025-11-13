@@ -79,6 +79,9 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
     })
   }
 
+  // fix: for path required parameters, move to the end
+  config.parameters.sort(a => (a.required ? -1 : 1))
+
   return config
 }
 
