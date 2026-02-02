@@ -21,7 +21,7 @@ export function transformDefinitions(definitions: Definitions) {
     })
 
     function defToFields(name: string, propertie: Schema) {
-      propertie.required = definition?.required?.some(v => v === name)
+      propertie.required = definition?.required?.includes(name)
       if (propertie.description)
         propertie.description = `@description ${propertie.description}`
 
