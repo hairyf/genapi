@@ -34,10 +34,9 @@
     "@genapi/shared": "workspace:*",
     "fs-extra": "catalog:runtime",
     "got": "catalog:runtime",
+    "knitwork-x": "catalog:runtime",
     "p-pipe": "catalog:runtime",
-    "prettier": "catalog:runtime",
-    "ts-factory-extra": "catalog:runtime",
-    "typescript": "catalog:cli"
+    "prettier": "catalog:runtime"
   },
   "devDependencies": {
     "@types/fs-extra": "catalog:types",

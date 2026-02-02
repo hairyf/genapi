@@ -12,6 +12,9 @@
       "undocs",
       "unjs",
       "vitest"
+    ],
+    "hairyf/knitwork-x": [
+      "knitwork-x"
     ]
   }
 }

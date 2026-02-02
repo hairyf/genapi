@@ -1,32 +1,37 @@
 import type { ApiPipeline } from '@genapi/shared'
-import { createComment, createInterface, createTypeAlias } from 'ts-factory-extra'
-import { factory } from 'typescript'
+import { genComment, genInterface, genTypeAlias } from 'knitwork-x'
 
-export function compilerTsTypingsDeclaration(configRead: ApiPipeline.ConfigRead, comment = true) {
+/**
+ * Compiles configRead graphs to typings code string using knitwork-x.
+ */
+export function compilerTsTypingsDeclaration(configRead: ApiPipeline.ConfigRead, comment = true): string {
   configRead.graphs.comments = configRead.graphs.comments || []
   configRead.graphs.typings = configRead.graphs.typings || []
   configRead.graphs.interfaces = configRead.graphs.interfaces || []
 
+  const sections: string[] = []
+
+  if (comment && configRead.graphs.comments.length > 0) {
+    sections.push(genComment(configRead.graphs.comments.join('\n'), { block: true }))
+  }
+
   const typings = configRead.graphs.typings.map((item) => {
-    return createTypeAlias(item.export, item.name, item.value)
+    return genTypeAlias(item.name, item.value, { export: !!item.export })
   })
+  if (typings.length > 0)
+    sections.push(typings.join('\n'))
+
   const interfaces = configRead.graphs.interfaces.map((item) => {
-    return createInterface({
-      export: item.export,
-      name: item.name,
-      properties: item.properties || [],
-    })
+    const properties = (item.properties || []).map(p => ({
+      name: p.name,
+      type: p.type ?? 'any',
+      optional: !p.required,
+      jsdoc: p.description,
+    }))
+    return genInterface(item.name, properties, { export: !!item.export })
   })
+  if (interfaces.length > 0)
+    sections.push(interfaces.join('\n'))
 
-  const nodes = [
-    factory.createIdentifier(''),
-    ...typings,
-    factory.createIdentifier(''),
-    ...interfaces,
-  ]
-
-  if (comment)
-    nodes.unshift(createComment('multi', configRead.graphs.comments))
-
-  return nodes as any[]
+  return sections.filter(Boolean).join('\n\n')
 }

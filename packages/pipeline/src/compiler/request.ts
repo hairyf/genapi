@@ -1,16 +1,17 @@
 import type { ApiPipeline } from '@genapi/shared'
-import { codeToAstNode, createComment, createFunction, createImport, createVariable } from 'ts-factory-extra'
+import {
+  genComment,
+  genFunction,
+  genImport,
+  genVariable,
+} from 'knitwork-x'
 
-import { factory, NodeFlags } from 'typescript'
 import { compilerTsTypingsDeclaration } from './typings'
 
-const varFlags = {
-  let: NodeFlags.Let,
-  const: NodeFlags.Const,
-  var: NodeFlags.None,
-}
-// @ts-check
-export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead) {
+/**
+ * Compiles configRead graphs to request code string using knitwork-x.
+ */
+export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead): string {
   configRead.graphs.imports = configRead.graphs.imports || []
   configRead.graphs.comments = configRead.graphs.comments || []
   configRead.graphs.variables = configRead.graphs.variables || []
@@ -19,46 +20,64 @@ export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead)
   const isGenerateType = configRead.outputs.some(v => v.type === 'typings')
   const isTypescript = configRead.outputs.some(v => v.type === 'request' && v.path.endsWith('.ts'))
 
-  const comments = [
-    createComment('multi', configRead.graphs.comments),
-  ]
-  const imports = configRead.graphs.imports?.map((item) => {
-    return createImport(item.name, item.names, item.value, item.namespace)
+  const sections: string[] = []
+
+  // Comments
+  if (configRead.graphs.comments.length > 0) {
+    sections.push(genComment(configRead.graphs.comments.join('\n'), { block: true }))
+  }
+
+  // Imports
+  const importLines = configRead.graphs.imports.map((item) => {
+    if (item.namespace)
+      return genImport(item.value, { name: '*', as: item.name! }, { type: !!item.type })
+    if (item.name && !item.names)
+      return genImport(item.value, item.name, { type: !!item.type })
+    if (item.name && item.names?.length) {
+      const imports = [{ name: 'default', as: item.name }, ...item.names.map(n => ({ name: n }))]
+      return genImport(item.value, imports, { type: !!item.type })
+    }
+    return genImport(item.value, item.names || [], { type: !!item.type })
   })
-  const variables = configRead.graphs.variables.map((item) => {
-    // eslint-disable-next-line ts/ban-ts-comment
-    // @ts-expect-error
-    return createVariable(item.export, varFlags[item.flag], item.name, item.value)
+  if (importLines.length > 0)
+    sections.push(importLines.join('\n'))
+
+  // Variables
+  const variableLines = configRead.graphs.variables.map((item) => {
+    return genVariable(item.name, item.value ?? '', {
+      export: !!item.export,
+      kind: item.flag,
+    })
   })
-  const functions = configRead.graphs.functions.flatMap((item) => {
-    return createFunction({
+  if (variableLines.length > 0)
+    sections.push(variableLines.join('\n'))
+
+  // Functions
+  const functionLines = configRead.graphs.functions.map((item) => {
+    return genFunction({
       export: true,
-      comment: item.description,
       name: item.name,
-      parameters: item.parameters,
-      body: item.body?.map(codeToAstNode),
+      parameters: (item.parameters || []).map(p => ({
+        name: p.name,
+        type: p.type,
+        optional: !p.required,
+      })),
+      body: item.body || [],
       async: item.async,
       returnType: item.returnType,
       generics: item.generics,
       generator: item.generator,
+      jsdoc: item.description,
     })
   })
+  if (functionLines.length > 0)
+    sections.push(functionLines.join('\n\n'))
 
-  const nodes = [
-    ...comments,
-    factory.createIdentifier(''),
-    ...imports,
-    factory.createIdentifier(''),
-    ...variables,
-    factory.createIdentifier(''),
-    ...functions,
-  ]
-
+  // Inline typings for TS request files when not generating separate typings
   if (!isGenerateType && isTypescript) {
-    nodes.push(factory.createIdentifier(''))
-    nodes.push(factory.createIdentifier(''))
-    nodes.push(...compilerTsTypingsDeclaration(configRead, false))
+    sections.push('')
+    sections.push(compilerTsTypingsDeclaration(configRead, false))
   }
 
-  return nodes
+  return sections.filter(Boolean).join('\n\n')
 }

@@ -1,13 +1,13 @@
 catalogMode: prefer
+
 ignoreWorkspaceRootCheck: true
+
 shellEmulator: true
 
 trustPolicy: no-downgrade
-
 packages:
   - packages/*
   - playground
-
 catalogs:
   cli:
     '@antfu/eslint-config': ^7.2.0
@@ -25,19 +25,14 @@ catalogs:
     vite: ^7.3.1
   inlined:
     '@antfu/utils': ^9.3.0
-  # OpenAPI 类型与规范
   openapi:
     openapi-specification-types: ^0.0.3
-  # 仅 playground
   playground:
     '@uni-helper/uni-network': ^0.23.1
     wpapi-to-swagger: ^0.1.0
-
-  # 仅根目录（prepare 等）
   root:
     skills: ^1.3.1
     skills-manifest: ^0.2.1
-  # 各包运行时依赖
   runtime:
     '@hairy/utils': ^1.47.0
     cac: ^6.7.14
@@ -45,12 +40,12 @@ catalogs:
     fs-extra: ^11.3.3
     got: 11.8.6
     jiti: ^1.21.7
+    knitwork-x: ^0.2.0
     ora: ^5.4.1
     p-pipe: ^3.1.0
     pascal-case: ^3.1.2
     prettier: ^2.8.8
     transliteration: ^2.6.1
-    ts-factory-extra: ^0.0.5
     unconfig: ^0.3.13
   testing:
     vitest: ^4.0.18
