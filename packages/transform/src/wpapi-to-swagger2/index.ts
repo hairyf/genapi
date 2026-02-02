@@ -3,9 +3,11 @@ import type { WordPressAPISchema, WordPressRoute } from './types'
 import { convertEndpoint, getParametersFromArgs, getParametersFromEndpoint } from './utils'
 
 /**
- * Converts WordPress REST API schema to Swagger v2 format
- * @param source WordPress REST API schema
- * @returns Swagger v2 document
+ * Converts a WordPress REST API schema to Swagger 2.0 format.
+ *
+ * @param source - WordPress REST API schema (routes + endpoints)
+ * @returns Swagger 2.0 document
+ * @group Transform
  */
 export function wpapiToSwagger2(source: WordPressAPISchema): OpenAPISpecificationV2 {
   const swagger: OpenAPISpecificationV2 = {

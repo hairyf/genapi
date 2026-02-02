@@ -8,6 +8,13 @@ export interface PathMethod {
   responses: Responses
 }
 
+/**
+ * Walks OpenAPI paths and invokes a callback for each path + method with merged parameters and options.
+ *
+ * @param paths - OpenAPI paths object
+ * @param callback - Called for each (path, method) with path, parameters, method, options, responses
+ * @group Traverse
+ */
 export function traversePaths(paths: Paths, callback: (options: PathMethod) => void) {
   for (const [path, _others] of Object.entries(paths)) {
     let { parameters = [], ...methods } = _others

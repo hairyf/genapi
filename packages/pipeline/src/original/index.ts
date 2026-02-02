@@ -1,6 +1,13 @@
 import type { ApiPipeline } from '@genapi/shared'
 import got from 'got'
 
+/**
+ * Fetches source: resolves uri/http/json from configRead.inputs and sets configRead.source.
+ *
+ * @param configRead - ConfigRead with inputs (uri, http, or json)
+ * @returns Same configRead with source set
+ * @group Pipeline
+ */
 export async function original(configRead: ApiPipeline.ConfigRead) {
   if (configRead.inputs.uri)
     configRead.source = await got({ url: configRead.inputs.uri, responseType: 'json' }).json<any>()

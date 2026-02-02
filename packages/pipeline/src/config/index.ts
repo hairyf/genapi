@@ -3,6 +3,13 @@ import path from 'node:path'
 import process from 'node:process'
 import { provide } from '@genapi/shared'
 
+/**
+ * Normalizes pipeline config: output paths, responseType, baseURL, and builds ConfigRead with inputs/outputs.
+ *
+ * @param userConfig - Raw config from defineConfig
+ * @returns ConfigRead (config + inputs + outputs)
+ * @group Pipeline
+ */
 export function config(userConfig: ApiPipeline.Config) {
   userConfig.import = userConfig.import || {}
 

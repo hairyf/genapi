@@ -39,6 +39,7 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "typecheck": "tsc --noEmit",
+    "automd": "automd",
     "prepublishOnly": "nr build"
   },
   "publishConfig": {

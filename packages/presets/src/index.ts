@@ -14,6 +14,10 @@ export {
   uni,
 }
 
+/**
+ * Preset pipelines by HTTP client: axios, fetch, ky, got, ofetch, uni.
+ * Each key has `.ts` and `.js` (e.g. `presets.axios.ts`, `presets.axios.js`).
+ */
 export default {
   axios,
   fetch,

@@ -18,6 +18,18 @@ export interface BaseUrlSyntaxTransformOptions {
 export interface BaseUrlTransformOptions {
   configRead: ApiPipeline.ConfigRead
 }
+/**
+ * Transforms query params for codegen: optional URLSearchParams snippet and option list updates.
+ *
+ * @param name - Parameter name
+ * @param options - Options for the transform
+ * @param options.body - Array to push URLSearchParams snippet into
+ * @param options.options - Literal field list to update
+ * @param options.optionKey - Optional key for URLSearchParams in options
+ * @param options.url - Optional URL string to append query to
+ * @returns Updated url fragment
+ * @group Transform
+ */
 export function transformQueryParams(name: string, { body, options, optionKey, url }: QueryUrlTransformOptions) {
   url = url || ''
   if (optionKey) {
@@ -33,6 +45,15 @@ export function transformQueryParams(name: string, { body, options, optionKey, u
   return url || ''
 }
 
+/**
+ * Wraps URL in template literal or string literal and optionally prefixes baseURL.
+ *
+ * @param url - Path or full URL
+ * @param options - Optional options
+ * @param options.baseURL - Optional base URL to prefix
+ * @returns Code string for the URL
+ * @group Transform
+ */
 export function transformUrlSyntax(url: string, { baseURL }: BaseUrlSyntaxTransformOptions = {}) {
   if (baseURL)
     url = `\${baseURL}${url}`
@@ -42,6 +63,12 @@ export function transformUrlSyntax(url: string, { baseURL }: BaseUrlSyntaxTransf
     return `\`${url}\``
 }
 
+/**
+ * Injects baseURL from config into spec when config.baseURL is set.
+ *
+ * @param source - Swagger/OpenAPI spec (mutated)
+ * @group Transform
+ */
 export function transformBaseURL(source: OpenAPISpecificationV2) {
   const { configRead } = inject()
 
