@@ -1,4 +1,3 @@
-/* eslint-disable ts/ban-ts-comment */
 import type { StatementField, StatementInterface } from '@genapi/shared'
 import type { Parameter } from 'openapi-specification-types'
 import type { PathMethod } from '../traverse'
@@ -18,12 +17,14 @@ export type { InSchemas }
  */
 export function parseMethodParameters({ method, parameters, path }: PathMethod, schemas?: InSchemas) {
   const { config: userConfig } = inject()
-  const requestConfigs = {
-    body: [] as StatementField[],
-    formData: [] as StatementField[],
-    path: [] as StatementField[],
-    query: [] as StatementField[],
-    header: [] as StatementField[],
+  const requestConfigs: Record<string, StatementField[]> = {
+    body: [],
+    formData: [],
+    path: [],
+    query: [],
+    header: [],
+    cookie: [],
+    querystring: [],
   }
 
   const config = {
@@ -32,14 +33,17 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
     interfaces: [] as StatementInterface[],
   }
 
-  for (const parameter of parameters)
-    requestConfigs[parameter.in].push(parseParameterFiled(parameter))
+  for (const parameter of parameters) {
+    const key = parameter.in
+    if (key in requestConfigs)
+      requestConfigs[key].push(parseParameterFiled(parameter))
+  }
 
-  for (const [inType, properties] of Object.entries(requestConfigs) as [Parameter['in'], StatementField[]][]) {
+  for (const [inType, properties] of Object.entries(requestConfigs)) {
     if (properties.length === 0)
       continue
 
-    const name = toUndefField(inType, schemas)
+    const name = toUndefField(inType as Parameter['in'], schemas)
 
     if (inType !== 'path')
       config.options.push(name)
@@ -56,7 +60,7 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
       continue
     }
 
-    if (['header', 'path', 'query'].includes(inType)) {
+    if (['header', 'path', 'query', 'cookie', 'querystring'].includes(inType)) {
       const typeName = varName([method, path, inType])
       config.interfaces.push({ name: typeName, properties, export: true })
       const required = inType === 'path' || isRequiredParameter(properties) || userConfig?.parametersRequired
@@ -87,25 +91,30 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
 
 export function parseMethodMetadata({ method, path, responses, options: meta }: PathMethod) {
   const { configRead, interfaces } = inject()
+  const metaAny = meta as { consumes?: string[] }
   const comments = [
     meta.summary && `@summary ${meta.summary}`,
     meta.description && `@description ${meta.description}`,
     `@method ${method}`,
-    meta.tags && `@tags ${meta.tags.join(' | ') || '-'}`,
-    meta.consumes && `@consumes ${meta.consumes.join('; ') || '-'}`,
-  ]
+    meta.tags?.length ? `@tags ${meta.tags.join(' | ') || '-'}` : undefined,
+    metaAny.consumes?.length ? `@consumes ${metaAny.consumes.join('; ') || '-'}` : undefined,
+  ].filter((c): c is string => typeof c === 'string')
 
   const name = camelCase(`${method}/${path}`)
 
   const url = `${path.replace(/(\{)/g, '${paths.')}`
-  const responseSchema
-    // @ts-expect-error
-    = responses.default?.content?.['application/json']?.schema
-    // @ts-expect-error
-      || responses['200']?.content?.['application/json']?.schema
-      || responses['200']?.schema
-      || responses['200']
-  const responseType = responseSchema ? parseSchemaType(responseSchema) : 'void'
+  function hasContent(r: unknown): r is { content?: Record<string, { schema?: unknown }> } {
+    return r != null && typeof r === 'object' && 'content' in r
+  }
+  const resDefault = responses.default && hasContent(responses.default) ? responses.default : null
+  const res200 = responses['200'] && typeof responses['200'] === 'object' ? responses['200'] : null
+  const contentDefault = resDefault?.content?.['application/json']
+  const content200 = res200 && hasContent(res200) ? res200.content?.['application/json'] : null
+  const schemaFromContent = (contentDefault && typeof contentDefault === 'object' && 'schema' in contentDefault ? (contentDefault as { schema: unknown }).schema : null)
+    ?? (content200 && typeof content200 === 'object' && 'schema' in content200 ? (content200 as { schema: unknown }).schema : null)
+  const schemaFromRes200 = res200 && typeof res200 === 'object' && 'schema' in res200 && !('content' in res200) ? (res200 as { schema: unknown }).schema : null
+  const responseSchema = schemaFromContent ?? schemaFromRes200
+  const responseType = responseSchema && typeof responseSchema === 'object' ? parseSchemaType(responseSchema as Parameters<typeof parseSchemaType>[0]) : 'void'
 
   if (configRead.config.responseRequired)
     deepSignRequired(interfaces.find(v => v.name === responseType)?.properties || [])
@@ -119,5 +128,5 @@ export function parseMethodMetadata({ method, path, responses, options: meta }: 
     }
   }
 
-  return { description: comments.filter(Boolean), name, url, responseType, body: [] as string[] }
+  return { description: comments, name, url, responseType, body: [] as string[] }
 }

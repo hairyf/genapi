@@ -1,4 +1,3 @@
-/* eslint-disable ts/ban-ts-comment */
 /* eslint-disable no-cond-assign */
 
 import type { Parameter, SchemaType } from 'openapi-specification-types'
@@ -98,27 +97,21 @@ export function buildParam(name: string, method: string, endpoint: string, detai
   // Handle enumerations
   if (detail.enum) {
     param.type = 'array'
-    // @ts-expect-error
-    param.items = { type: typeof typeValue === 'string' ? typeValue : 'string', enum: detail.enum }
+    param.items = { type: typeof typeValue === 'string' ? typeValue : 'string', enum: detail.enum } as Parameter['items']
 
     if (detail.default !== undefined && param.items)
-    // @ts-expect-error
       param.items.default = detail.default
 
-    // @ts-expect-error
     param.collectionFormat = 'multi'
   }
   // Handle arrays
   else if (detail.items) {
-    // @ts-expect-error
-    param.items = { type: detail.items.type || 'string' }
+    param.items = { type: detail.items.type || 'string' } as Parameter['items']
   }
 
   // Handle numeric ranges
-  // @ts-expect-error
   detail.maximum !== undefined && (param.maximum = detail.maximum)
 
-  // @ts-expect-error
   detail.minimum !== undefined && (param.minimum = detail.minimum)
 
   // Handle format

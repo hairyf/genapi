@@ -51,8 +51,8 @@ catalogs:
       version: 9.3.0
   openapi:
     openapi-specification-types:
-      specifier: ^0.0.3
-      version: 0.0.3
+      specifier: ^0.3.0
+      version: 0.3.0
   playground:
     '@uni-helper/uni-network':
       specifier: ^0.23.1
@@ -238,7 +238,7 @@ importers:
     devDependencies:
       openapi-specification-types:
         specifier: catalog:openapi
-        version: 0.0.3
+        version: 0.3.0
 
   packages/pipeline:
     dependencies:
@@ -281,7 +281,7 @@ importers:
         version: link:../shared
       openapi-specification-types:
         specifier: catalog:openapi
-        version: 0.0.3
+        version: 0.3.0
 
   packages/shared:
     dependencies:
@@ -293,7 +293,7 @@ importers:
     devDependencies:
       openapi-specification-types:
         specifier: catalog:openapi
-        version: 0.0.3
+        version: 0.3.0
 
   playground:
     dependencies:
@@ -2474,8 +2474,8 @@ packages:
     resolution: {integrity: sha512-VXJjc87FScF88uafS3JllDgvAm+c/Slfz06lorj2uAY34rlUu0Nt+v8wreiImcrgAjjIHp1rXpTDlLOGw29WwQ==}
     engines: {node: '>=18'}
 
-  openapi-specification-types@0.0.3:
-    resolution: {integrity: sha512-2pGoJRYcfP7NJ9+TT7M3RgkSTxs0H3oIVU8Hd34Tsr/JfyBGzbj2LHl4ygvsLpKnblIGzUMLhaF5jwDn2Q9TBA==}
+  openapi-specification-types@0.3.0:
+    resolution: {integrity: sha512-+ZOP3z4WTTSxtIOxgrlARp7tpAvf+7V0qZINj8htfREg24UaBwnoFnw8Ku3cMMChzzVN2WSNhsoiHupZIvmYmQ==}
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -3893,6 +3893,14 @@ snapshots:
       '@vitest/utils': 4.0.18
       chai: 6.2.2
       tinyrainbow: 3.0.3
+
+  '@vitest/mocker@4.0.18(vite@7.3.1(@types/node@22.19.7)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2))':
+    dependencies:
+      '@vitest/spy': 4.0.18
+      estree-walker: 3.0.3
+      magic-string: 0.30.21
+    optionalDependencies:
+      vite: 7.3.1(@types/node@22.19.7)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2)
 
   '@vitest/mocker@4.0.18(vite@7.3.1(@types/node@22.19.7)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
@@ -5382,7 +5390,7 @@ snapshots:
     dependencies:
       mimic-function: 5.0.1
 
-  openapi-specification-types@0.0.3: {}
+  openapi-specification-types@0.3.0: {}
 
   optionator@0.9.4:
     dependencies:
@@ -5922,7 +5930,7 @@ snapshots:
   vitest@4.0.18(@types/node@22.19.7)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2):
     dependencies:
       '@vitest/expect': 4.0.18
-      '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@22.19.7)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
+      '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@22.19.7)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2))
       '@vitest/pretty-format': 4.0.18
       '@vitest/runner': 4.0.18
       '@vitest/snapshot': 4.0.18

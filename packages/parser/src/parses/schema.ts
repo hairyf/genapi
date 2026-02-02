@@ -1,10 +1,20 @@
 import type { StatementField } from '@genapi/shared'
-import type { Properties, Schema } from 'openapi-specification-types'
+import type { Properties, Schema, SchemaType } from 'openapi-specification-types'
 import { inject } from '@genapi/shared'
 import { isArray, uniq } from '@hairy/utils'
 import { spliceEnumType, useRefMap, varName } from '../utils'
 
-type SchemaWithAllOf = Schema & { allOf?: Schema[] }
+type SchemaWithAllOf = Schema & { allOf?: Schema[], schema?: Schema }
+type SchemaLike = SchemaWithAllOf & { required?: boolean | string[] }
+
+function schemaRequired(schema: SchemaLike, field?: string): boolean {
+  const r = schema.required
+  if (r === undefined)
+    return true
+  if (typeof r === 'boolean')
+    return r
+  return field !== undefined ? r.includes(field) : true
+}
 
 /**
  * parse schema to type
@@ -56,7 +66,7 @@ export function parseSchemaType(propertie: SchemaWithAllOf): string {
           isMerge = true
         fields[field] = {
           type,
-          required: item.required ?? true,
+          required: schemaRequired(item as SchemaLike, field),
           description: item.description,
           name: field,
         }
@@ -77,18 +87,23 @@ export function parseSchemaType(propertie: SchemaWithAllOf): string {
     return name
   }
 
-  if (propertie.schema)
-    return parseSchemaType(propertie.schema)
+  const schemaRef = (propertie as SchemaWithAllOf).schema
+  if (schemaRef && typeof schemaRef === 'object')
+    return parseSchemaType(schemaRef)
 
   // TODO: handle additionalProperties
-  if (propertie.additionalProperties)
-    return `Record<string, ${parseSchemaType(propertie.additionalProperties)}>`
+  const addProps = propertie.additionalProperties
+  if (addProps === true)
+    return 'Record<string, any>'
+  if (addProps && typeof addProps === 'object')
+    return `Record<string, ${parseSchemaType(addProps)}>`
   if (propertie.type === 'object') {
     const fields: Record<string, StatementField> = {}
     for (const [field, item] of Object.entries(propertie.properties || {})) {
+      const itemLike = item as SchemaLike
       fields[field] = {
         type: parseSchemaType(item),
-        required: item.required,
+        required: schemaRequired(itemLike, field),
         description: item.description,
         name: field,
       }
@@ -100,8 +115,11 @@ export function parseSchemaType(propertie: SchemaWithAllOf): string {
     return 'any'
 
   if (propertie.type === 'array') {
-    if (propertie.items?.enum)
-      return ['string', spliceEnumType(propertie.items.enum)].filter(Boolean).join(' | ')
+    const itemsEnum = propertie.items?.enum
+    if (Array.isArray(itemsEnum)) {
+      const enumStrs = itemsEnum.filter((e): e is string => typeof e === 'string')
+      return ['string', spliceEnumType(enumStrs)].filter(Boolean).join(' | ')
+    }
 
     let itemsType = parseSchemaType(propertie.items!)
     itemsType = itemsType.includes('|') ? `(${itemsType})` : itemsType
@@ -111,8 +129,10 @@ export function parseSchemaType(propertie: SchemaWithAllOf): string {
   if (propertie.type === 'boolean')
     return propertie.type
 
-  if (isArray(propertie.type))
-    return uniq(propertie.type.map(type => parseSchemaType({ type }))).join(' | ')
+  if (isArray(propertie.type)) {
+    const types = (propertie.type as unknown[]).filter((t): t is string => typeof t === 'string')
+    return uniq(types.map(type => parseSchemaType({ type: type as SchemaType }))).join(' | ')
+  }
 
   if (['integer', 'long', 'float', 'byte', 'TypesLong', 'number'].includes(propertie.type))
     return 'number'

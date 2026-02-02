@@ -21,15 +21,13 @@ export function transformDefinitions(definitions: Definitions) {
     })
 
     function defToFields(name: string, propertie: Schema) {
-      propertie.required = definition?.required?.includes(name)
-      if (propertie.description)
-        propertie.description = `@description ${propertie.description}`
-
+      const required = Array.isArray(definition?.required) ? definition.required.includes(name) : undefined
+      const description = propertie.description ? `@description ${propertie.description}` : undefined
       return {
         name: varFiled(name),
         type: parseSchemaType(propertie),
-        description: propertie.description,
-        required: propertie.required,
+        description,
+        required: required ?? (typeof propertie.required === 'boolean' ? propertie.required : undefined),
       }
     }
   }

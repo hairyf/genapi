@@ -1,5 +1,5 @@
-import type { OpenAPISpecificationV2 } from 'openapi-specification-types'
-import type { OpenAPISpecificationV3 } from 'openapi-specification-types/index-v3'
+import type { OpenAPISpecificationV2, OpenAPISpecificationV3 } from 'openapi-specification-types'
+
 import { swagger2ToSwagger3 } from '@genapi/transform'
 
 /**

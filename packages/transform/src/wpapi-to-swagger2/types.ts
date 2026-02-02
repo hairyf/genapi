@@ -12,7 +12,7 @@ export interface WordPressAPISchema {
  * Interface for WordPress REST API endpoint
  */
 export interface WordPressEndpoint {
-  methods: ('get' | 'post' | 'put' | 'delete')[]
+  methods: ('get' | 'post' | 'put' | 'delete' | 'patch')[]
   description?: string
   args?: Record<string, WordPressArgument>
 }

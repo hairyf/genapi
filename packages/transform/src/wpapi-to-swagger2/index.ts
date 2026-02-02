@@ -1,4 +1,4 @@
-import type { OpenAPISpecificationV2, Responses, Security } from 'openapi-specification-types'
+import type { Method, OpenAPISpecificationV2, Paths, Responses, Security } from 'openapi-specification-types'
 import type { WordPressAPISchema, WordPressRoute } from './types'
 import { convertEndpoint, getParametersFromArgs, getParametersFromEndpoint } from './utils'
 
@@ -87,11 +87,12 @@ export function wpapiToSwagger2(source: WordPressAPISchema): OpenAPISpecificatio
         // Create operation ID
         const operationId = `${method}${convertedPath.replace(/\//g, '_').replace(/\{|\}/g, '')}`
 
-        // Initialize path object if it doesn't exist
-        swagger.paths[convertedPath] = swagger.paths[convertedPath] ?? {}
-
-        // Add method to path
-        swagger.paths[convertedPath][method] = {
+        // Initialize path object if it doesn't exist (PathItemV2, not ref)
+        const paths = swagger.paths as Paths
+        const pathItem = (paths[convertedPath] && typeof paths[convertedPath] === 'object' && !('$ref' in paths[convertedPath]))
+          ? paths[convertedPath] as Record<string, Method>
+          : {} as Record<string, Method>
+        (pathItem as Record<string, unknown>)[method] = {
           tags,
           summary: endpoint.description || '',
           description: endpoint.description || '',
@@ -102,6 +103,7 @@ export function wpapiToSwagger2(source: WordPressAPISchema): OpenAPISpecificatio
           responses,
           security,
         }
+        paths[convertedPath] = pathItem as Paths[string]
       }
     }
   }

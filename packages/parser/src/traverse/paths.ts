@@ -1,5 +1,15 @@
 import type { Method, Parameter, Paths, RequestBody, Responses } from 'openapi-specification-types'
 
+const HTTP_METHODS = ['get', 'put', 'post', 'delete', 'patch', 'head', 'options'] as const
+
+function isParameter(p: Parameter | { $ref?: string }): p is Parameter {
+  return p != null && 'name' in p && 'in' in p
+}
+
+function isOperationObject(value: unknown): value is Method {
+  return value != null && typeof value === 'object' && 'responses' in value
+}
+
 export interface PathMethod {
   path: string
   parameters: Parameter[]
@@ -17,19 +27,23 @@ export interface PathMethod {
  */
 export function traversePaths(paths: Paths, callback: (options: PathMethod) => void) {
   for (const [path, _others] of Object.entries(paths)) {
-    let { parameters = [], ...methods } = _others
-    for (const method in methods) {
-      const options = methods[method as keyof typeof methods]
+    if (typeof _others === 'string' || Array.isArray(_others))
+      continue
+    const pathParameters = (Array.isArray(_others.parameters) ? _others.parameters : [])
+      .filter(isParameter)
+    for (const method of HTTP_METHODS) {
+      const options = _others[method]
+      if (!isOperationObject(options))
+        continue
       const parametersMap = new Map<string, Parameter>()
-
-      for (const parameter of parameters)
+      for (const parameter of pathParameters)
         parametersMap.set(parameter.name, parameter)
-      for (const parameter of (options.parameters || []))
+      const opParams = (options.parameters ?? []).filter(isParameter)
+      for (const parameter of opParams)
         parametersMap.set(parameter.name, parameter)
-
-      parameters = [...parametersMap.values()]
-
-      extendsRequestBody(parameters, options.requestBody)
+      const parameters = [...parametersMap.values()]
+      if (options.requestBody && 'content' in options.requestBody)
+        extendsRequestBody(parameters, options.requestBody)
       callback({
         responses: options.responses,
         path,
@@ -42,24 +56,25 @@ export function traversePaths(paths: Paths, callback: (options: PathMethod) => v
 }
 
 function extendsRequestBody(parameters: Parameter[], requestBody?: RequestBody) {
-  if (!requestBody)
+  if (!requestBody?.content)
     return
-  if (requestBody.content['multipart/form-data']) {
-    const properties = requestBody.content['multipart/form-data'].schema.properties!
-    for (const name in Object.keys(properties)) {
+  const multipart = requestBody.content['multipart/form-data']
+  if (multipart && 'schema' in multipart && multipart.schema?.properties) {
+    const properties = multipart.schema.properties
+    for (const name of Object.keys(properties)) {
       parameters.push({
         in: 'formData',
         name,
         description: requestBody.description,
-        ...properties[name],
+        ...(properties[name] as object),
       })
     }
     return
   }
-
-  if (requestBody.content['application/json']) {
+  const json = requestBody.content['application/json']
+  if (json && typeof json === 'object') {
     parameters.push({
-      ...requestBody.content['application/json'] as any,
+      ...(json as object),
       description: requestBody.description,
       in: 'body',
       name: 'body',

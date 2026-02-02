@@ -36,9 +36,10 @@ export function createParser(pathHandler: PathHandler) {
 
     provide({ interfaces, functions })
     transformBaseURL(source)
-    transformDefinitions(source.definitions)
+    if (source.definitions)
+      transformDefinitions(source.definitions)
 
-    traversePaths(source.paths, (config) => {
+    traversePaths(source.paths ?? {}, (config) => {
       pathHandler(config, inject() as ParserContext)
     })
 

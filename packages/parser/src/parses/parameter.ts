@@ -19,12 +19,14 @@ export function parseParameterFiled(parameter: Parameter) {
     field.description = `@description ${field.description}`
 
   if (parameter.in === 'query' && parameter.type === 'array') {
-    const enums = spliceEnumDescription(parameter.name, parameter.items?.enum)
-    field.description = [field.description || '', enums].filter(Boolean)
+    const rawEnum = parameter.items?.enum
+    const enums = Array.isArray(rawEnum) ? rawEnum.filter((e): e is string => typeof e === 'string') : []
+    const enumsDesc = spliceEnumDescription(parameter.name, enums)
+    field.description = [field.description || '', enumsDesc].filter(Boolean)
   }
 
   if (['formData', 'body', 'header', 'path', 'query'].includes(parameter.in))
-    field.type = parseSchemaType(parameter)
+    field.type = parseSchemaType(parameter as Parameters<typeof parseSchemaType>[0])
 
   if (!field.description)
     delete field.description
