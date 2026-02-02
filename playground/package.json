@@ -10,9 +10,9 @@
     "@genapi/pipeline": "workspace:*",
     "@genapi/presets": "workspace:*",
     "@genapi/transform": "workspace:*",
-    "wpapi-to-swagger": "^0.1.0"
+    "wpapi-to-swagger": "catalog:playground"
   },
   "devDependencies": {
-    "@uni-helper/uni-network": "^0.23.0"
+    "@uni-helper/uni-network": "catalog:playground"
   }
 }

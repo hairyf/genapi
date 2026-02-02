@@ -1,15 +1,16 @@
-import type { StatementField } from '@genapi/shared/dist/index.mjs'
-
+import type { StatementField } from '@genapi/shared'
 import type { Properties, Schema } from 'openapi-specification-types'
 import { inject } from '@genapi/shared'
 import { isArray, uniq } from '@hairy/utils'
 import { spliceEnumType, useRefMap, varName } from '../utils'
 
+type SchemaWithAllOf = Schema & { allOf?: Schema[] }
+
 /**
  * parse schema to type
  * @param propertie
  */
-export function parseSchemaType(propertie: Schema): string {
+export function parseSchemaType(propertie: SchemaWithAllOf): string {
   const { interfaces = [] } = inject()
 
   if (!propertie)
@@ -35,7 +36,7 @@ export function parseSchemaType(propertie: Schema): string {
 
     assignProperties(propertie.properties)
 
-    function assignBaseProperties(schema: Schema) {
+    function assignBaseProperties(schema: Schema): void {
       if (!schema.$ref)
         return
       const type = parseSchemaType(schema)
@@ -44,7 +45,7 @@ export function parseSchemaType(propertie: Schema): string {
       for (const property of interfaces.find(v => v.name === type)?.properties || [])
         fields[property.name] = property
     }
-    function assignProperties(properties?: Properties) {
+    function assignProperties(properties?: Properties): void {
       for (const [field, item] of Object.entries(properties || {})) {
         const type = parseSchemaType(item)
 

@@ -17,6 +17,7 @@
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
+    "./package.json": "./package.json",
     "./swag-axios-js": "./src/axios/js/index.ts",
     "./swag-axios-ts": "./src/axios/ts/index.ts",
     "./swag-fetch-js": "./src/fetch/js/index.ts",
@@ -28,9 +29,22 @@
     "./swag-ofetch-js": "./src/ofetch/js/index.ts",
     "./swag-ofetch-ts": "./src/ofetch/ts/index.ts"
   },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "nr build"
+  },
   "publishConfig": {
     "exports": {
       ".": "./dist/index.mjs",
+      "./package.json": "./package.json",
       "./swag-axios-js": {
         "types": "./dist/axios/js/index.d.mts",
         "default": "./dist/axios/js/index.mjs"
@@ -73,18 +87,10 @@
       }
     }
   },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "tsdown",
-    "prepublishOnly": "nr build",
-    "start": "tsx src/index.ts"
-  },
   "dependencies": {
     "@genapi/parser": "workspace:*",
     "@genapi/pipeline": "workspace:*",
     "@genapi/shared": "workspace:*",
-    "openapi-specification-types": "^0.0.3"
+    "openapi-specification-types": "catalog:openapi"
   }
 }

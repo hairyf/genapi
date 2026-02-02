@@ -15,22 +15,27 @@
     "transform"
   ],
   "sideEffects": false,
-  "main": "./src/index.ts",
-  "publishConfig": {
-    "exports": {
-      ".": "./dist/index.mjs"
-    },
-    "main": "./dist/index.mjs",
-    "module": "./dist/index.mjs",
-    "types": "./dist/index.d.mjs"
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
   },
-  "files": ["dist"],
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsdown",
-    "prepublishOnly": "nr build",
-    "start": "tsx src/index.ts"
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "nr build"
   },
   "devDependencies": {
-    "openapi-specification-types": "^0.0.3"
+    "openapi-specification-types": "catalog:openapi"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": "./dist/index.mjs",
+      "./package.json": "./package.json"
+    }
   }
 }

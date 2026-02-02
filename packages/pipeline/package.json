@@ -15,31 +15,37 @@
     "shared"
   ],
   "sideEffects": false,
-  "main": "./src/index.ts",
-  "publishConfig": {
-    "exports": {
-      ".": "./dist/index.mjs"
-    },
-    "main": "./dist/index.mjs",
-    "module": "./dist/index.mjs",
-    "types": "./dist/index.d.mts"
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
   },
-  "files": ["dist"],
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsdown",
-    "prepublishOnly": "nr build",
-    "start": "tsx src/index.ts"
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "nr build"
   },
   "dependencies": {
     "@genapi/shared": "workspace:*",
-    "fs-extra": "^11.1.0",
-    "got": "11.8.6",
-    "p-pipe": "^3",
-    "prettier": "^2.8.4",
-    "ts-factory-extra": "^0.0.5",
-    "typescript": "^5.0.0"
+    "fs-extra": "catalog:runtime",
+    "got": "catalog:runtime",
+    "p-pipe": "catalog:runtime",
+    "prettier": "catalog:runtime",
+    "ts-factory-extra": "catalog:runtime",
+    "typescript": "catalog:cli"
   },
   "devDependencies": {
-    "@types/fs-extra": "^11.0.1"
+    "@types/fs-extra": "catalog:types",
+    "@types/prettier": "catalog:types"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": "./dist/index.mjs",
+      "./package.json": "./package.json"
+    }
   }
 }

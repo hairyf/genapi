@@ -15,24 +15,27 @@
     "shared"
   ],
   "sideEffects": false,
-  "main": "./src/index.ts",
-  "publishConfig": {
-    "exports": {
-      ".": "./dist/index.mjs"
-    },
-    "main": "./dist/index.mjs",
-    "module": "./dist/index.mjs",
-    "types": "./dist/index.d.mts"
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
   },
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsdown",
-    "prepublishOnly": "nr build",
-    "start": "tsx src/index.ts"
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "nr build"
   },
   "dependencies": {
-    "got": "11.8.6"
+    "got": "catalog:runtime"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": "./dist/index.mjs",
+      "./package.json": "./package.json"
+    }
   }
 }

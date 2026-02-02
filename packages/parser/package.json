@@ -15,29 +15,34 @@
     "shared"
   ],
   "sideEffects": false,
-  "main": "./src/index.ts",
-  "publishConfig": {
-    "exports": {
-      ".": "./dist/index.mjs"
-    },
-    "main": "./dist/index.mjs",
-    "module": "./dist/index.mjs",
-    "types": "./dist/index.d.mts"
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
   },
-  "files": ["dist"],
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsdown",
-    "prepublishOnly": "nr build",
-    "start": "tsx src/index.ts"
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "nr build"
   },
   "dependencies": {
     "@genapi/shared": "workspace:*",
     "@genapi/transform": "workspace:*",
-    "@hairy/utils": "^1.7.4",
-    "pascal-case": "^3.1.2",
-    "transliteration": "^2.3.5"
+    "@hairy/utils": "catalog:runtime",
+    "pascal-case": "catalog:runtime",
+    "transliteration": "catalog:runtime"
   },
   "devDependencies": {
-    "openapi-specification-types": "^0.0.3"
+    "openapi-specification-types": "catalog:openapi"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": "./dist/index.mjs",
+      "./package.json": "./package.json"
+    }
   }
 }
