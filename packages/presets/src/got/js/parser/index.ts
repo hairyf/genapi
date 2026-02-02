@@ -1,97 +1,55 @@
-import type { ApiPipeline, StatementFunction, StatementInterface } from '@genapi/shared'
-import type { Paths } from 'openapi-specification-types'
 import {
+  createParser,
   literalFieldsToString,
-  parseHeaderCommits,
   parseMethodMetadata,
   parseMethodParameters,
-  parseOpenapiSpecification,
-  transformBaseURL,
   transformBodyStringify,
-  transformDefinitions,
   transformParameters,
   transformQueryParams,
   transformUrlSyntax,
-  traversePaths,
 } from '@genapi/parser'
-import { inject, provide } from '@genapi/shared'
 
-export interface PathsTransformOptions {
-  configRead: ApiPipeline.ConfigRead
-  interfaces: StatementInterface[]
-  functions: StatementFunction[]
-}
+export const parser = createParser((config, { configRead, functions, interfaces }) => {
+  const { parameters, interfaces: attachInters, options } = parseMethodParameters(config)
+  let { name, description, url, responseType } = parseMethodMetadata(config)
 
-export function parser(configRead: ApiPipeline.ConfigRead) {
-  const source = parseOpenapiSpecification(configRead.source)
+  interfaces.push(...attachInters)
+  parameters.push({
+    name: 'config',
+    type: 'import(\'got\').OptionsOfTextResponseBody',
+    required: false,
+  })
+  options.push(['...', 'config'])
+  if (configRead.config.baseURL)
+    options.unshift(['prefixUrl', 'baseURL'])
 
-  const comments = parseHeaderCommits(source)
+  for (const parameter of parameters) {
+    if (parameter.type === 'FormData')
+      parameter.type = 'any'
+  }
 
-  const interfaces: StatementInterface[] = []
-  const functions: StatementFunction[] = []
+  transformParameters(parameters, {
+    syntax: 'ecmascript',
+    configRead,
+    description,
+    interfaces,
+    responseType,
+  })
+  transformBodyStringify('body', { options, parameters })
+  transformQueryParams('query', { optionKey: 'searchParams', options })
+  url = transformUrlSyntax(url)
 
-  provide({ interfaces, functions })
-
-  transformBaseURL(source)
-
-  transformDefinitions(source.definitions)
-
-  transformPaths(source.paths)
-
-  configRead.graphs.comments = comments
-  configRead.graphs.functions = functions
-  configRead.graphs.interfaces = interfaces
-
-  return configRead
-}
-
-export function transformPaths(paths: Paths) {
-  const { configRead, functions, interfaces } = inject()
-  traversePaths(paths, (config) => {
-    /**
-     * function params/function options/function use interfaces
-     */
-    const { parameters, interfaces: attachInters, options } = parseMethodParameters(config)
-    let { name, description, url, responseType } = parseMethodMetadata(config)
-
-    interfaces.push(...attachInters)
-    parameters.push({
-      name: 'config',
-      type: 'import(\'got\').OptionsOfTextResponseBody',
-      required: false,
-    })
-    options.push(['...', 'config'])
-    if (configRead.config.baseURL)
-      options.unshift(['prefixUrl', 'baseURL'])
-
-    for (const parameter of parameters) {
-      if (parameter.type === 'FormData')
-        parameter.type = 'any'
-    }
-
-    transformParameters(parameters, {
-      syntax: 'ecmascript',
-      configRead,
-      description,
-      interfaces,
-      responseType,
-    })
-    transformBodyStringify('body', { options, parameters })
-    transformQueryParams('query', { optionKey: 'searchParams', options })
-    url = transformUrlSyntax(url)
-
-    functions.push({
-      export: true,
-      async: true,
-      name,
-      description,
-      parameters,
-      body: [
-        `const response = await http(${url}, {
+  functions.push({
+    export: true,
+    async: true,
+    name,
+    description,
+    parameters,
+    body: [
+      `const response = await http(${url}, {
           ${literalFieldsToString(options)}
         })`,
-        'return response.json()',
-      ],
-    })
+      'return response.json()',
+    ],
   })
-}
+})
