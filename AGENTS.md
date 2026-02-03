@@ -1,5 +1,14 @@
 # AGENTS
 
+## Testing Guidelines
+
+- **Specification benchmark**: Conduct unit testing based on OpenAPI 2.0 (Swagger 2.0) and OpenAPI 3.2 specification benchmarks. Use skills `openapi-specification-v2` and `openapi-specification-v3.2` when writing or validating tests and fixtures.
+- **Coverage**: Strive to cover all scenarios as much as possible—paths, operations, parameters, request/response, schema, security, and edge cases defined in the specs.
+- **Scope**: Focus unit tests on the following subpackages:
+  - `packages/parser` — parsing and transforming OpenAPI/Swagger structures
+  - `packages/transform` — spec conversions (e.g. Swagger 2 → 3, wpapi → Swagger 2)
+- **Failure handling**: If a single test fails, **prioritize fixing the source code** (implementation bugs, spec violations) rather than changing the test code to make the test pass.
+
 <skills_system priority="1">
 
 ## Available Skills

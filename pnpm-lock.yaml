@@ -239,6 +239,9 @@ importers:
       openapi-specification-types:
         specifier: catalog:openapi
         version: 0.3.0
+      vitest:
+        specifier: catalog:testing
+        version: 4.0.18(@types/node@22.19.7)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
 
   packages/pipeline:
     dependencies:
@@ -294,6 +297,9 @@ importers:
       openapi-specification-types:
         specifier: catalog:openapi
         version: 0.3.0
+      vitest:
+        specifier: catalog:testing
+        version: 4.0.18(@types/node@22.19.7)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
 
   playground:
     dependencies:

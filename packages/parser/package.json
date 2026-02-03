@@ -39,7 +39,8 @@
     "transliteration": "catalog:runtime"
   },
   "devDependencies": {
-    "openapi-specification-types": "catalog:openapi"
+    "openapi-specification-types": "catalog:openapi",
+    "vitest": "catalog:testing"
   },
   "publishConfig": {
     "exports": {

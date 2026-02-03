@@ -9,7 +9,7 @@ import { swagger2ToSwagger3 } from '@genapi/transform'
 export function parseHeaderCommits(source: OpenAPISpecificationV2) {
   const comments = [
     `@title ${source.info.title}`,
-    `@description ${source.info.description}`,
+    source.info.description != null && source.info.description !== '' && `@description ${source.info.description}`,
     source.swagger && `@swagger ${source.swagger}`,
     `@version ${source.info.version}`,
   ].filter(Boolean)

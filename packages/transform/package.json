@@ -26,12 +26,14 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "automd": "automd",
     "prepublishOnly": "nr build"
   },
   "devDependencies": {
-    "openapi-specification-types": "catalog:openapi"
+    "openapi-specification-types": "catalog:openapi",
+    "vitest": "catalog:testing"
   },
   "publishConfig": {
     "exports": {

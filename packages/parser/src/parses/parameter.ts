@@ -25,7 +25,7 @@ export function parseParameterFiled(parameter: Parameter) {
     field.description = [field.description || '', enumsDesc].filter(Boolean)
   }
 
-  if (['formData', 'body', 'header', 'path', 'query'].includes(parameter.in))
+  if (['formData', 'body', 'header', 'path', 'query', 'cookie', 'querystring'].includes(parameter.in))
     field.type = parseSchemaType(parameter as Parameters<typeof parseSchemaType>[0])
 
   if (!field.description)
