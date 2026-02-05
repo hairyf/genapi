@@ -223,6 +223,7 @@ export namespace ApiPipeline {
      */
     source?: any
 
+    [key: string]: any
   }
   export interface ConfigServers extends Omit<Config, 'input' | 'output'> {
     servers: Config[]

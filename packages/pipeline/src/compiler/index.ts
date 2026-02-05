@@ -19,3 +19,5 @@ export function compiler(configRead: ApiPipeline.ConfigRead) {
 
   return configRead
 }
+
+export { compilerTsRequestDeclaration, compilerTsTypingsDeclaration }

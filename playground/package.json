@@ -10,9 +10,11 @@
     "@genapi/pipeline": "workspace:*",
     "@genapi/presets": "workspace:*",
     "@genapi/transform": "workspace:*",
+    "ofetch": "catalog:",
     "wpapi-to-swagger": "catalog:playground"
   },
   "devDependencies": {
-    "@uni-helper/uni-network": "catalog:playground"
+    "@uni-helper/uni-network": "catalog:playground",
+    "fetchdts": "catalog:"
   }
 }
