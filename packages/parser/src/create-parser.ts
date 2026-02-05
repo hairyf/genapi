@@ -34,7 +34,7 @@ export function createParser(pathHandler: PathHandler) {
     const interfaces: StatementInterface[] = []
     const functions: StatementFunction[] = []
 
-    provide({ interfaces, functions })
+    provide({ interfaces, functions, configRead })
     transformBaseURL(source)
     if (source.definitions)
       transformDefinitions(source.definitions)

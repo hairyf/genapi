@@ -21,15 +21,23 @@ function schemaRequired(schema: SchemaLike, field?: string): boolean {
  * @param propertie
  */
 export function parseSchemaType(propertie: SchemaWithAllOf): string {
-  const { interfaces = [] } = inject()
+  const { interfaces = [], configRead } = inject()
 
   if (!propertie)
     return 'any'
-  if (propertie.originalRef)
-    return varName(propertie.originalRef)
+  if (propertie.originalRef) {
+    const originalName = varName(propertie.originalRef)
+    // Check if this definition was renamed
+    const nameMapping = (configRead?.config as any)?.__definitionNameMapping
+    return nameMapping?.[originalName] ?? originalName
+  }
 
-  if (propertie.$ref)
-    return varName(useRefMap(propertie.$ref))
+  if (propertie.$ref) {
+    const originalName = varName(useRefMap(propertie.$ref))
+    // Check if this definition was renamed
+    const nameMapping = (configRead?.config as any)?.__definitionNameMapping
+    return nameMapping?.[originalName] ?? originalName
+  }
 
   // Handle allOf: merge multiple schemas, typically used for generic response types
   if (propertie.allOf) {

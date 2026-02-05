@@ -137,12 +137,12 @@ export namespace ApiPipeline {
      * @description
      * Transform the operation
      */
-    operation: (name: string, parameters: StatementField[], responseType: string) => Operation
+    operation?: (name: string, parameters: StatementField[], responseType: string) => Operation
     /**
      * @description
      * Transform the definition type
      */
-    definition: (name: string, type: string) => Definition
+    definition?: (name: string, type: string) => Definition
   }
 
   export interface Config extends PreInputs, PreOutput, Meta {

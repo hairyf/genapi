@@ -14,26 +14,39 @@ export function transformDefinitions(definitions: Definitions) {
   const transformDef = config.transform?.definition
   const patchDefinitions = config.patch?.definitions || {}
 
+  // Map from original interface name to renamed interface name
+  // Used by parseSchemaType to resolve $ref to renamed interfaces
+  const nameMapping: Record<string, string> = {}
+
   for (const [name, definition] of Object.entries(definitions)) {
     const { properties = {} } = definition
 
     const interfaceName = varName(name)
 
-    interfaces.push({
-      export: true,
-      name: interfaceName,
-      properties: Object.keys(properties).map(name => defToFields(name, properties[name])),
-    })
-
     // Build a structural type string for this definition so `transform.definition`
     // and `patch.definitions` can operate on it.
     const baseType = buildDefinitionType(interfaceName, properties)
-    applyDefinitionTransformsAndPatches({
+    const patchResult = applyDefinitionTransformsAndPatches({
       baseName: interfaceName,
       baseType,
       configRead,
       transformDef,
       patchDefinitions,
+    })
+
+    // If patch only renames (no type override), use the new name for the interface
+    // Otherwise, keep original name and create type alias
+    const finalInterfaceName = patchResult.shouldRename ? patchResult.aliasName : interfaceName
+
+    // Store mapping for parseSchemaType to use
+    if (finalInterfaceName !== interfaceName) {
+      nameMapping[interfaceName] = finalInterfaceName
+    }
+
+    interfaces.push({
+      export: true,
+      name: finalInterfaceName,
+      properties: Object.keys(properties).map(name => defToFields(name, properties[name])),
     })
 
     function defToFields(name: string, propertie: Schema) {
@@ -46,6 +59,11 @@ export function transformDefinitions(definitions: Definitions) {
         required: required ?? (typeof propertie.required === 'boolean' ? propertie.required : undefined),
       }
     }
+  }
+
+  // Store name mapping in config for parseSchemaType to use
+  if (configRead?.config) {
+    (configRead.config as any).__definitionNameMapping = nameMapping
   }
 }
 
@@ -75,13 +93,14 @@ interface DefinitionPatchContext {
  * to a single Swagger/OpenAPI definition.
  *
  * Semantics:
- * - Rename only: `'UserDto': 'User'` → `export type User = UserDto`
+ * - Rename only (string or name only): `'Order': 'OrderDTO'` → interface renamed to `OrderDTO`
  * - Rename + override type:
  *   `'SessionDto': { name: 'Session', type: '{ name: string }' }`
- *   → `export type Session = { name: string }`
+ *   → interface stays `SessionDto`, creates `export type Session = { name: string }`
  *
- * The original interface (e.g. `UserDto`) is preserved so existing references
- * from schemas remain valid; patches add friendly alias types on top.
+ * When only renaming, the interface itself is renamed so all references automatically
+ * use the new name. When type is overridden, the original interface is preserved
+ * and a type alias is created.
  */
 function applyDefinitionTransformsAndPatches(ctx: DefinitionPatchContext) {
   const {
@@ -94,6 +113,7 @@ function applyDefinitionTransformsAndPatches(ctx: DefinitionPatchContext) {
 
   let aliasName = baseName
   let aliasType = baseType
+  let hasTypeOverride = false
 
   function applyPatch(patch?: ApiPipeline.Definition) {
     if (!patch)
@@ -106,8 +126,10 @@ function applyDefinitionTransformsAndPatches(ctx: DefinitionPatchContext) {
 
     if (patch.name)
       aliasName = patch.name
-    if (patch.type)
+    if (patch.type) {
       aliasType = patch.type
+      hasTypeOverride = true
+    }
   }
 
   // Global transform first.
@@ -124,14 +146,22 @@ function applyDefinitionTransformsAndPatches(ctx: DefinitionPatchContext) {
   const hasTypeChange = aliasType !== baseType
 
   if (!hasNameChange && !hasTypeChange)
-    return
+    return { aliasName: baseName, shouldRename: false }
 
-  const aliasValue = hasTypeChange ? aliasType : baseName
+  // If only renaming (no type override), rename the interface itself
+  // Otherwise, create a type alias
+  const shouldRename = hasNameChange && !hasTypeOverride
 
-  configRead.graphs.typings = configRead.graphs.typings || []
-  configRead.graphs.typings.push({
-    export: true,
-    name: aliasName,
-    value: aliasValue,
-  })
+  if (!shouldRename) {
+    // Create type alias when type is overridden
+    const aliasValue = hasTypeChange ? aliasType : baseName
+    configRead.graphs.typings = configRead.graphs.typings || []
+    configRead.graphs.typings.push({
+      export: true,
+      name: aliasName,
+      value: aliasValue,
+    })
+  }
+
+  return { aliasName, shouldRename }
 }
