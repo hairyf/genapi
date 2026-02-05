@@ -15,6 +15,7 @@ export function transformParameters(parameters: StatementField[], options: Param
   const namespace = syntax === 'ecmascript' ? `import('${importType}')` : 'Types'
   const infer = configRead.graphs.response.infer || ''
   const generic = parseGenericType(configRead.graphs.response.generic || options.generic, syntax)
+
   const spaceResponseType = parseResponseType({
     responseType: spliceTypeSpace(responseType),
     generic,

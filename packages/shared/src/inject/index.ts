@@ -1,5 +1,4 @@
 import type { ApiPipeline, StatementField, StatementFunction, StatementInterface } from '../types'
-
 /**
  * Context passed through pipeline steps (config, configRead, interfaces, functions, parameters).
  */
@@ -9,6 +8,7 @@ export interface Context {
   interfaces?: StatementInterface[]
   functions?: StatementFunction[]
   parameters?: StatementField[]
+  returnType?: string
 }
 
 export const context: Record<string, Context> = {

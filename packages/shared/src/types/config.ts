@@ -88,6 +88,13 @@ export namespace ApiPipeline {
 
     /** Only generate type declaration files */
     onlyDeclaration?: boolean
+
+    /**
+     * Whether to generate mock functions using better-mock
+     *
+     * @default false
+     */
+    mockjs?: boolean
   }
 
   export type Operation = string | {

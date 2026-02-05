@@ -34,6 +34,12 @@ export function createParser(pathHandler: PathHandler) {
     const interfaces: StatementInterface[] = []
     const functions: StatementFunction[] = []
 
+    // Inject interfaces, functions, and configRead into default context
+    // Referenced at:
+    // - packages/parser/src/parses/method.ts:95 (inject() gets interfaces, configRead)
+    // - packages/parser/src/parses/schema.ts:24 (inject() gets interfaces, configRead)
+    // - packages/parser/src/transform/definitions.ts:12 (inject() gets interfaces, configRead)
+    // - packages/parser/src/create-parser.ts:43 (inject() gets interfaces, functions, configRead)
     provide({ interfaces, functions, configRead })
     transformBaseURL(source)
     if (source.definitions)

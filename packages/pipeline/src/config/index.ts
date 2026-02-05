@@ -89,6 +89,14 @@ export function config(userConfig: ApiPipeline.Config) {
     },
   }
 
+  // Inject config and configRead into default context
+  // Referenced at:
+  // - packages/parser/src/parses/method.ts:20 (inject() gets config)
+  // - packages/parser/src/parses/method.ts:95 (inject() gets configRead)
+  // - packages/parser/src/parses/schema.ts:24 (inject() gets configRead)
+  // - packages/parser/src/transform/definitions.ts:12 (inject() gets configRead)
+  // - packages/parser/src/transform/urls.ts:73 (inject() gets configRead)
+  // - packages/parser/src/create-parser.ts:43 (inject() gets configRead)
   provide({ config: userConfig, configRead })
 
   return configRead

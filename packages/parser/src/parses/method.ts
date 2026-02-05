@@ -87,6 +87,9 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
   // fix: for path required parameters, move to the end
   config.parameters.sort(a => (a.required ? -1 : 1))
 
+  // Inject method parameter config into named context `${method}/${path}`
+  // Referenced at:
+  // - packages/parser/src/parses/method.ts:133 (inject(\`${method}/${path}\`) gets config)
   provide(`${method}/${path}`, config)
   return config
 }
@@ -137,5 +140,9 @@ export function parseMethodMetadata({ method, path, responses, options: meta }: 
     parameters: config?.parameters,
     responseType,
   }))
+  // Inject function return type into named context (function name)
+  // Referenced at:
+  // - packages/pipeline/src/compiler/request.ts:172 (inject(item.name) gets returnType)
+  provide(name, { returnType: responseType })
   return { description: comments, name, url, responseType, body: [] as string[] }
 }

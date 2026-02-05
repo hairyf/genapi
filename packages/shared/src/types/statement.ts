@@ -34,6 +34,8 @@ export interface StatementFunction {
 
   returnType?: string
 
+  mockReturn?: string
+
   generics?: StatementGeneric[]
 }
 

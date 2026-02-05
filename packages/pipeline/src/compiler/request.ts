@@ -1,4 +1,5 @@
-import type { ApiPipeline } from '@genapi/shared'
+import type { ApiPipeline, StatementInterface } from '@genapi/shared'
+import { inject } from '@genapi/shared'
 import {
   genComment,
   genFunction,
@@ -7,6 +8,93 @@ import {
 } from 'knitwork-x'
 
 import { compilerTsTypingsDeclaration } from './typings'
+
+/**
+ * Generate mock template object based on interface definition
+ */
+function generateMockTemplate(
+  typeName: string,
+  interfaces: StatementInterface[],
+  visited = new Set<string>(),
+): string {
+  // Remove namespace prefix like "Types." or "import('...')."
+  const cleanTypeName = typeName
+    .replace(/^Types\./, '')
+    .replace(/^import\(['"][^'"]+['"]\)\./, '')
+    .trim()
+
+  // Handle array types like "Pet[]" or "string[]"
+  const arrayMatch = cleanTypeName.match(/^(.+)\[\]$/)
+  if (arrayMatch) {
+    const itemType = arrayMatch[1]
+    const itemTemplate = generateMockTemplate(itemType, interfaces, visited)
+    return `[${itemTemplate}]`
+  }
+
+  // Handle union types (basic handling)
+  if (cleanTypeName.includes('|')) {
+    return '{}'
+  }
+
+  // Handle primitive types
+  const primitiveMap: Record<string, string> = {
+    string: '\'@string\'',
+    number: '\'@integer\'',
+    boolean: '\'@boolean\'',
+    Date: '\'@datetime\'',
+    void: 'null',
+    any: '\'@string\'',
+  }
+
+  if (primitiveMap[cleanTypeName]) {
+    return primitiveMap[cleanTypeName]
+  }
+
+  // Handle interface types
+  const interfaceDef = interfaces.find(i => i.name === cleanTypeName)
+  if (!interfaceDef || !interfaceDef.properties) {
+    // If interface not found, return a basic object
+    return '{}'
+  }
+
+  // Prevent circular references
+  if (visited.has(cleanTypeName)) {
+    return '{}'
+  }
+  visited.add(cleanTypeName)
+
+  // Generate properties
+  const properties: string[] = []
+  for (const prop of interfaceDef.properties) {
+    if (!prop.type)
+      continue
+
+    let propType = prop.type.trim()
+    // Remove namespace prefix from property types
+    propType = propType.replace(/^Types\./, '').replace(/^import\(['"][^'"]+['"]\)\./, '')
+
+    let mockValue: string
+
+    // Handle array types in properties
+    if (propType.endsWith('[]')) {
+      const itemType = propType.slice(0, -2)
+      const itemTemplate = generateMockTemplate(itemType, interfaces, new Set(visited))
+      mockValue = `'${prop.name}|1-5': ${itemTemplate}`
+    }
+    else {
+      const innerTemplate = generateMockTemplate(propType, interfaces, new Set(visited))
+      mockValue = `'${prop.name}': ${innerTemplate}`
+    }
+
+    properties.push(mockValue)
+  }
+
+  visited.delete(cleanTypeName)
+
+  return properties.length > 0
+    ? `{\n    ${properties.join(',\n    ')}\n  }`
+    : '{}'
+}
 
 /**
  * Compiles configRead graphs to request code string using knitwork-x.
@@ -39,6 +127,12 @@ export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead)
     }
     return genImport(item.value, item.names || [], { type: !!item.type })
   })
+
+  // Add better-mock import if mockjs is enabled
+  if (configRead.config.mockjs) {
+    importLines.push(genImport('better-mock', { name: 'Mock' }))
+  }
+
   if (importLines.length > 0)
     sections.push(importLines.join('\n'))
 
@@ -53,8 +147,9 @@ export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead)
     sections.push(variableLines.join('\n'))
 
   // Functions
-  const functionLines = configRead.graphs.functions.map((item) => {
-    return genFunction({
+  const functionLines: string[] = []
+  configRead.graphs.functions.forEach((item) => {
+    const functionCode = genFunction({
       export: true,
       name: item.name,
       parameters: (item.parameters || []).map(p => ({
@@ -69,6 +164,25 @@ export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead)
       generator: item.generator,
       jsdoc: item.description,
     })
+    functionLines.push(functionCode)
+
+    // Add .mock property if mockjs is enabled
+    if (!configRead.config.mockjs)
+      return
+    const mockReturnType = inject(item.name)?.returnType || 'any'
+
+    // For void return type, mock should return undefined
+    if (mockReturnType === 'void')
+      return
+    let mockTemplate = '{}'
+    if (mockReturnType && mockReturnType !== 'any') {
+      // Generate structured mock template based on interface definition
+      mockTemplate = generateMockTemplate(
+        mockReturnType,
+        configRead.graphs.interfaces || [],
+      )
+    }
+    functionLines.push(`${item.name}.mock = () => { return Mock.mock(${mockTemplate}) }`)
   })
   if (functionLines.length > 0)
     sections.push(functionLines.join('\n\n'))
