@@ -13,7 +13,6 @@ const config = defineConfig({
   },
 
   mockjs: true,
-  responseRequired: true,
 })
 
 export default config

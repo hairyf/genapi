@@ -120,6 +120,77 @@ export default defineConfig({
 
 ![swag-axios-js](public/swag-axios-js.png)
 
+## Patch - 静态补丁
+
+精确匹配修改操作和类型定义：
+
+```ts
+export default defineConfig({
+  pipeline: axios.ts,
+  input: 'https://petstore.swagger.io/v2/swagger.json',
+  patch: {
+    operations: {
+      // 重命名函数
+      postUpdateUserUsingPOST: 'updateUserInfo',
+      // 修改参数和返回类型
+      getUserUsingGET: {
+        name: 'getUser',
+        parameters: [{ name: 'id', type: 'string', required: true }],
+        responseType: 'UserResponse'
+      }
+    },
+    definitions: {
+      // 重命名类型
+      UserDto: 'User',
+      // 覆盖类型（创建类型别名）
+      SessionDto: {
+        name: 'Session',
+        type: '{ name: string, age: number }'
+      }
+    }
+  }
+})
+```
+
+## Transform - 全局转换
+
+通过函数批量转换操作和类型定义：
+
+```ts
+export default defineConfig({
+  pipeline: axios.ts,
+  input: 'https://petstore.swagger.io/v2/swagger.json',
+  transform: {
+    operation: name => `api_${name}`, // 批量添加前缀
+    definition: name => name.endsWith('Dto') ? name.slice(0, -3) : name
+  },
+  patch: {
+    // transform 先执行，patch 后执行
+    operations: { api_getUser: 'fetchUser' }
+  }
+})
+```
+
+## MockJS - Mock 数据生成
+
+为每个 API 函数自动生成 mock 方法（需要安装 `better-mock`）：
+
+```ts
+export default defineConfig({
+  pipeline: axios.ts,
+  input: 'https://petstore.swagger.io/v2/swagger.json',
+  mockjs: true,
+})
+```
+
+使用示例：
+
+```ts
+import { getUser } from './api'
+
+const mockUser = getUser.mock() // 返回符合类型的模拟数据
+```
+
 ## 自定义管道
 
 管道是genapi的核心。你可以创建自定义管道:

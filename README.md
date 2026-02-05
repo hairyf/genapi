@@ -122,6 +122,77 @@ Run `genapi` and get:
 
 ![swag-axios-js](public/swag-axios-js.png)
 
+## Patch - Static Patches
+
+Make exact-match modifications to operations and type definitions:
+
+```ts
+export default defineConfig({
+  pipeline: axios.ts,
+  input: 'https://petstore.swagger.io/v2/swagger.json',
+  patch: {
+    operations: {
+      // Rename function
+      postUpdateUserUsingPOST: 'updateUserInfo',
+      // Modify parameters and return type
+      getUserUsingGET: {
+        name: 'getUser',
+        parameters: [{ name: 'id', type: 'string', required: true }],
+        responseType: 'UserResponse'
+      }
+    },
+    definitions: {
+      // Rename type
+      UserDto: 'User',
+      // Override type (creates type alias)
+      SessionDto: {
+        name: 'Session',
+        type: '{ name: string, age: number }'
+      }
+    }
+  }
+})
+```
+
+## Transform - Global Transformations
+
+Batch transform operations and type definitions via functions:
+
+```ts
+export default defineConfig({
+  pipeline: axios.ts,
+  input: 'https://petstore.swagger.io/v2/swagger.json',
+  transform: {
+    operation: name => `api_${name}`, // Batch add prefix
+    definition: name => name.endsWith('Dto') ? name.slice(0, -3) : name
+  },
+  patch: {
+    // transform executes first, patch executes after
+    operations: { api_getUser: 'fetchUser' }
+  }
+})
+```
+
+## MockJS - Mock Data Generation
+
+Automatically generate mock methods for each API function (requires `better-mock`):
+
+```ts
+export default defineConfig({
+  pipeline: axios.ts,
+  input: 'https://petstore.swagger.io/v2/swagger.json',
+  mockjs: true,
+})
+```
+
+Usage:
+
+```ts
+import { getUser } from './api'
+
+const mockUser = getUser.mock() // Returns mock data conforming to type definitions
+```
+
 ## Custom Pipeline
 
 Pipeline is the core of genapi. You can create custom pipelines:
