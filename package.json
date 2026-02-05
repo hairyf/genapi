@@ -10,6 +10,7 @@
     "lint": "eslint --cache .",
     "typecheck": "pnpm -r run typecheck",
     "test": "vitest",
+    "test:coverage": "vitest run --coverage",
     "automd": "pnpm --filter '@genapi/*' exec automd",
     "release": "bumpp -r && pnpm -r publish --access public",
     "prepare": "simple-git-hooks && skills-manifest install"
@@ -19,6 +20,7 @@
     "@antfu/ni": "catalog:cli",
     "@antfu/utils": "catalog:inlined",
     "@types/node": "catalog:types",
+    "@vitest/coverage-v8": "catalog:testing",
     "automd": "catalog:cli",
     "bumpp": "catalog:cli",
     "eslint": "catalog:cli",

@@ -11,8 +11,8 @@ export function config(userConfig: ApiPipeline.Config): ApiPipeline.ConfigRead {
   const configRead = _config(userConfig)
 
   configRead.graphs.imports.push({
-    name: 'ofetch',
     value: userConfig.import.http,
+    names: ['ofetch'],
   })
 
   return configRead

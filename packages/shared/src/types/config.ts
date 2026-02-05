@@ -104,7 +104,7 @@ export namespace ApiPipeline {
   }
   export type Definition = string | {
     name?: string
-    type?: string
+    type?: StatementField[]
   }
 
   export interface Patch {
@@ -149,7 +149,7 @@ export namespace ApiPipeline {
      * @description
      * Transform the definition type
      */
-    definition?: (name: string, type: string) => Definition
+    definition?: (name: string, type: StatementField[]) => Definition
   }
 
   export interface Config extends PreInputs, PreOutput, Meta {

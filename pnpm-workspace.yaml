@@ -5,12 +5,10 @@ ignoreWorkspaceRootCheck: true
 shellEmulator: true
 
 trustPolicy: no-downgrade
+
 packages:
   - packages/*
   - playground
-catalog:
-  fetchdts: ^0.1.7
-  ofetch: ^1.5.1
 catalogs:
   cli:
     '@antfu/eslint-config': ^7.2.0
@@ -28,6 +26,8 @@ catalogs:
     vite: ^7.3.1
   inlined:
     '@antfu/utils': ^9.3.0
+    fetchdts: ^0.1.7
+    ofetch: ^1.5.1
   openapi:
     openapi-specification-types: ^0.3.0
   playground:
@@ -51,6 +51,7 @@ catalogs:
     transliteration: ^2.6.1
     unconfig: ^0.3.13
   testing:
+    '@vitest/coverage-v8': 4.0.18
     vitest: ^4.0.18
   types:
     '@types/fs-extra': ^11.0.4

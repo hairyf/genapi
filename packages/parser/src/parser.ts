@@ -45,9 +45,7 @@ export function createParser(pathHandler: PathHandler) {
     if (source.definitions)
       transformDefinitions(source.definitions)
 
-    traversePaths(source.paths ?? {}, (config) => {
-      pathHandler(config, inject() as ParserContext)
-    })
+    traversePaths(source.paths ?? {}, config => pathHandler(config, inject() as ParserContext))
 
     configRead.graphs.comments = comments
     configRead.graphs.functions = functions

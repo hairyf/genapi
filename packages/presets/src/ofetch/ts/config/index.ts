@@ -8,8 +8,7 @@ export function config(userConfig: ApiPipeline.Config): ApiPipeline.ConfigRead {
   const configRead = _config(userConfig)
 
   configRead.graphs.imports.push({
-    name: 'ofetch',
-    names: userConfig.import.http === 'ofetch' ? ['FetchOptions'] : undefined,
+    names: userConfig.import.http === 'ofetch' ? ['FetchOptions', 'ofetch'] : ['ofetch'],
     value: userConfig.import.http,
   })
 

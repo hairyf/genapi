@@ -126,18 +126,16 @@ describe('transformDefinitions', () => {
       // Interface renamed to User
       expect(interfaces.find((i: any) => i.name === 'User')).toBeDefined()
       expect(interfaces.find((i: any) => i.name === 'UserDto')).toBeUndefined()
-      // No type alias created when only renaming
-      expect(configRead.graphs.typings).toHaveLength(0)
     })
 
-    it('creates type alias with custom type when patch provides type override', () => {
+    it('applies name and type when patch provides both', () => {
       const interfaces: any[] = []
       provide({ interfaces, configRead })
       configRead.config.patch = {
         definitions: {
           SessionDto: {
             name: 'Session',
-            type: '{ name: string, age: number }',
+            type: [{ name: 'name', type: 'string' }, { name: 'age', type: 'number' }],
           },
         },
       }
@@ -153,11 +151,12 @@ describe('transformDefinitions', () => {
       }
       transformDefinitions(definitions as any)
 
-      // Original interface preserved when type is overridden
-      expect(interfaces.find((i: any) => i.name === 'SessionDto')).toBeDefined()
-      expect(configRead.graphs.typings).toHaveLength(1)
-      expect(configRead.graphs.typings![0].name).toBe('Session')
-      expect(configRead.graphs.typings![0].value).toBe('{ name: string, age: number }')
+      // Interface renamed to Session with patch type as properties
+      const session = interfaces.find((i: any) => i.name === 'Session')
+      expect(session).toBeDefined()
+      expect(session!.properties).toHaveLength(2)
+      expect(session!.properties.map((p: any) => p.name)).toEqual(['name', 'age'])
+      expect(interfaces.find((i: any) => i.name === 'SessionDto')).toBeUndefined()
     })
 
     it('handles multiple definition patches', () => {
@@ -182,10 +181,9 @@ describe('transformDefinitions', () => {
       }
       transformDefinitions(definitions as any)
 
-      // Interfaces renamed, no type aliases created
+      // Interfaces renamed
       expect(interfaces.find((i: any) => i.name === 'User')).toBeDefined()
       expect(interfaces.find((i: any) => i.name === 'Order')).toBeDefined()
-      expect(configRead.graphs.typings).toHaveLength(0)
     })
 
     it('renames interface when patch matches transformed name', () => {
@@ -215,7 +213,6 @@ describe('transformDefinitions', () => {
 
       // Interface renamed to UserAlias (transform: UserDto -> User, patch: User -> UserAlias)
       expect(interfaces.find((i: any) => i.name === 'UserAlias')).toBeDefined()
-      expect(configRead.graphs.typings).toHaveLength(0)
     })
 
     it('renames interface when patch only renames', () => {
@@ -275,11 +272,9 @@ describe('transformDefinitions', () => {
 
       // Transform: UserDto -> User
       // Patch: User -> UserEntity
-      // Interface should be renamed to UserEntity (no typings created)
       expect(interfaces.find((i: any) => i.name === 'UserEntity')).toBeDefined()
       expect(interfaces.find((i: any) => i.name === 'User')).toBeUndefined()
       expect(interfaces.find((i: any) => i.name === 'UserDto')).toBeUndefined()
-      expect(configRead.graphs.typings).toHaveLength(0)
     })
 
     it('renames interface when transform returns string', () => {
@@ -301,18 +296,17 @@ describe('transformDefinitions', () => {
       // Interface renamed to RenamedType
       expect(interfaces.find((i: any) => i.name === 'RenamedType')).toBeDefined()
       expect(interfaces.find((i: any) => i.name === 'OriginalType')).toBeUndefined()
-      expect(configRead.graphs.typings).toHaveLength(0)
     })
 
-    it('creates type alias with custom type when transform returns object with type', () => {
+    it('applies name and type when transform returns object with type', () => {
       const interfaces: any[] = []
       provide({ interfaces, configRead })
       configRead.config.transform = {
         operation: () => '',
-        definition: (name, type) => {
+        definition: (name) => {
           return {
             name: `${name}Alias`,
-            type: `Custom${type}`,
+            type: [{ name: 'id', type: 'integer' }],
           }
         },
       }
@@ -325,19 +319,19 @@ describe('transformDefinitions', () => {
       }
       transformDefinitions(definitions as any)
 
-      // Original interface preserved when type is overridden
-      expect(interfaces.find((i: any) => i.name === 'Test')).toBeDefined()
-      expect(configRead.graphs.typings).toHaveLength(1)
-      expect(configRead.graphs.typings![0].name).toBe('TestAlias')
-      expect(configRead.graphs.typings![0].value).toContain('Custom')
+      // Interface renamed to TestAlias with transform type as properties
+      const testAlias = interfaces.find((i: any) => i.name === 'TestAlias')
+      expect(testAlias).toBeDefined()
+      expect(testAlias!.properties).toHaveLength(1)
+      expect(testAlias!.properties[0]).toEqual({ name: 'id', type: 'integer', required: undefined, description: undefined })
     })
 
-    it('does not create alias when transform returns same name and type', () => {
+    it('keeps interface unchanged when transform returns same name and type', () => {
       const interfaces: any[] = []
       provide({ interfaces, configRead })
       configRead.config.transform = {
         operation: () => '',
-        definition: (name, type) => ({ name, type }), // No-op transform
+        definition: (name, properties) => ({ name, type: properties }), // No-op transform
       }
 
       const definitions = {
@@ -348,8 +342,8 @@ describe('transformDefinitions', () => {
       }
       transformDefinitions(definitions as any)
 
-      // No typings should be created since nothing changed
-      expect(configRead.graphs.typings).toHaveLength(0)
+      expect(interfaces.find((i: any) => i.name === 'Unchanged')).toBeDefined()
+      expect(interfaces.find((i: any) => i.name === 'Unchanged')!.properties).toHaveLength(1)
     })
   })
 })
