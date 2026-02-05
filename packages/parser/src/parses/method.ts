@@ -97,52 +97,76 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
 export function parseMethodMetadata({ method, path, responses, options: meta }: PathMethod) {
   const { configRead, interfaces } = inject()
   const metaAny = meta as { consumes?: string[] }
+
+  // 1. 结构化注释生成
   const comments = [
     meta.summary && `@summary ${meta.summary}`,
     meta.description && `@description ${meta.description}`,
     `@method ${method}`,
-    meta.tags?.length ? `@tags ${meta.tags.join(' | ') || '-'}` : undefined,
-    metaAny.consumes?.length ? `@consumes ${metaAny.consumes.join('; ') || '-'}` : undefined,
-  ].filter((c): c is string => typeof c === 'string')
+    meta.tags?.length && `@tags ${meta.tags.join(' | ')}`,
+    metaAny.consumes?.length && `@consumes ${metaAny.consumes.join('; ')}`,
+  ].filter((c): c is string => !!c)
 
+  // 2. 路径处理
   let name = camelCase(`${method}/${path}`)
+  const url = path.replace(/\{/g, '${paths.')
 
-  const url = `${path.replace(/(\{)/g, '${paths.')}`
-  function hasContent(r: unknown): r is { content?: Record<string, { schema?: unknown }> } {
-    return r != null && typeof r === 'object' && 'content' in r
+  // 3. 响应 Schema 提取逻辑 (解耦与简化)
+  const getResponseSchema = () => {
+    const res200 = responses['200']
+    const resDefault = responses.default
+
+    // 优先尝试从 content/application/json 获取 (OpenAPI 3.0)
+    const getContentSchema = (res: any) => res?.content?.['application/json']?.schema
+    const schemaFromContent = getContentSchema(res200) ?? getContentSchema(resDefault)
+    if (schemaFromContent)
+      return schemaFromContent
+
+    // 兜底从根节点获取 (Swagger 2.0)
+    if (res200 && 'schema' in res200)
+      return (res200 as any).schema
+    return null
   }
-  const resDefault = responses.default && hasContent(responses.default) ? responses.default : null
-  const res200 = responses['200'] && typeof responses['200'] === 'object' ? responses['200'] : null
-  const contentDefault = resDefault?.content?.['application/json']
-  const content200 = res200 && hasContent(res200) ? res200.content?.['application/json'] : null
-  const schemaFromContent = (contentDefault && typeof contentDefault === 'object' && 'schema' in contentDefault ? (contentDefault as { schema: unknown }).schema : null)
-    ?? (content200 && typeof content200 === 'object' && 'schema' in content200 ? (content200 as { schema: unknown }).schema : null)
-  const schemaFromRes200 = res200 && typeof res200 === 'object' && 'schema' in res200 && !('content' in res200) ? (res200 as { schema: unknown }).schema : null
-  const responseSchema = schemaFromContent ?? schemaFromRes200
-  let responseType = responseSchema && typeof responseSchema === 'object' ? parseSchemaType(responseSchema as Parameters<typeof parseSchemaType>[0]) : 'void'
 
-  if (configRead.config.responseRequired)
-    deepSignRequired(interfaces.find(v => v.name === responseType)?.properties || [])
+  const responseSchema = getResponseSchema()
+  let responseType = responseSchema ? parseSchemaType(responseSchema as any) : 'void'
 
-  function deepSignRequired(properties: StatementField[]) {
-    for (const property of properties) {
-      property.required = true
-
-      for (const { properties } of interfaces.filter(v => v.name === property.type))
-        deepSignRequired(properties || [])
+  // 4. 强制必填标记逻辑 (递归优化)
+  if (configRead.config.responseRequired && responseType !== 'void') {
+    const processedTypes = new Set<string>() // 防止循环引用导致死循环
+    const markRequiredRecursive = (typeName: string) => {
+      if (processedTypes.has(typeName))
+        return
+      processedTypes.add(typeName)
+      const targetInterface = interfaces.find(v => v.name === typeName)
+      targetInterface?.properties?.forEach((prop) => {
+        prop.required = true
+        if (prop.type)
+          markRequiredRecursive(prop.type)
+      })
     }
+    markRequiredRecursive(responseType)
   }
 
+  // 5. 转换与注入
   const config = inject(`${method}/${path}`)
-  ;({ name, responseType } = transformOperation({
+  const transformed = transformOperation({
     configRead,
     name,
     parameters: config?.parameters,
     responseType,
-  }))
-  // Inject function return type into named context (function name)
-  // Referenced at:
-  // - packages/pipeline/src/compiler/request.ts:172 (inject(item.name) gets returnType)
-  provide(name, { returnType: responseType })
-  return { description: comments, name, url, responseType, body: [] as string[] }
+  })
+
+  name = transformed.name
+  responseType = transformed.responseType
+
+  provide(name, { responseType })
+
+  return {
+    description: comments,
+    name,
+    url,
+    responseType,
+    body: [] as string[],
+  }
 }

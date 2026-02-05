@@ -1,42 +1,87 @@
-import type { ApiPipeline, StatementInterface } from '@genapi/shared'
+import type { ApiPipeline, StatementFunction, StatementInterface } from '@genapi/shared'
 import { inject } from '@genapi/shared'
-import {
-  genComment,
-  genFunction,
-  genImport,
-  genVariable,
-} from 'knitwork-x'
-
+import { genComment, genFunction, genImport, genVariable } from 'knitwork-x'
 import { compilerTsTypingsDeclaration } from './typings'
 
+export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead): string {
+  const { graphs, config, outputs } = configRead
+  const sections: string[] = []
+
+  // 1. 预处理数据：建立 Map 索引提升递归查找性能
+  const interfaceMap = new Map<string, StatementInterface>(
+    (graphs.interfaces || []).map(i => [i.name, i]),
+  )
+
+  // 2. 注释生成
+  if (graphs.comments?.length) {
+    sections.push(genComment(graphs.comments.join('\n'), { block: true }))
+  }
+
+  // 3. 导入生成 (逻辑解耦)
+  const importLines = (graphs.imports || []).map((item) => {
+    const isType = !!item.type
+    if (item.namespace)
+      return genImport(item.value, { name: '*', as: item.name! }, { type: isType })
+    if (item.name && !item.names)
+      return genImport(item.value, item.name, { type: isType })
+
+    const names = item.names || []
+    const imports = item.name ? [{ name: 'default', as: item.name }, ...names.map(n => ({ name: n }))] : names
+    return genImport(item.value, imports, { type: isType })
+  })
+
+  if (config.mockjs) {
+    importLines.push(genImport('better-mock', { name: 'Mock' }))
+  }
+  if (importLines.length)
+    sections.push(importLines.join('\n'))
+
+  // 4. 变量生成
+  const variables = (graphs.variables || []).map(item =>
+    genVariable(item.name, item.value ?? '', { export: !!item.export, kind: item.flag }),
+  )
+
+  if (variables.length)
+    sections.push(variables.join('\n'))
+
+  // 5. 函数与 Mock 逻辑
+  const functions = genFunctionsWithMock(graphs.functions || [], interfaceMap, config)
+
+  if (functions.length)
+    sections.push(functions.join('\n\n'))
+
+  // 6. 内联类型声明
+  const isGenerateType = outputs.some(v => v.type === 'typings')
+  const isTsRequest = outputs.some(v => v.type === 'request' && v.path.endsWith('.ts'))
+  if (!isGenerateType && isTsRequest) {
+    sections.push(compilerTsTypingsDeclaration(configRead, false))
+  }
+
+  return sections.filter(Boolean).join('\n\n')
+}
+
+// 预编译正则，避免递归中重复创建
+const RE_NAMESPACE = /^(Types\.|import\(['"][^'"]+['"]\)\.)/g
+const RE_ARRAY_TYPE = /^(.+)\[\]$/
+
 /**
- * Generate mock template object based on interface definition
+ * 优化后的 Mock 模板生成函数
  */
 function generateMockTemplate(
   typeName: string,
-  interfaces: StatementInterface[],
+  interfaceMap: Map<string, StatementInterface>,
   visited = new Set<string>(),
 ): string {
-  // Remove namespace prefix like "Types." or "import('...')."
-  const cleanTypeName = typeName
-    .replace(/^Types\./, '')
-    .replace(/^import\(['"][^'"]+['"]\)\./, '')
-    .trim()
+  const cleanTypeName = typeName.replace(RE_NAMESPACE, '').trim()
 
-  // Handle array types like "Pet[]" or "string[]"
-  const arrayMatch = cleanTypeName.match(/^(.+)\[\]$/)
+  // 1. 处理数组
+  const arrayMatch = cleanTypeName.match(RE_ARRAY_TYPE)
   if (arrayMatch) {
-    const itemType = arrayMatch[1]
-    const itemTemplate = generateMockTemplate(itemType, interfaces, visited)
+    const itemTemplate = generateMockTemplate(arrayMatch[1], interfaceMap, visited)
     return `[${itemTemplate}]`
   }
 
-  // Handle union types (basic handling)
-  if (cleanTypeName.includes('|')) {
-    return '{}'
-  }
-
-  // Handle primitive types
+  // 2. 基础类型映射
   const primitiveMap: Record<string, string> = {
     string: '\'@string\'',
     number: '\'@integer\'',
@@ -46,48 +91,36 @@ function generateMockTemplate(
     any: '\'@string\'',
   }
 
-  if (primitiveMap[cleanTypeName]) {
+  if (primitiveMap[cleanTypeName])
     return primitiveMap[cleanTypeName]
-  }
+  if (cleanTypeName.includes('|'))
+    return '{}' // 联合类型暂简化处理
 
-  // Handle interface types
-  const interfaceDef = interfaces.find(i => i.name === cleanTypeName)
-  if (!interfaceDef || !interfaceDef.properties) {
-    // If interface not found, return a basic object
+  // 3. 递归处理接口
+  const interfaceDef = interfaceMap.get(cleanTypeName)
+  if (!interfaceDef?.properties || visited.has(cleanTypeName)) {
     return '{}'
   }
 
-  // Prevent circular references
-  if (visited.has(cleanTypeName)) {
-    return '{}'
-  }
   visited.add(cleanTypeName)
 
-  // Generate properties
-  const properties: string[] = []
-  for (const prop of interfaceDef.properties) {
-    if (!prop.type)
-      continue
+  const properties = interfaceDef.properties
+    .filter(prop => prop.type)
+    .map((prop) => {
+      const propType = prop.type!.replace(RE_NAMESPACE, '').trim()
 
-    let propType = prop.type.trim()
-    // Remove namespace prefix from property types
-    propType = propType.replace(/^Types\./, '').replace(/^import\(['"][^'"]+['"]\)\./, '')
+      // 这里的 visited 需要浅拷贝一份给子树，避免同级字段干扰，但保持父子链路
+      const nextVisited = new Set(visited)
 
-    let mockValue: string
+      if (propType.endsWith('[]')) {
+        const itemType = propType.slice(0, -2)
+        const itemTemplate = generateMockTemplate(itemType, interfaceMap, nextVisited)
+        return `'${prop.name}|1-5': ${itemTemplate}`
+      }
 
-    // Handle array types in properties
-    if (propType.endsWith('[]')) {
-      const itemType = propType.slice(0, -2)
-      const itemTemplate = generateMockTemplate(itemType, interfaces, new Set(visited))
-      mockValue = `'${prop.name}|1-5': ${itemTemplate}`
-    }
-    else {
-      const innerTemplate = generateMockTemplate(propType, interfaces, new Set(visited))
-      mockValue = `'${prop.name}': ${innerTemplate}`
-    }
-
-    properties.push(mockValue)
-  }
+      const innerTemplate = generateMockTemplate(propType, interfaceMap, nextVisited)
+      return `'${prop.name}': ${innerTemplate}`
+    })
 
   visited.delete(cleanTypeName)
 
@@ -96,59 +129,10 @@ function generateMockTemplate(
     : '{}'
 }
 
-/**
- * Compiles configRead graphs to request code string using knitwork-x.
- */
-export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead): string {
-  configRead.graphs.imports = configRead.graphs.imports || []
-  configRead.graphs.comments = configRead.graphs.comments || []
-  configRead.graphs.variables = configRead.graphs.variables || []
-  configRead.graphs.functions = configRead.graphs.functions || []
-
-  const isGenerateType = configRead.outputs.some(v => v.type === 'typings')
-  const isTypescript = configRead.outputs.some(v => v.type === 'request' && v.path.endsWith('.ts'))
-
-  const sections: string[] = []
-
-  // Comments
-  if (configRead.graphs.comments.length > 0) {
-    sections.push(genComment(configRead.graphs.comments.join('\n'), { block: true }))
-  }
-
-  // Imports
-  const importLines = configRead.graphs.imports.map((item) => {
-    if (item.namespace)
-      return genImport(item.value, { name: '*', as: item.name! }, { type: !!item.type })
-    if (item.name && !item.names)
-      return genImport(item.value, item.name, { type: !!item.type })
-    if (item.name && item.names?.length) {
-      const imports = [{ name: 'default', as: item.name }, ...item.names.map(n => ({ name: n }))]
-      return genImport(item.value, imports, { type: !!item.type })
-    }
-    return genImport(item.value, item.names || [], { type: !!item.type })
-  })
-
-  // Add better-mock import if mockjs is enabled
-  if (configRead.config.mockjs) {
-    importLines.push(genImport('better-mock', { name: 'Mock' }))
-  }
-
-  if (importLines.length > 0)
-    sections.push(importLines.join('\n'))
-
-  // Variables
-  const variableLines = configRead.graphs.variables.map((item) => {
-    return genVariable(item.name, item.value ?? '', {
-      export: !!item.export,
-      kind: item.flag,
-    })
-  })
-  if (variableLines.length > 0)
-    sections.push(variableLines.join('\n'))
-
-  // Functions
-  const functionLines: string[] = []
-  configRead.graphs.functions.forEach((item) => {
+export function genFunctionsWithMock(functions: StatementFunction[], interfaceMap: Map<string, StatementInterface>, config: ApiPipeline.Config) {
+  const functionBlocks: string[] = [];
+  (functions || []).forEach((item) => {
+    // 生成函数主体
     const functionCode = genFunction({
       export: true,
       name: item.name,
@@ -161,37 +145,17 @@ export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead)
       async: item.async,
       returnType: item.returnType,
       generics: item.generics,
-      generator: item.generator,
       jsdoc: item.description,
     })
-    functionLines.push(functionCode)
+    functionBlocks.push(functionCode)
+    const responseType = inject(item.name)?.responseType
 
-    // Add .mock property if mockjs is enabled
-    if (!configRead.config.mockjs)
+    // Mock 注入逻辑
+    if (!config.mockjs || !responseType || responseType === 'void' || responseType === 'any') {
       return
-    const mockReturnType = inject(item.name)?.returnType || 'any'
-
-    // For void return type, mock should return undefined
-    if (mockReturnType === 'void')
-      return
-    let mockTemplate = '{}'
-    if (mockReturnType && mockReturnType !== 'any') {
-      // Generate structured mock template based on interface definition
-      mockTemplate = generateMockTemplate(
-        mockReturnType,
-        configRead.graphs.interfaces || [],
-      )
     }
-    functionLines.push(`${item.name}.mock = () => { return Mock.mock(${mockTemplate}) }`)
+    const mockTemplate = generateMockTemplate(responseType, interfaceMap)
+    functionBlocks.push(`${item.name}.mock = () => Mock.mock(${mockTemplate});`)
   })
-  if (functionLines.length > 0)
-    sections.push(functionLines.join('\n\n'))
-
-  // Inline typings for TS request files when not generating separate typings
-  if (!isGenerateType && isTypescript) {
-    sections.push('')
-    sections.push(compilerTsTypingsDeclaration(configRead, false))
-  }
-
-  return sections.filter(Boolean).join('\n\n')
+  return functionBlocks
 }

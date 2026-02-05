@@ -8,7 +8,7 @@ export interface Context {
   interfaces?: StatementInterface[]
   functions?: StatementFunction[]
   parameters?: StatementField[]
-  returnType?: string
+  responseType?: string
 }
 
 export const context: Record<string, Context> = {
