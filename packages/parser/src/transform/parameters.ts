@@ -50,6 +50,7 @@ export function transformParameters(parameters: StatementField[], options: Param
       return `(${_name})`
     return _name
   }
+
   function spliceTypeSpace(name: string): string {
     if (name.includes('|') && !name.includes('[]'))
       return splitTypeSpaces(name)

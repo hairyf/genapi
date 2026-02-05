@@ -71,7 +71,7 @@ describe('ofetch/schema compiler', () => {
     const output = configRead.outputs[0]
     expect(output.code).toBeDefined()
     expect(output.code).toContain('interface APISchema')
-    expect(output.code).toContain('\'/users\'')
+    expect(output.code).toContain('"/users"')
     expect(output.code).toContain('[Endpoint]')
     expect(output.code).toContain('GET')
     expect(output.code).toContain('response: User[]')
@@ -172,8 +172,8 @@ describe('ofetch/schema compiler', () => {
 
     const output = configRead.outputs[0]
     expect(output.code).toBeDefined()
-    expect(output.code).toContain('\'/users\'')
-    expect(output.code).toContain('\'/posts\'')
+    expect(output.code).toContain('"/users"')
+    expect(output.code).toContain('"/posts"')
     expect(output.code).toContain('[DynamicParam]')
   })
 

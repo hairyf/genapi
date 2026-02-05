@@ -294,6 +294,9 @@ importers:
       '@genapi/shared':
         specifier: workspace:*
         version: link:../shared
+      knitwork-x:
+        specifier: catalog:runtime
+        version: 0.2.0
       openapi-specification-types:
         specifier: catalog:openapi
         version: 0.3.0

@@ -93,6 +93,7 @@
     "@genapi/parser": "workspace:*",
     "@genapi/pipeline": "workspace:*",
     "@genapi/shared": "workspace:*",
+    "knitwork-x": "catalog:runtime",
     "openapi-specification-types": "catalog:openapi"
   }
 }
