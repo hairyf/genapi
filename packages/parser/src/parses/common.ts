@@ -6,13 +6,13 @@ import { swagger2ToSwagger3 } from '@genapi/transform'
  * parse OpenAPI info to commits
  * @param source
  */
-export function parseHeaderCommits(source: OpenAPISpecificationV2) {
+export function parseHeaderCommits(source: OpenAPISpecificationV2): string[] {
   const comments = [
     `@title ${source.info.title}`,
     source.info.description != null && source.info.description !== '' && `@description ${source.info.description}`,
     source.swagger && `@swagger ${source.swagger}`,
     `@version ${source.info.version}`,
-  ].filter(Boolean)
+  ].filter((comment): comment is string => typeof comment === 'string')
   return comments
 }
 

@@ -12,7 +12,6 @@ import {
 export const parser = createParser((config, { configRead, functions, interfaces }) => {
   const { parameters, interfaces: attachInters, options } = parseMethodParameters(config)
   let { name, description, url, responseType } = parseMethodMetadata(config)
-
   interfaces.push(...attachInters)
   parameters.push({
     name: 'config',

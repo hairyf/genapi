@@ -1,5 +1,6 @@
 import type { OptionsOfJSONResponseBody } from 'got'
 import type {
+  StatementField,
   StatementFunction,
   StatementImported,
   StatementInterface,
@@ -89,7 +90,73 @@ export namespace ApiPipeline {
     onlyDeclaration?: boolean
   }
 
+  export type Operation = string | {
+    name?: string
+    parameters?: StatementField[]
+    responseType?: string
+  }
+  export type Definition = string | {
+    name?: string
+    type?: string
+  }
+
+  export interface Patch {
+    /**
+     * @example
+     * {
+     *    // change name to updateUserInfo
+     *    postUpdateUserUsingPOST: 'updateUserInfo',
+     *    // change parameters and name
+     *   'getUserUsingGET_1': {
+     *     name: 'getUser',
+     *     parameters: [
+     *       { name: 'id', type: 'string' }
+     *     ]
+     *   }
+     * }
+     */
+    operations?: Record<string, Operation>
+    /**
+     * @example
+     * {
+     *    // rename type
+     *   'UserDto': 'User',
+     *   'OrderDto': 'Order',
+     *   // change type
+     *   'SessionDto': {
+     *     name: 'Session',
+     *     type: '{ name: string, age: number }',
+     *   }
+     * }
+     */
+    definitions?: Record<string, Definition>
+  }
+
+  export interface Transform {
+    /**
+     * @description
+     * Transform the operation
+     */
+    operation: (name: string, parameters: StatementField[], responseType: string) => Operation
+    /**
+     * @description
+     * Transform the definition type
+     */
+    definition: (name: string, type: string) => Definition
+  }
+
   export interface Config extends PreInputs, PreOutput, Meta {
+    /**
+     * @description
+     * Static patches: exact match modification
+     */
+    patch?: Patch
+
+    /**
+     * @description
+     * Transform the operation and definition
+     */
+    transform?: Transform
     /**
      * The compilation pipeline used supports npm package (add the prefix @genapi/ or genapi-) | local path
      * @default 'swag-axios-ts'

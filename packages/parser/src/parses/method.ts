@@ -2,8 +2,9 @@ import type { StatementField, StatementInterface } from '@genapi/shared'
 import type { Parameter } from 'openapi-specification-types'
 import type { PathMethod } from '../traverse'
 import type { InSchemas, LiteralField } from '../utils'
-import { inject } from '@genapi/shared'
+import { inject, provide } from '@genapi/shared'
 import { camelCase } from '@hairy/utils'
+import { transformOperation } from '../transform'
 import { isRequiredParameter, signAnyInter, toUndefField, varName } from '../utils'
 import { parseParameterFiled } from './parameter'
 import { parseSchemaType } from './schema'
@@ -86,6 +87,7 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
   // fix: for path required parameters, move to the end
   config.parameters.sort(a => (a.required ? -1 : 1))
 
+  provide(`${method}/${path}`, config)
   return config
 }
 
@@ -100,7 +102,7 @@ export function parseMethodMetadata({ method, path, responses, options: meta }: 
     metaAny.consumes?.length ? `@consumes ${metaAny.consumes.join('; ') || '-'}` : undefined,
   ].filter((c): c is string => typeof c === 'string')
 
-  const name = camelCase(`${method}/${path}`)
+  let name = camelCase(`${method}/${path}`)
 
   const url = `${path.replace(/(\{)/g, '${paths.')}`
   function hasContent(r: unknown): r is { content?: Record<string, { schema?: unknown }> } {
@@ -114,7 +116,7 @@ export function parseMethodMetadata({ method, path, responses, options: meta }: 
     ?? (content200 && typeof content200 === 'object' && 'schema' in content200 ? (content200 as { schema: unknown }).schema : null)
   const schemaFromRes200 = res200 && typeof res200 === 'object' && 'schema' in res200 && !('content' in res200) ? (res200 as { schema: unknown }).schema : null
   const responseSchema = schemaFromContent ?? schemaFromRes200
-  const responseType = responseSchema && typeof responseSchema === 'object' ? parseSchemaType(responseSchema as Parameters<typeof parseSchemaType>[0]) : 'void'
+  let responseType = responseSchema && typeof responseSchema === 'object' ? parseSchemaType(responseSchema as Parameters<typeof parseSchemaType>[0]) : 'void'
 
   if (configRead.config.responseRequired)
     deepSignRequired(interfaces.find(v => v.name === responseType)?.properties || [])
@@ -128,5 +130,12 @@ export function parseMethodMetadata({ method, path, responses, options: meta }: 
     }
   }
 
+  const config = inject(`${method}/${path}`)
+  ;({ name, responseType } = transformOperation({
+    configRead,
+    name,
+    parameters: config?.parameters,
+    responseType,
+  }))
   return { description: comments, name, url, responseType, body: [] as string[] }
 }
