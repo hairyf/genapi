@@ -13,7 +13,7 @@
 
 ## 特性
 
-- 🚀 **多种HTTP客户端** - 支持 [axios](https://github.com/axios/axios)、[fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API)、[ky](https://github.com/sindresorhus/ky)、[got](https://github.com/sindresorhus/got)、[ofetch](https://github.com/unjs/ofetch)、[TanStack Query](https://github.com/TanStack/query)（React/Vue）、[uni](https://github.com/uni-helper/uni-network)
+- 🚀 **多种HTTP客户端** - 支持 [axios](https://github.com/axios/axios)、[fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API)、[ky](https://github.com/sindresorhus/ky)、[got](https://github.com/sindresorhus/got)、[ofetch](https://github.com/unjs/ofetch)、[tanstack-query](https://github.com/TanStack/query)、[uni](https://github.com/uni-helper/uni-network)
 - 🔄 **TypeScript & JavaScript** - 生成完整的 TS 和 JS API，包含完整的类型定义
 - 📋 **Schema 模式** - 基于 schema 的类型安全 fetch API（支持 `fetch` 和 `ofetch` 预设）
 - 📖 **多数据源支持** - 支持 OpenAPI 2.0/3.x、Swagger 等多种输入源
