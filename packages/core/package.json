@@ -38,12 +38,17 @@
     "prepublishOnly": "nr build"
   },
   "dependencies": {
+    "@clack/prompts": "catalog:runtime",
     "@genapi/shared": "workspace:*",
     "@hairy/utils": "catalog:runtime",
     "cac": "catalog:runtime",
     "chalk": "catalog:runtime",
+    "consola": "catalog:runtime",
     "fs-extra": "catalog:runtime",
     "jiti": "catalog:runtime",
+    "knitwork-x": "catalog:runtime",
+    "magicast": "catalog:runtime",
+    "nypm": "catalog:runtime",
     "ora": "catalog:runtime",
     "unconfig": "catalog:runtime"
   },

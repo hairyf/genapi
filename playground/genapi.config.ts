@@ -1,18 +1,11 @@
 import { defineConfig } from '@genapi/core'
-// create an API pipeline generator using the pipeline provided by genapi
-// each pipeline exposes corresponding methods, which can be reused and reorganized
-// import pipeline from '@genapi/pipeline'
 import { ofetch } from '@genapi/presets'
 
-const config = defineConfig({
+export default defineConfig({
   preset: ofetch.schema,
-
-  input: 'https://petstore.swagger.io/v2/swagger.json',
+  input: 'http://example.com/api-docs',
   output: {
-    main: 'dist/index.ts',
-    type: 'dist/index.type.ts',
+    main: 'src/api/index.ts',
+    type: 'src/api/index.type.ts',
   },
-
 })
-
-export default config

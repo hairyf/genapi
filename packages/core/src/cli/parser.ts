@@ -36,7 +36,10 @@ export function options(options: any): Partial<ApiPipeline.Config> {
   return config
 }
 
-export function servers(config: ApiPipeline.DefineConfig): ApiPipeline.Config[] {
+export function servers(config: ApiPipeline.DefineConfig | undefined): ApiPipeline.Config[] {
+  if (!config)
+    return []
+
   if (isUndefined((config as ApiPipeline.ConfigServers).servers))
     (config as ApiPipeline.ConfigServers).servers = []
 

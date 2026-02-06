@@ -3,18 +3,19 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "genapi"
+    "build": "genapi",
+    "init": "genapi init"
   },
   "dependencies": {
-    "@genapi/core": "workspace:*",
     "@genapi/pipeline": "workspace:*",
-    "@genapi/presets": "workspace:*",
     "@genapi/transform": "workspace:*",
     "wpapi-to-swagger": "catalog:playground"
   },
   "devDependencies": {
+    "@genapi/core": "workspace:*",
+    "@genapi/presets": "workspace:*",
     "@uni-helper/uni-network": "catalog:playground",
-    "fetchdts": "catalog:inlined",
-    "ofetch": "catalog:inlined"
+    "axios": "catalog:",
+    "fetchdts": "catalog:inlined"
   }
 }
