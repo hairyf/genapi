@@ -7,7 +7,7 @@
 [![License][license-src]][license-href]
 
 > **中文** | [English](./README.md)
-<!-- > [中文文档](http://genapi.vercel.app/?lang=zh-CN) -->
+<!-- > [中文文档](http://genapi-docs.vercel.app/?lang=zh-CN) -->
 API生成器，用于将OpenAPI（v2~v3）和其他输入源转换为TypeScript/JavaScript API。
 
 ## 特性
@@ -67,7 +67,7 @@ export default defineConfig({
 npm run genapi
 ```
 
-更多详情和高级功能，请访问[文档网站](http://genapi.vercel.app/)。
+更多详情和高级功能，请访问[文档网站](http://genapi-docs.vercel.app/)。
 
 ## License
 

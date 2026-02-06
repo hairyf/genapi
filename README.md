@@ -7,7 +7,7 @@
 [![License][license-src]][license-href]
 
 > [中文](./README_CN.md) | **English**
-> [English Docs](http://genapi.vercel.app/)
+> [English Docs](http://genapi-docs.vercel.app/)
 
 API generator that converts OpenAPI (v2~v3) and other input sources into TypeScript/JavaScript APIs.
 
@@ -66,7 +66,7 @@ Then run:
 npm run genapi
 ```
 
-For more details and features, visit the [documentation site](http://genapi.vercel.app/).
+For more details and features, visit the [documentation site](http://genapi-docs.vercel.app/).
 
 ## License
 
