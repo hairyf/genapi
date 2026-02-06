@@ -8,8 +8,7 @@
   },
   "dependencies": {
     "@genapi/pipeline": "workspace:*",
-    "@genapi/transform": "workspace:*",
-    "wpapi-to-swagger": "catalog:playground"
+    "@genapi/transform": "workspace:*"
   },
   "devDependencies": {
     "@genapi/core": "workspace:*",

@@ -39,7 +39,6 @@ catalogs:
   playground:
     '@uni-helper/uni-network': ^0.23.1
     axios: ^1.13.4
-    wpapi-to-swagger: ^0.1.0
   root:
     skills: ^1.3.7
     skills-manifest: ^0.3.3

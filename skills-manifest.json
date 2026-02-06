@@ -1,6 +1,9 @@
 {
   "$schema": "https://raw.githubusercontent.com/hairyf/skills-manifest/main/skills-manifest.schema.json",
-  "agents": ["cursor", "claude-code"],
+  "agents": [
+    "cursor",
+    "claude-code"
+  ],
   "skills": {
     "hairyf/skills": [
       "arch-tsdown-monorepo",

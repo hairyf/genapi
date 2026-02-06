@@ -168,6 +168,14 @@ export namespace ApiPipeline {
      * @default 'swag-axios-ts'
      */
     preset?: string | ApiPipeline.Pipeline
+    /**
+     * @description
+     * Parser type for input source
+     * - 'wpapi': WordPress REST API schema format
+     * - 'swagger': OpenAPI/Swagger format (default)
+     * @default 'swagger'
+     */
+    parser?: 'wpapi' | 'swagger'
   }
 
   export interface Graphs {

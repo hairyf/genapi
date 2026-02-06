@@ -1,9 +1,9 @@
-import type { Method, OpenAPISpecificationV2, Paths, Responses, Security } from 'openapi-specification-types'
+import type { Method, OpenAPISpecificationV2, Paths } from 'openapi-specification-types'
 import type { WordPressAPISchema, WordPressRoute } from './types'
 import { convertEndpoint, getParametersFromArgs, getParametersFromEndpoint } from './utils'
 
 /**
- * Converts a WordPress REST API schema to Swagger 2.0 format.
+ * Converts WordPress REST API schema to Swagger 2.0 format.
  *
  * @param source - WordPress REST API schema (routes + endpoints)
  * @returns Swagger 2.0 document
@@ -18,10 +18,9 @@ export function wpapiToSwagger2(source: WordPressAPISchema): OpenAPISpecificatio
       title: 'WordPress REST API',
       version: '1.0',
       description: 'Using the WordPress REST API you can create a plugin to provide an entirely new admin experience for WordPress, build a brand new interactive front-end experience, or bring your WordPress content into completely separate applications.',
-    } as any,
+    },
     definitions: {},
     consumes: [],
-    externalDocs: {} as any,
     paths: {},
     schemes: ['https', 'http'],
     securityDefinitions: {
@@ -29,7 +28,7 @@ export function wpapiToSwagger2(source: WordPressAPISchema): OpenAPISpecificatio
         type: 'basic',
         description: 'Basic authentication',
       },
-    } as any,
+    },
     tags: [],
   }
 
@@ -66,11 +65,11 @@ export function wpapiToSwagger2(source: WordPressAPISchema): OpenAPISpecificatio
         const tags = [route.namespace]
 
         // Set responses
-        const responses: Responses = {
+        const responses = {
           200: { description: 'OK' },
           400: { description: 'Bad Request' },
           404: { description: 'Not Found' },
-        } as any
+        }
 
         // Set content types for consumption and production
         const consumes = [
@@ -82,7 +81,7 @@ export function wpapiToSwagger2(source: WordPressAPISchema): OpenAPISpecificatio
         const produces = ['application/json']
 
         // Set security definitions
-        const security: Security[] = [{ basic: [] }] as any
+        const security = [{ basic: [] }]
 
         // Create operation ID
         const operationId = `${method}${convertedPath.replace(/\//g, '_').replace(/\{|\}/g, '')}`

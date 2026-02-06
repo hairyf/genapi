@@ -1,4 +1,5 @@
 import type { ApiPipeline } from '@genapi/shared'
+import { wpapiToSwagger2 } from '@genapi/transform'
 import { ofetch } from 'ofetch'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { original } from '../../src/original'
@@ -6,6 +7,11 @@ import { original } from '../../src/original'
 // Mock ofetch
 vi.mock('ofetch', () => ({
   ofetch: vi.fn(),
+}))
+
+// Mock @genapi/transform
+vi.mock('@genapi/transform', () => ({
+  wpapiToSwagger2: vi.fn(),
 }))
 
 describe('original', () => {
@@ -368,5 +374,182 @@ describe('original', () => {
     const result = await original(configRead)
 
     expect(result).toBe(configRead)
+  })
+
+  describe('parser configuration', () => {
+    beforeEach(() => {
+      vi.clearAllMocks()
+    })
+
+    it('transforms WordPress API schema when parser is "wpapi"', async () => {
+      const wpapiSource = {
+        routes: {
+          '/wp/v2': {
+            namespace: 'wp/v2',
+            endpoints: [
+              {
+                methods: ['get'],
+                description: 'List posts',
+                args: {
+                  per_page: { type: 'integer' },
+                },
+              },
+            ],
+          },
+        },
+      }
+
+      const swaggerSource = {
+        swagger: '2.0',
+        info: { title: 'WordPress REST API', version: '1.0' },
+        paths: {
+          '/wp/v2': {
+            get: {
+              operationId: 'getWpV2',
+              tags: ['wp/v2'],
+              responses: { 200: { description: 'OK' } },
+            },
+          },
+        },
+      }
+
+      vi.mocked(wpapiToSwagger2).mockReturnValue(swaggerSource as any)
+
+      const configRead: ApiPipeline.ConfigRead = {
+        config: {
+          input: '',
+          parser: 'wpapi',
+        } as ApiPipeline.Config,
+        inputs: {
+          json: wpapiSource as any,
+        },
+        outputs: [],
+        graphs: {
+          comments: [],
+          functions: [],
+          imports: [],
+          interfaces: [],
+          typings: [],
+          variables: [],
+          response: {},
+        },
+      }
+
+      const result = await original(configRead)
+
+      expect(wpapiToSwagger2).toHaveBeenCalledWith(wpapiSource)
+      expect(result.source).toEqual(swaggerSource)
+    })
+
+    it('does not transform when parser is "swagger"', async () => {
+      const swaggerSource = {
+        swagger: '2.0',
+        info: { title: 'Test API', version: '1.0.0' },
+        paths: {},
+      }
+
+      const configRead: ApiPipeline.ConfigRead = {
+        config: {
+          input: '',
+          parser: 'swagger',
+        } as ApiPipeline.Config,
+        inputs: {
+          json: swaggerSource as any,
+        },
+        outputs: [],
+        graphs: {
+          comments: [],
+          functions: [],
+          imports: [],
+          interfaces: [],
+          typings: [],
+          variables: [],
+          response: {},
+        },
+      }
+
+      const result = await original(configRead)
+
+      expect(wpapiToSwagger2).not.toHaveBeenCalled()
+      expect(result.source).toEqual(swaggerSource)
+    })
+
+    it('defaults to "swagger" parser when parser is not specified', async () => {
+      const swaggerSource = {
+        swagger: '2.0',
+        info: { title: 'Test API', version: '1.0.0' },
+        paths: {},
+      }
+
+      const configRead: ApiPipeline.ConfigRead = {
+        config: {
+          input: '',
+        } as ApiPipeline.Config,
+        inputs: {
+          json: swaggerSource as any,
+        },
+        outputs: [],
+        graphs: {
+          comments: [],
+          functions: [],
+          imports: [],
+          interfaces: [],
+          typings: [],
+          variables: [],
+          response: {},
+        },
+      }
+
+      const result = await original(configRead)
+
+      expect(wpapiToSwagger2).not.toHaveBeenCalled()
+      expect(result.source).toEqual(swaggerSource)
+    })
+
+    it('transforms WordPress API schema from uri input when parser is "wpapi"', async () => {
+      const wpapiSource = {
+        routes: {
+          '/wp/v2': {
+            namespace: 'wp/v2',
+            endpoints: [{ methods: ['get'], args: {} }],
+          },
+        },
+      }
+
+      const swaggerSource = {
+        swagger: '2.0',
+        info: { title: 'WordPress REST API', version: '1.0' },
+        paths: {},
+      }
+
+      vi.mocked(ofetch).mockResolvedValue(wpapiSource as any)
+      vi.mocked(wpapiToSwagger2).mockReturnValue(swaggerSource as any)
+
+      const configRead: ApiPipeline.ConfigRead = {
+        config: {
+          input: '',
+          parser: 'wpapi',
+        } as ApiPipeline.Config,
+        inputs: {
+          uri: 'https://example.com/wp-json',
+        },
+        outputs: [],
+        graphs: {
+          comments: [],
+          functions: [],
+          imports: [],
+          interfaces: [],
+          typings: [],
+          variables: [],
+          response: {},
+        },
+      }
+
+      const result = await original(configRead)
+
+      expect(ofetch).toHaveBeenCalledWith('https://example.com/wp-json')
+      expect(wpapiToSwagger2).toHaveBeenCalledWith(wpapiSource)
+      expect(result.source).toEqual(swaggerSource)
+    })
   })
 })
