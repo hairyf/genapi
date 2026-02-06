@@ -64,6 +64,14 @@ describe('fillParameters', () => {
     expect(result).toHaveLength(1)
     expect(result[0].name).toBe('id')
   })
+
+  it('handles options without parameters property (undefined)', () => {
+    const pathParams = [{ name: 'id', in: 'path' as const, required: true, type: 'string' as const }]
+    const options = { responses: {} } as any
+    const result = fillParameters(options, pathParams as any)
+    expect(result).toHaveLength(1)
+    expect(result[0].name).toBe('id')
+  })
 })
 
 describe('replaceMainext', () => {

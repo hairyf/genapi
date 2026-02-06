@@ -164,4 +164,37 @@ describe('parseParameterFiled', () => {
     const f2 = parseParameterFiled(withEmpty as any)
     expect(f2.description).toBeUndefined()
   })
+
+  it('handles query array parameter with enum values (including non-string)', () => {
+    provide({ interfaces: [] })
+    const param = {
+      name: 'status',
+      in: 'query' as const,
+      type: 'array' as const,
+      items: {
+        type: 'string' as const,
+        enum: ['active', 'inactive', 123, null], // Mixed types
+      },
+    }
+    const field = parseParameterFiled(param as any)
+    // When enum is present, the type includes enum union
+    expect(field.type).toContain('[]')
+    expect(field.description).toBeDefined()
+    // description can be string or array
+    const descStr = Array.isArray(field.description) ? field.description.join(' ') : field.description
+    expect(descStr).toContain('active')
+    expect(descStr).toContain('inactive')
+  })
+
+  it('handles parameter with unsupported in type', () => {
+    provide({ interfaces: [] })
+    const param = {
+      name: 'custom',
+      in: 'unsupported' as any,
+      type: 'string' as const,
+    }
+    const field = parseParameterFiled(param as any)
+    // Should not set type for unsupported in types
+    expect(field.name).toBe('custom')
+  })
 })

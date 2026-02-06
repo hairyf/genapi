@@ -1,5 +1,8 @@
-import { describe, expect, it } from 'vitest'
+import type { ApiPipeline } from '@genapi/shared'
+import { provide } from '@genapi/shared'
+import { beforeEach, describe, expect, it } from 'vitest'
 import {
+  transformBaseURL,
   transformFetchBody,
   transformQueryParams,
   transformUrlSyntax,
@@ -70,5 +73,117 @@ describe('transformFetchBody', () => {
   it('returns none for any response type', () => {
     const body = transformFetchBody('url', [], 'any')
     expect(body[1]).toBe('return response')
+  })
+})
+
+describe('transformBaseURL', () => {
+  let configRead: ApiPipeline.ConfigRead
+
+  beforeEach(() => {
+    configRead = {
+      config: {
+        input: '',
+        meta: {},
+      } as ApiPipeline.Config,
+      inputs: {},
+      outputs: [],
+      graphs: {
+        comments: [],
+        functions: [],
+        imports: [],
+        interfaces: [],
+        typings: [],
+        variables: [],
+        response: {},
+      },
+    }
+    provide({ configRead })
+  })
+
+  it('does not set baseURL when baseURL is false', () => {
+    configRead.config.meta = { baseURL: false }
+    provide({ configRead })
+
+    const source = {
+      swagger: '2.0',
+      schemes: ['https'],
+      host: 'api.example.com',
+      paths: {},
+    }
+
+    transformBaseURL(source as any)
+
+    expect(configRead.config.meta.baseURL).toBe(false)
+  })
+
+  it('sets baseURL from schemes and host when not provided', () => {
+    const source = {
+      swagger: '2.0',
+      schemes: ['https'],
+      host: 'api.example.com',
+      basePath: '/v1',
+      paths: {},
+    }
+
+    transformBaseURL(source as any)
+
+    expect(configRead.config.meta?.baseURL).toContain('https://api.example.com')
+    expect(configRead.config.meta?.baseURL).toContain('/v1')
+  })
+
+  it('uses http when https is not in schemes', () => {
+    const source = {
+      swagger: '2.0',
+      schemes: ['http'],
+      host: 'api.example.com',
+      basePath: '/v1',
+      paths: {},
+    }
+
+    transformBaseURL(source as any)
+
+    expect(configRead.config.meta?.baseURL).toContain('http://api.example.com')
+    expect(configRead.config.meta?.baseURL).toContain('/v1')
+  })
+
+  it('does not set baseURL when schemes is empty', () => {
+    const source = {
+      swagger: '2.0',
+      schemes: [],
+      host: 'api.example.com',
+      paths: {},
+    }
+
+    transformBaseURL(source as any)
+
+    expect(configRead.config.meta?.baseURL).toBeUndefined()
+  })
+
+  it('does not set baseURL when host is missing', () => {
+    const source = {
+      swagger: '2.0',
+      schemes: ['https'],
+      paths: {},
+    }
+
+    transformBaseURL(source as any)
+
+    expect(configRead.config.meta?.baseURL).toBeUndefined()
+  })
+
+  it('does not override existing baseURL', () => {
+    configRead.config.meta = { baseURL: 'https://custom.api.com' }
+    provide({ configRead })
+
+    const source = {
+      swagger: '2.0',
+      schemes: ['https'],
+      host: 'api.example.com',
+      paths: {},
+    }
+
+    transformBaseURL(source as any)
+
+    expect(configRead.config.meta.baseURL).toBe('https://custom.api.com')
   })
 })

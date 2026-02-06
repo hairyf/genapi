@@ -12,6 +12,7 @@
     "lint": "eslint --cache .",
     "typecheck": "pnpm -r run typecheck",
     "test": "vitest",
+    "test:run": "vitest --run",
     "test:coverage": "vitest run --coverage",
     "automd": "pnpm --filter '@genapi/*' exec automd",
     "release": "bumpp -r && pnpm -r publish --access public",

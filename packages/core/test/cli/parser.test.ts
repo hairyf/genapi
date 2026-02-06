@@ -1,5 +1,6 @@
-import { describe, expect, it } from 'vitest'
-import { options, servers } from '../../src/cli/parser'
+import fs from 'fs-extra'
+import { describe, expect, it, vi } from 'vitest'
+import { getVersion, options, servers } from '../../src/cli/parser'
 
 describe('parser.options', () => {
   it('returns empty object when no options', () => {
@@ -34,7 +35,27 @@ describe('parser.options', () => {
   })
 })
 
+describe('parser.getVersion', () => {
+  it('returns version string when package.json exists', () => {
+    const version = getVersion()
+    expect(typeof version).toBe('string')
+    expect(version).toMatch(/^\d+\.\d+\.\d+/)
+  })
+
+  it('returns 0.0.0 when package.json does not exist', () => {
+    // Mock fs.existsSync to return false
+    vi.spyOn(fs, 'existsSync').mockReturnValue(false)
+    const version = getVersion()
+    expect(version).toBe('0.0.0')
+    vi.restoreAllMocks()
+  })
+})
+
 describe('parser.servers', () => {
+  it('returns empty array when config is undefined', () => {
+    expect(servers(undefined)).toEqual([])
+  })
+
   it('wraps single config with input into one server', () => {
     const config = {
       preset: 'swag-axios-ts',
@@ -72,5 +93,34 @@ describe('parser.servers', () => {
     const result = servers(config as any)
     expect(result).toHaveLength(1)
     expect(result[0].input).toEqual({ json: './swagger.json' })
+  })
+
+  it('handles config with servers already defined', () => {
+    const config = {
+      preset: 'swag-axios-ts',
+      servers: [
+        { input: { uri: 'https://a.com' } },
+      ],
+    }
+    const result = servers(config as any)
+    expect(result).toHaveLength(1)
+    expect(result[0]).toMatchObject({ preset: 'swag-axios-ts', input: { uri: 'https://a.com' } })
+  })
+
+  it('merges base config properties into each server', () => {
+    const config = {
+      preset: 'swag-axios-ts',
+      meta: { baseURL: 'https://api.example.com' },
+      servers: [
+        { input: { uri: 'https://a.com' } },
+        { input: { uri: 'https://b.com' } },
+      ],
+    }
+    const result = servers(config as any)
+    expect(result).toHaveLength(2)
+    expect(result[0].preset).toBe('swag-axios-ts')
+    expect(result[0].meta).toEqual({ baseURL: 'https://api.example.com' })
+    expect(result[1].preset).toBe('swag-axios-ts')
+    expect(result[1].meta).toEqual({ baseURL: 'https://api.example.com' })
   })
 })

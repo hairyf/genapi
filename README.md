@@ -27,6 +27,7 @@ API generator that converts OpenAPI (v2~v3) and other input sources into TypeScr
   - `swag-got-ts` / `swag-got-js`
   - `swag-ofetch-ts` / `swag-ofetch-js`
   - `swag-uni-ts` / `swag-uni-js`
+- 📋 **Schema Mode** - Generate type-safe fetch APIs using schema-based typing (supports `fetch` and `ofetch` presets)
 - 🛠️ **Customizable** - Flexible pipeline system for customizing the generation process
 
 ## Installation
@@ -40,7 +41,34 @@ npm i @genapi/core @genapi/presets -D
 
 ## Usage
 
-Create a configuration file in your project root:
+### Quick Start with `init` Command
+
+The easiest way to get started is using the interactive `init` command:
+
+```bash
+npx genapi init
+```
+
+This command will:
+1. Guide you through selecting a preset (axios, fetch, ky, got, ofetch, uni)
+2. Let you choose the mode (TypeScript, JavaScript, or Schema - if supported)
+3. Generate a `genapi.config.ts` or `genapi.config.js` file
+4. Optionally install required dependencies automatically
+
+Example interaction:
+
+```bash
+🚀 genapi init
+? Select preset: › axios
+? Select mode: › TS
+? Overwrite? › No / Yes
+? Install now? › No / Yes
+✨ Success
+```
+
+### Manual Configuration
+
+Alternatively, you can create a configuration file manually in your project root:
 
 - `genapi.config.ts`
 - `genapi.config.js`
@@ -124,6 +152,72 @@ export default defineConfig({
 Run `genapi` and get:
 
 ![swag-axios-js](public/swag-axios-js.png)
+
+## Schema Mode - Type-Safe Fetch API
+
+Schema mode generates a type-safe fetch API using schema-based typing. It's available for `fetch` and `ofetch` presets and requires the `fetchdts` package.
+
+```ts
+import { defineConfig } from '@genapi/core'
+import { fetch } from '@genapi/presets'
+
+export default defineConfig({
+  preset: fetch.schema,
+  input: 'https://petstore.swagger.io/v2/swagger.json',
+  output: {
+    main: 'src/api/index.ts',
+  },
+})
+```
+
+This generates a `$fetch` function with full type safety:
+
+```ts
+import type { TypedFetchInput, TypedFetchRequestInit, TypedFetchResponseBody, TypedResponse } from 'fetchdts'
+
+// API Schema
+interface APISchema {
+  '/users': {
+    [Endpoint]: {
+      GET: {
+        response: User[]
+      }
+    }
+  }
+  '/users/{id}': {
+    [DynamicParam]: {
+      [Endpoint]: {
+        GET: {
+          response: User
+        }
+      }
+    }
+  }
+}
+
+async function $fetch<T extends TypedFetchInput<APISchema>>(
+  input: T,
+  init?: TypedFetchRequestInit<APISchema, T>
+): Promise<TypedResponse<TypedFetchResponseBody<APISchema, T>>> {
+  return ofetch(input, init as any) as Promise<TypedResponse<TypedFetchResponseBody<APISchema, T>>>
+}
+```
+
+Usage:
+
+```ts
+import { $fetch } from './api'
+
+// Fully type-safe API calls
+const users = await $fetch('/users')
+const user = await $fetch('/users/123')
+```
+
+**Note**: Schema mode requires `fetchdts` as a dev dependency. Install it with:
+
+```bash
+npm i -D fetchdts
+```
 
 ## Patch - Static Patches
 

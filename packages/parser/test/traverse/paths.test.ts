@@ -82,6 +82,59 @@ describe('traversePaths', () => {
     expect(bodyParam!.name).toBe('body')
   })
 
+  it('handles requestBody without content', () => {
+    const paths = {
+      '/upload': {
+        post: {
+          requestBody: {},
+          responses: { 200: { description: 'OK' } },
+        },
+      },
+    }
+    const collected: PathMethod[] = []
+    traversePaths(paths as any, config => collected.push(config))
+    expect(collected).toHaveLength(1)
+    expect(collected[0].parameters).toBeDefined()
+  })
+
+  it('handles requestBody with content but no multipart/form-data', () => {
+    const paths = {
+      '/upload': {
+        post: {
+          requestBody: {
+            content: {
+              'application/json': {
+                schema: { type: 'object' },
+              },
+            },
+          },
+          responses: { 200: { description: 'OK' } },
+        },
+      },
+    }
+    const collected: PathMethod[] = []
+    traversePaths(paths as any, config => collected.push(config))
+    expect(collected).toHaveLength(1)
+  })
+
+  it('handles requestBody with multipart/form-data but no schema', () => {
+    const paths = {
+      '/upload': {
+        post: {
+          requestBody: {
+            content: {
+              'multipart/form-data': {},
+            },
+          },
+          responses: { 200: { description: 'OK' } },
+        },
+      },
+    }
+    const collected: PathMethod[] = []
+    traversePaths(paths as any, config => collected.push(config))
+    expect(collected).toHaveLength(1)
+  })
+
   it('extends parameters from OpenAPI 3 requestBody multipart/form-data', () => {
     const paths = openapi3RequestBody.paths!
     const collected: PathMethod[] = []

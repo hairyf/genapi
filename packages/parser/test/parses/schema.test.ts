@@ -53,6 +53,199 @@ describe('parseSchemaType', () => {
     expect(parseSchemaType({ type: 'number' } as any)).toBe('number')
   })
 
+  it('handles schemaRequired with boolean true', () => {
+    const schema = {
+      type: 'object',
+      properties: {
+        id: { type: 'integer', required: true },
+      },
+    }
+    const result = parseSchemaType(schema as any)
+    expect(result).toContain('id')
+  })
+
+  it('handles schemaRequired with boolean false', () => {
+    const schema = {
+      type: 'object',
+      properties: {
+        id: { type: 'integer', required: false },
+      },
+    }
+    const result = parseSchemaType(schema as any)
+    expect(result).toContain('id')
+  })
+
+  it('handles schemaRequired with array of required fields', () => {
+    const schema = {
+      type: 'object',
+      properties: {
+        id: { type: 'integer' },
+        name: { type: 'string' },
+      },
+      required: ['id'], // Only id is required
+    }
+    const result = parseSchemaType(schema as any)
+    expect(result).toContain('id')
+    expect(result).toContain('name')
+  })
+
+  it('handles schemaRequired with array when field is undefined (defaults to required)', () => {
+    // When field is undefined and required is an array, schemaRequired returns true
+    const schema = {
+      type: 'object',
+      properties: {
+        id: { type: 'integer' },
+      },
+      required: ['id'],
+    }
+    const result = parseSchemaType(schema as any)
+    expect(result).toContain('id')
+  })
+
+  it('handles schemaRequired with array and undefined field (line 16 coverage)', () => {
+    // Test the branch: field !== undefined ? r.includes(field) : true
+    // When field is undefined and required is an array, should return true
+    provide({ interfaces: [], configRead: { config: {} } as any })
+    const schema = {
+      type: 'object',
+      properties: {
+        id: { type: 'integer' },
+        name: { type: 'string' },
+      },
+      required: ['id'], // Array with 'id', but field is undefined
+    }
+    // This should call schemaRequired with undefined field
+    const result = parseSchemaType(schema as any)
+    expect(result).toBeTruthy()
+  })
+
+  it('handles schemaRequired with undefined (defaults to required)', () => {
+    const schema = {
+      type: 'object',
+      properties: {
+        id: { type: 'integer' }, // No required field specified
+      },
+    }
+    const result = parseSchemaType(schema as any)
+    expect(result).toContain('id')
+  })
+
+  it('handles schemaRequired with required true in properties', () => {
+    const schema = {
+      type: 'object',
+      properties: {
+        id: { type: 'integer', required: true },
+      },
+    }
+    const result = parseSchemaType(schema as any)
+    expect(result).toBeTruthy()
+  })
+
+  it('handles schemaRequired with boolean false (duplicate test)', () => {
+    const schema = {
+      type: 'object',
+      properties: {
+        id: { type: 'integer', required: false },
+      },
+    }
+    const result = parseSchemaType(schema as any)
+    expect(result).toBeTruthy()
+  })
+
+  it('handles schemaRequired with array and field name', () => {
+    const schema = {
+      type: 'object',
+      required: ['id', 'name'],
+      properties: {
+        id: { type: 'integer' },
+        name: { type: 'string' },
+      },
+    }
+    const result = parseSchemaType(schema as any)
+    expect(result).toBeTruthy()
+  })
+
+  it('handles allOf with $ref that does not exist in interfaces', () => {
+    provide({ interfaces: [], configRead: { config: {} } as any })
+    const schema = {
+      allOf: [
+        { $ref: '#/definitions/NonExistent' },
+        {
+          type: 'object',
+          properties: {
+            id: { type: 'integer' },
+          },
+        },
+      ],
+    }
+    const result = parseSchemaType(schema as any)
+    expect(result).toBeTruthy()
+  })
+
+  it('handles allOf with $ref where interface.find returns undefined', () => {
+    // Test case where interfaces.find returns undefined (line 64)
+    const interfaces: any[] = [] // Empty interfaces array
+    provide({ interfaces, configRead: { config: {} } as any })
+    const schema = {
+      allOf: [
+        { $ref: '#/definitions/NonExistentRef' }, // This ref won't be found
+        {
+          type: 'object',
+          properties: {
+            code: { type: 'integer' },
+          },
+        },
+      ],
+    }
+    const result = parseSchemaType(schema as any)
+    // Should still work even when interface is not found
+    // The result will be AllOfNonExistentRef with code property
+    expect(result).toBeTruthy()
+    // When interface is not found, it still processes the properties
+    expect(result).toMatch(/AllOfNonExistentRef|code/)
+  })
+
+  it('handles allOf with $ref where interfaces.find returns undefined (line 64 coverage)', () => {
+    // Specifically test line 64: interfaces.find(v => v.name === type)?.properties || []
+    const interfaces: any[] = [
+      { name: 'OtherType', properties: [] }, // Different name, won't match
+    ]
+    provide({ interfaces, configRead: { config: {} } as any })
+    const schema = {
+      allOf: [
+        { $ref: '#/definitions/NonExistentType' }, // This will parse to 'NonExistentType' but won't be found
+        {
+          type: 'object',
+          properties: {
+            value: { type: 'string' },
+          },
+        },
+      ],
+    }
+    const result = parseSchemaType(schema as any)
+    // Should handle undefined find result gracefully
+    expect(result).toBeTruthy()
+  })
+
+  it('handles allOf with items.$ref', () => {
+    provide({ interfaces: [], configRead: { config: {} } as any })
+    const schema = {
+      allOf: [
+        {
+          type: 'object',
+          properties: {
+            items: {
+              type: 'array',
+              items: { $ref: '#/definitions/Item' },
+            },
+          },
+        },
+      ],
+    }
+    const result = parseSchemaType(schema as any)
+    expect(result).toBeTruthy()
+  })
+
   it('parses allOf composition and merges into interface', () => {
     provide({ interfaces: [] })
     const schema = {

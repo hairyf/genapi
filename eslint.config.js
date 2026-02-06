@@ -5,7 +5,7 @@ export default antfu(
   {
     type: 'lib',
     pnpm: true,
-    ignores: ['packages/**/*.md', 'docs/**/*.md'],
+    ignores: ['packages/**/*.md', 'docs/**/*.md', 'test/fixtures/generated/**'],
   },
   {
     rules: {

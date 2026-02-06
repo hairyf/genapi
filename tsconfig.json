@@ -15,6 +15,7 @@
     "skipLibCheck": true
   },
   "exclude": [
-    "playground/dist"
+    "playground/dist",
+    "test/fixtures/generated"
   ]
 }

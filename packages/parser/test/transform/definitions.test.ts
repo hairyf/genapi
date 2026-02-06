@@ -80,6 +80,57 @@ describe('transformDefinitions', () => {
     expect(interfaces[0].properties).toHaveLength(0)
   })
 
+  it('handles definition without properties (undefined)', () => {
+    const interfaces: any[] = []
+    provide({ interfaces, configRead })
+    const definitions = {
+      NoProps: { type: 'object' }, // No properties field
+    }
+    transformDefinitions(definitions as any)
+    expect(interfaces).toHaveLength(1)
+    expect(interfaces[0].name).toBe('NoProps')
+    expect(interfaces[0].properties).toHaveLength(0)
+  })
+
+  it('handles definition with property that has boolean required field', () => {
+    const interfaces: any[] = []
+    provide({ interfaces, configRead })
+    const definitions = {
+      Test: {
+        type: 'object',
+        properties: {
+          id: { type: 'integer', required: true },
+          name: { type: 'string', required: false },
+        },
+      },
+    }
+    transformDefinitions(definitions as any)
+    const testInterface = interfaces.find((i: any) => i.name === 'Test')
+    expect(testInterface).toBeDefined()
+    const idField = testInterface!.properties.find((p: any) => p.name === 'id')
+    const nameField = testInterface!.properties.find((p: any) => p.name === 'name')
+    expect(idField?.required).toBe(true)
+    expect(nameField?.required).toBe(false)
+  })
+
+  it('handles definition with property description', () => {
+    const interfaces: any[] = []
+    provide({ interfaces, configRead })
+    const definitions = {
+      Test: {
+        type: 'object',
+        properties: {
+          id: { type: 'integer', description: 'The unique identifier' },
+        },
+      },
+    }
+    transformDefinitions(definitions as any)
+    const testInterface = interfaces.find((i: any) => i.name === 'Test')
+    expect(testInterface).toBeDefined()
+    const idField = testInterface!.properties.find((p: any) => p.name === 'id')
+    expect(idField?.description).toBe('@description The unique identifier')
+  })
+
   it('handles $ref in definition properties', () => {
     const interfaces: any[] = []
     provide({ interfaces })
@@ -345,5 +396,71 @@ describe('transformDefinitions', () => {
       expect(interfaces.find((i: any) => i.name === 'Unchanged')).toBeDefined()
       expect(interfaces.find((i: any) => i.name === 'Unchanged')!.properties).toHaveLength(1)
     })
+
+    it('handles patch with only name (no type)', () => {
+      const interfaces: any[] = []
+      provide({ interfaces, configRead })
+      configRead.config.patch = {
+        definitions: {
+          OldName: {
+            name: 'NewName',
+            // No type provided
+          },
+        },
+      }
+
+      const definitions = {
+        OldName: {
+          type: 'object',
+          properties: { id: { type: 'integer' } },
+        },
+      }
+      transformDefinitions(definitions as any)
+
+      const renamed = interfaces.find((i: any) => i.name === 'NewName')
+      expect(renamed).toBeDefined()
+      expect(renamed!.properties).toHaveLength(1) // Properties preserved
+    })
+
+    it('handles patch with only type (no name)', () => {
+      const interfaces: any[] = []
+      provide({ interfaces, configRead })
+      configRead.config.patch = {
+        definitions: {
+          Original: {
+            type: [{ name: 'custom', type: 'string' }],
+            // No name provided
+          },
+        },
+      }
+
+      const definitions = {
+        Original: {
+          type: 'object',
+          properties: { id: { type: 'integer' } },
+        },
+      }
+      transformDefinitions(definitions as any)
+
+      const patched = interfaces.find((i: any) => i.name === 'Original')
+      expect(patched).toBeDefined()
+      expect(patched!.properties).toHaveLength(1)
+      expect(patched!.properties[0].name).toBe('custom')
+    })
+  })
+
+  it('handles configRead without config (undefined)', () => {
+    const interfaces: any[] = []
+    provide({ interfaces, configRead: undefined as any })
+    const definitions = {
+      Test: {
+        type: 'object',
+        properties: { id: { type: 'integer' } },
+      },
+    }
+    transformDefinitions(definitions as any)
+    // Should not crash when configRead is undefined
+    expect(interfaces).toHaveLength(1)
+    expect(interfaces[0].name).toBe('Test')
   })
 })

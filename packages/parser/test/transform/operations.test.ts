@@ -225,4 +225,30 @@ describe('transformOperation', () => {
     expect(result.name).toBe('final_getUser')
     expect(result.responseType).toBe('FinalUser')
   })
+
+  it('handles configRead without config property', () => {
+    const configReadWithoutConfig = {
+      inputs: {},
+      outputs: [],
+      graphs: {
+        comments: [],
+        functions: [],
+        imports: [],
+        interfaces: [],
+        typings: [],
+        variables: [],
+        response: {},
+      },
+    } as any
+
+    const result = transformOperation({
+      configRead: configReadWithoutConfig,
+      name: 'getUser',
+      parameters,
+      responseType: 'User',
+    })
+
+    expect(result.name).toBe('getUser')
+    expect(result.parameters).toBe(parameters)
+  })
 })
