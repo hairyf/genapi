@@ -16,20 +16,20 @@ describe('absolutePath', () => {
 })
 
 describe('inPipeline', () => {
-  it('returns function when pipe is already a function', () => {
+  it('returns function when pipe is already a function', async () => {
     const fn = vi.fn()
-    expect(inPipeline(fn as any)).toBe(fn)
+    expect(await inPipeline(fn as any)).toBe(fn)
   })
 
-  it('returns undefined for non-resolvable string without throwing', () => {
-    expect(inPipeline('non-existent-package-name-xyz')).toBeUndefined()
+  it('returns undefined for non-resolvable string without throwing', async () => {
+    expect(await inPipeline('non-existent-package-name-xyz')).toBeUndefined()
   })
 
-  it('tries multiple input paths when resolving preset', () => {
+  it('tries multiple input paths when resolving preset', async () => {
     // The function tries: @genapi/presets/${pipe}, genapi-${pipe}, pipe, absolutePath(pipe)
     // We test that it doesn't crash when trying these paths
     // Using a non-existent preset to avoid side effects
-    const result = inPipeline('non-existent-preset-xyz-123')
+    const result = await inPipeline('non-existent-preset-xyz-123')
     expect(result).toBeUndefined()
   })
 })

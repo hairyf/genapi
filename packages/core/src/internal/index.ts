@@ -1,10 +1,10 @@
 import type { ApiPipeline } from '@genapi/shared'
 import path from 'node:path'
 import { cwd } from 'node:process'
-import createJiti from 'jiti'
+import { createJiti } from 'jiti'
 
 const jiti = createJiti(cwd())
-export function inPipeline(pipe: string | ApiPipeline.Pipeline): ApiPipeline.Pipeline | undefined {
+export async function inPipeline(pipe: string | ApiPipeline.Pipeline): Promise<ApiPipeline.Pipeline | undefined> {
   if (typeof pipe === 'function')
     return pipe as ApiPipeline.Pipeline
 
@@ -12,8 +12,8 @@ export function inPipeline(pipe: string | ApiPipeline.Pipeline): ApiPipeline.Pip
 
   for (const input of inputs) {
     try {
-      const inputModule = jiti(input)
-      const pipeline = inputModule.default || inputModule
+      const inputModule = await jiti.import(input)
+      const pipeline = (inputModule as { default?: ApiPipeline.Pipeline })?.default ?? (inputModule as ApiPipeline.Pipeline)
       if (pipeline)
         return pipeline
     }

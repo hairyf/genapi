@@ -15,8 +15,8 @@ export async function operatePipelineGenerator(config: ApiPipeline.Config | ApiP
   const s = spinner()
   s.start('Generate API File...')
 
-  const process = configs.map((config) => {
-    const pipeline = inPipeline(config.preset || 'swag-axios-ts')
+  const process = configs.map(async (config) => {
+    const pipeline = await inPipeline(config.preset || 'swag-axios-ts')
     if (!pipeline)
       throw new Error(`Pipeline not found ${config.preset}`)
     return pipeline(config)
