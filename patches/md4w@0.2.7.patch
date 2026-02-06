@@ -1,0 +1,47 @@
+diff --git a/js/index.js b/js/index.js
+index 61e620a3f493b747c1393bbfb150ac345db4ca19..e5faf07334d8bb8b02c974cd2e73bb9733f0bbe4 100644
+--- a/js/index.js
++++ b/js/index.js
+@@ -1,4 +1,6 @@
+ import { initWasm } from "./md4w.js";
++import { fileURLToPath } from "node:url";
++import { resolve, dirname } from "node:path";
+ 
+ // universal FS
+ const fs = {};
+@@ -12,7 +14,13 @@ if (globalThis.Bun) {
+   const p = import(u); // <- use variable to skip deno-lsp analyzing
+   fs.readFile = async (url) => {
+     const { readFile } = await p;
+-    return readFile(url.pathname);
++    // Fix Windows path issue: normalize the pathname to avoid duplicate drive letters
++    let pathname = url.pathname;
++    if (process.platform === "win32" && pathname.startsWith("/")) {
++      // Remove leading slash on Windows to avoid D:\D:\ issue
++      pathname = pathname.replace(/^\//, "");
++    }
++    return readFile(pathname);
+   };
+ } else {
+   // browser or deno
+@@ -40,7 +48,19 @@ export async function init(wasm) {
+   }
+   let wasmRes;
+   if (typeof wasm === "string" || wasm instanceof URL) {
+-    wasmRes = await fs.readFile(new URL(wasm, import.meta.url));
++    // Fix Windows path issue: use fileURLToPath to properly resolve paths
++    const baseUrl = import.meta.url;
++    const wasmUrl = new URL(wasm, baseUrl);
++    // Normalize the URL pathname on Windows to avoid duplicate drive letters
++    if (process.platform === "win32" && wasmUrl.protocol === "file:") {
++      let pathname = wasmUrl.pathname;
++      // Remove leading slash on Windows
++      if (pathname.startsWith("/")) {
++        pathname = pathname.slice(1);
++      }
++      wasmUrl.pathname = pathname;
++    }
++    wasmRes = await fs.readFile(wasmUrl);
+   } else {
+     wasmRes = wasm;
+   }

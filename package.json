@@ -7,6 +7,8 @@
     "dev": "pnpm -r run dev",
     "build": "pnpm -r run build",
     "play": "pnpm -C playground run dev",
+    "docs:dev": "pnpm -C docs run dev",
+    "docs:build": "pnpm -C docs run build",
     "lint": "eslint --cache .",
     "typecheck": "pnpm -r run typecheck",
     "test": "vitest",

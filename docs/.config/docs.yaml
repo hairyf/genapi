@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://unpkg.com/undocs/schema/config.json
+
+name: genapi
+shortDescription: API generator that converts OpenAPI (v2~v3) and other input sources into TypeScript/JavaScript APIs
+description: Convert OpenAPI specifications into TypeScript/JavaScript API code with flexible customization options.
+github: hairyf/genapi
+url: 'https://genapi.hairyf.com'
+lang: en
+themeColor: green
+landing:
+  heroCode: npm i @genapi/core @genapi/presets -D
+  contributors: true
+  features:
+    - title: Multiple HTTP Clients
+      icon: 🚀
+      description: Support for axios, fetch, ky, got, ofetch, uni and more HTTP clients
+    - title: TypeScript/JavaScript
+      icon: 🔄
+      description: Generate both TypeScript and JavaScript API code
+    - title: Flexible & Customizable
+      icon: 🛠️
+      description: Flexible pipeline system for customizing the generation process
+    - title: OpenAPI Support
+      icon: 📋
+      description: Full support for OpenAPI 2.0 and 3.x specifications
+automd: true

@@ -1,0 +1,14 @@
+{
+  "name": "docs",
+  "private": true,
+  "scripts": {
+    "dev": "undocs dev",
+    "build": "undocs build"
+  },
+  "dependencies": {
+    "nuxt": "catalog:docs"
+  },
+  "devDependencies": {
+    "undocs": "catalog:docs"
+  }
+}

@@ -3,12 +3,13 @@ catalogMode: prefer
 ignoreWorkspaceRootCheck: true
 
 shellEmulator: true
-
-trustPolicy: no-downgrade
-
 packages:
   - packages/*
   - playground
+  - docs
+patchedDependencies:
+  md4w@0.2.7: patches/md4w@0.2.7.patch
+
 catalogs:
   cli:
     '@antfu/eslint-config': ^7.2.0
@@ -24,6 +25,9 @@ catalogs:
     tsx: ^4.21.0
     typescript: ^5.9.3
     vite: ^7.3.1
+  docs:
+    nuxt: 4.3.0
+    undocs: latest
   inlined:
     '@antfu/utils': ^9.3.0
     fetchdts: ^0.1.7
@@ -60,3 +64,4 @@ catalogs:
 onlyBuiltDependencies:
   - esbuild
   - simple-git-hooks
+  - vue-demi
