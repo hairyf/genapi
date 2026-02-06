@@ -17,7 +17,6 @@ export type { InSchemas }
  * @param {InSchemas} [schemas]
  */
 export function parseMethodParameters({ method, parameters, path }: PathMethod, schemas?: InSchemas) {
-  const { config: userConfig } = inject()
   const requestConfigs: Record<string, StatementField[]> = {
     body: [],
     formData: [],
@@ -64,14 +63,14 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
     if (['header', 'path', 'query', 'cookie', 'querystring'].includes(inType)) {
       const typeName = varName([method, path, inType])
       config.interfaces.push({ name: typeName, properties, export: true })
-      const required = inType === 'path' || isRequiredParameter(properties) || userConfig?.parametersRequired
+      const required = inType === 'path' || isRequiredParameter(properties)
       config.parameters.push({ name, type: typeName, required })
     }
   }
 
   function increaseBodyParameter(name: string, properties: StatementField[]) {
     config.parameters.push({
-      required: properties[0].required || userConfig?.parametersRequired,
+      required: properties[0].required,
       type: properties[0].type,
       name,
     })

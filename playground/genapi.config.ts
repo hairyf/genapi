@@ -11,6 +11,7 @@ const config = defineConfig({
     main: 'dist/index.ts',
     type: 'dist/index.type.ts',
   },
+  responseRequired: true,
 })
 
 export default config

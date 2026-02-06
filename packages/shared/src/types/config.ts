@@ -79,12 +79,6 @@ export namespace ApiPipeline {
      * @default undefined use response.required
      */
     responseRequired?: boolean
-    /**
-     * Whether to generate required parameters
-     *
-     * @default undefined use parameter.required
-     */
-    parametersRequired?: boolean
 
     /** Only generate type declaration files */
     onlyDeclaration?: boolean
