@@ -33,6 +33,7 @@
   "dependencies": {
     "@genapi/shared": "workspace:*",
     "@genapi/transform": "workspace:*",
+    "confbox": "catalog:runtime",
     "fs-extra": "catalog:runtime",
     "knitwork-x": "catalog:runtime",
     "ofetch": "catalog:runtime",

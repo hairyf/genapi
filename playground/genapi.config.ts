@@ -3,7 +3,7 @@ import { axios } from '@genapi/presets'
 
 export default defineConfig({
   preset: axios.ts,
-  input: 'https://petstore3.swagger.io/api/v3/openapi.json',
+  input: 'https://petstore3.swagger.io/api/v3/openapi.yaml',
   meta: {
     baseURL: false,
   },

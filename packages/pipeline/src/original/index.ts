@@ -1,10 +1,32 @@
 import type { ApiPipeline } from '@genapi/shared'
 import { wpapiToSwagger2 } from '@genapi/transform'
+import { parseYAML } from 'confbox'
 import { ofetch } from 'ofetch'
+
+function isYamlUrl(url: string) {
+  try {
+    const pathname = new URL(url).pathname
+    return pathname.endsWith('.yaml') || pathname.endsWith('.yml')
+  }
+  catch {
+    return false
+  }
+}
+
+async function fetchSource(url: string, options?: Record<string, any>) {
+  if (isYamlUrl(url)) {
+    const text = await ofetch(url, { ...options, responseType: 'text' })
+    return parseYAML(text as string) as Record<string, any>
+  }
+  if (options && Object.keys(options).length > 0)
+    return await ofetch<any>(url, options)
+  return await ofetch<any>(url)
+}
 
 /**
  * Fetches source: resolves uri/http/json from configRead.inputs and sets configRead.source.
  * Transforms the source based on parser configuration (wpapi -> swagger2, swagger -> unchanged).
+ * Supports YAML source URLs (e.g. .yaml / .yml); uses confbox for parsing (same as undocs).
  *
  * @param configRead - ConfigRead with inputs (uri, http, or json)
  * @returns Same configRead with source set and transformed if needed
@@ -12,10 +34,10 @@ import { ofetch } from 'ofetch'
  */
 export async function original(configRead: ApiPipeline.ConfigRead) {
   if (configRead.inputs.uri)
-    configRead.source = await ofetch<any>(configRead.inputs.uri)
+    configRead.source = await fetchSource(configRead.inputs.uri)
   if (configRead.inputs.http) {
     const { url, ...options } = configRead.inputs.http as any
-    configRead.source = await ofetch<any>(url || configRead.inputs.uri || '', options)
+    configRead.source = await fetchSource(url || configRead.inputs.uri || '', options)
   }
   if (configRead.inputs.json)
     configRead.source = await readJsonSource(configRead.inputs.json)
@@ -32,10 +54,11 @@ export async function original(configRead: ApiPipeline.ConfigRead) {
   // For 'swagger' parser, source is already in Swagger/OpenAPI format, no transformation needed
 
   if (!configRead.source.schemes?.length) {
+    const effectiveUrl = (configRead.inputs.http as any)?.url || configRead.inputs.uri || ''
     const schemes: string[] = []
-    if (configRead.inputs.uri?.startsWith('https://'))
+    if (effectiveUrl.startsWith('https://'))
       schemes.push('https', 'http')
-    if (configRead.inputs.uri?.startsWith('http://'))
+    if (effectiveUrl.startsWith('http://'))
       schemes.push('http')
     configRead.source.schemes = schemes
   }

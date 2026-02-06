@@ -9,6 +9,18 @@ vi.mock('ofetch', () => ({
   ofetch: vi.fn(),
 }))
 
+// Mock confbox parseYAML so we don't depend on real parsing in test
+vi.mock('confbox', () => ({
+  parseYAML: vi.fn((text: string) => {
+    // minimal YAML parse for test: treat openapi: "3.0.0" style as parsed object
+    if (typeof text !== 'string')
+      return {}
+    if (text.includes('openapi:'))
+      return { openapi: '3.0.0', info: { title: 'YAML API', version: '1.0.0' }, paths: {} }
+    return {}
+  }),
+}))
+
 // Mock @genapi/transform
 vi.mock('@genapi/transform', () => ({
   wpapiToSwagger2: vi.fn(),
@@ -51,6 +63,40 @@ describe('original', () => {
 
     expect(ofetch).toHaveBeenCalledWith('https://api.example.com/swagger.json')
     expect(result.source).toEqual(mockSource)
+  })
+
+  it('fetches and parses YAML source from uri (.yaml / .yml)', async () => {
+    const yamlText = 'openapi: "3.0.0"\ninfo:\n  title: YAML API\n  version: "1.0.0"\npaths: {}'
+    vi.mocked(ofetch).mockResolvedValue(yamlText)
+
+    const configRead: ApiPipeline.ConfigRead = {
+      config: {
+        input: '',
+      } as ApiPipeline.Config,
+      inputs: {
+        uri: 'https://petstore3.swagger.io/api/v3/openapi.yaml',
+      },
+      outputs: [],
+      graphs: {
+        comments: [],
+        functions: [],
+        imports: [],
+        interfaces: [],
+        typings: [],
+        variables: [],
+        response: {},
+      },
+    }
+
+    const result = await original(configRead)
+
+    expect(ofetch).toHaveBeenCalledWith('https://petstore3.swagger.io/api/v3/openapi.yaml', { responseType: 'text' })
+    expect(result.source).toMatchObject({
+      openapi: '3.0.0',
+      info: { title: 'YAML API', version: '1.0.0' },
+      paths: {},
+    })
+    expect(result.source.schemes).toEqual(['https', 'http'])
   })
 
   it('fetches source from http input', async () => {

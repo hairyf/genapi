@@ -99,6 +99,9 @@ catalogs:
     citty:
       specifier: ^0.2.0
       version: 0.2.0
+    confbox:
+      specifier: ^0.2.4
+      version: 0.2.4
     consola:
       specifier: ^3.4.2
       version: 3.4.2
@@ -321,6 +324,9 @@ importers:
       '@genapi/transform':
         specifier: workspace:*
         version: link:../transform
+      confbox:
+        specifier: catalog:runtime
+        version: 0.2.4
       fs-extra:
         specifier: catalog:runtime
         version: 11.3.3
@@ -3492,6 +3498,9 @@ packages:
 
   confbox@0.2.2:
     resolution: {integrity: sha512-1NB+BKqhtNipMsov4xI/NnhCKp9XG9NamYp5PVm9klAT0fsrNPjaFICsCFhNhwZJKNh7zB/3q8qXz0E9oaMNtQ==}
+
+  confbox@0.2.4:
+    resolution: {integrity: sha512-ysOGlgTFbN2/Y6Cg3Iye8YKulHw+R2fNXHrgSmXISQdMnomY6eNDprVdW9R5xBguEqI954+S6709UyiO7B+6OQ==}
 
   consola@3.4.2:
     resolution: {integrity: sha512-5IKcdX0nnYavi6G7TtOhwkYzyjfJlatbjMjuLSfE2kYT5pMDOilZ4OvMhi637CcDICTmz3wARPoyhqyX1Y+XvA==}
@@ -8311,7 +8320,7 @@ snapshots:
       '@clack/prompts': 1.0.0-alpha.9
       c12: 3.3.3(magicast@0.5.2)
       citty: 0.1.6
-      confbox: 0.2.2
+      confbox: 0.2.4
       consola: 3.4.2
       copy-paste: 2.2.0
       debug: 4.4.3
@@ -10863,6 +10872,8 @@ snapshots:
 
   confbox@0.2.2: {}
 
+  confbox@0.2.4: {}
+
   consola@3.4.2: {}
 
   convert-source-map@2.0.0: {}
@@ -13378,7 +13389,7 @@ snapshots:
       chokidar: 5.0.0
       citty: 0.1.6
       compatx: 0.2.0
-      confbox: 0.2.2
+      confbox: 0.2.4
       consola: 3.4.2
       cookie-es: 2.0.0
       croner: 9.1.0
@@ -13907,7 +13918,7 @@ snapshots:
 
   pkg-types@2.3.0:
     dependencies:
-      confbox: 0.2.2
+      confbox: 0.2.4
       exsolve: 1.0.8
       pathe: 2.0.3
 
