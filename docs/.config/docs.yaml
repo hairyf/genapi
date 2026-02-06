@@ -1,8 +1,8 @@
 # yaml-language-server: $schema=https://unpkg.com/undocs/schema/config.json
 
 name: genapi
-shortDescription: Generate TS/JS APIs from OpenAPI and other specs.
-description: Convert OpenAPI specifications into TypeScript/JavaScript API code with flexible customization options.
+shortDescription: Lightweight API code generator—only the code you need, nothing extra.
+description: A lightweight API code generator that generates only the code you want from OpenAPI and other specs, with no bloat.
 github: hairyf/genapi
 url: 'https://genapi.hairyf.com'
 lang: en
@@ -20,7 +20,7 @@ landing:
     - title: Flexible & Customizable
       icon: 🛠️
       description: Flexible pipeline system for customizing the generation process
-    - title: OpenAPI Support
+    - title: Multiple Data Sources
       icon: 📋
-      description: Full support for OpenAPI 2.0 and 3.x specifications
+      description: Support for OpenAPI 2.0/3.x, Swagger and other input sources
 automd: true

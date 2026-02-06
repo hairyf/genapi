@@ -8,14 +8,15 @@
 
 > **中文** | [English](./README.md)
 <!-- > [中文文档](http://genapi-docs.vercel.app/?lang=zh-CN) -->
-API生成器，用于将OpenAPI（v2~v3）和其他输入源转换为TypeScript/JavaScript API。
+
+一款轻量化的 API 代码生成器，仅仅生成你需要的代码。
 
 ## 特性
 
 - 🚀 **多种HTTP客户端** - 支持 [axios](https://github.com/axios/axios)、[fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API)、[ky](https://github.com/sindresorhus/ky)、[got](https://github.com/sindresorhus/got)、[ofetch](https://github.com/unjs/ofetch)、[uni](https://github.com/uni-helper/uni-network)
 - 🔄 **TypeScript & JavaScript** - 生成完整的 TS 和 JS API，包含完整的类型定义
 - 📋 **Schema 模式** - 基于 schema 的类型安全 fetch API（支持 `fetch` 和 `ofetch` 预设）
-- 📖 **OpenAPI 支持** - 完整支持 OpenAPI 2.0 (Swagger) 和 OpenAPI 3.x 规范
+- 📖 **多数据源支持** - 支持 OpenAPI 2.0/3.x、Swagger 等多种输入源
 - 🔧 **交互式 CLI** - 使用 `genapi init` 进行引导式设置，选择预设配置
 - 🛠️ **可定制管道** - 灵活的管道系统，用于自定义生成过程
 - 🔀 **转换与补丁** - 批量转换操作和类型，或进行精确匹配的修改
@@ -32,11 +33,9 @@ API生成器，用于将OpenAPI（v2~v3）和其他输入源转换为TypeScript/
 
 ```bash
 # pnpm (推荐)
-pnpm dlx genapi init
-# npm
-npx genapi init
-# yarn
-yarn dlx genapi init
+pnpm dlx @genapi/core genapi init
+# npx @genapi/core genapi init
+# yarn dlx @genapi/core genapi init
 ```
 
 或手动安装和配置：
@@ -53,7 +52,7 @@ import { axios } from '@genapi/presets'
 
 export default defineConfig({
   preset: axios.ts,
-  input: 'http://example.com/api-docs',
+  input: 'https://petstore3.swagger.io/api/v3/openapi.json',
   output: {
     main: 'src/api/index.ts',
     type: 'src/api/index.type.ts',
@@ -61,13 +60,46 @@ export default defineConfig({
 })
 ```
 
-然后运行：
+然后运行以下命令
 
 ```bash
-npm run genapi
+npx genapi
 ```
 
-更多详情和高级功能，请访问[文档网站](http://genapi-docs.vercel.app/)。
+```ts
+/*
+ * @title Swagger Petstore - OpenAPI 3.0
+ * ... other metadata ...
+ */
+
+import type { AxiosRequestConfig } from 'axios'
+import type * as Types from './index.type'
+import http from 'axios'
+
+/**
+ * @summary Update an existing pet.
+ * @description Update an existing pet by Id.
+ * @method put
+ * @tags pet
+ */
+export function putPet(data?: Types.Pet, config?: AxiosRequestConfig) {
+  const url = '/pet'
+  return http.request<Types.Pet>({ method: 'put', url, data, ...config })
+}
+
+/**
+ * @summary Add a new pet to the store.
+ * @description Add a new pet to the store.
+ * @method post
+ * @tags pet
+ */
+export function postPet(data?: Types.Pet, config?: AxiosRequestConfig) {
+  const url = '/pet'
+  return http.request<Types.Pet>({ method: 'post', url, data, ...config })
+}
+```
+
+更多详情和功能，请访问[文档网站](http://genapi-docs.vercel.app/)。
 
 ## License
 

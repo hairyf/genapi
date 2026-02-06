@@ -1,10 +1,12 @@
 import { defineConfig } from '@genapi/core'
-import { ofetch } from '@genapi/presets'
+import { axios } from '@genapi/presets'
 
 export default defineConfig({
-  preset: ofetch.schema,
-  parser: 'wpapi',
-  input: 'http://example.com/api-docs',
+  preset: axios.ts,
+  input: 'https://petstore3.swagger.io/api/v3/openapi.json',
+  meta: {
+    baseURL: false,
+  },
   output: {
     main: 'src/api/index.ts',
     type: 'src/api/index.type.ts',

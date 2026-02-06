@@ -9,14 +9,14 @@
 > [中文](./README_CN.md) | **English**
 > [English Docs](http://genapi-docs.vercel.app/)
 
-API generator that converts OpenAPI (v2~v3) and other input sources into TypeScript/JavaScript APIs.
+A lightweight API code generator—only the code you need.
 
 ## Features
 
 - 🚀 **Multiple HTTP Clients** - Support for [axios](https://github.com/axios/axios), [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), [ky](https://github.com/sindresorhus/ky), [got](https://github.com/sindresorhus/got), [ofetch](https://github.com/unjs/ofetch), [uni](https://github.com/uni-helper/uni-network)
 - 🔄 **TypeScript & JavaScript** - Generate both TS and JS APIs with full type definitions
 - 📋 **Schema Mode** - Type-safe fetch APIs with schema-based typing (supports `fetch` and `ofetch` presets)
-- 📖 **OpenAPI Support** - Full support for OpenAPI 2.0 (Swagger) and OpenAPI 3.x specifications
+- 📖 **Multiple Data Sources** - Support for OpenAPI 2.0/3.x, Swagger and other input sources
 - 🔧 **Interactive CLI** - Use `genapi init` for guided setup with preset selection
 - 🛠️ **Customizable Pipeline** - Flexible pipeline system for customizing the generation process
 - 🔀 **Transform & Patch** - Batch transform operations and types, or make exact-match modifications
@@ -33,9 +33,9 @@ Just run the following command to init your project:
 
 ```bash
 # pnpm (recommended)
-pnpm dlx genapi init
-# npx genapi init
-# yarn dlx genapi init
+pnpm dlx @genapi/core genapi init
+# npx @genapi/core genapi init
+# yarn dlx @genapi/core genapi init
 ```
 
 Or install and configure manually:
@@ -52,7 +52,7 @@ import { axios } from '@genapi/presets'
 
 export default defineConfig({
   preset: axios.ts,
-  input: 'http://example.com/api-docs',
+  input: 'https://petstore3.swagger.io/api/v3/openapi.json',
   output: {
     main: 'src/api/index.ts',
     type: 'src/api/index.type.ts',
@@ -60,10 +60,43 @@ export default defineConfig({
 })
 ```
 
-Then run:
+Then run to generate API code like:
 
 ```bash
-npm run genapi
+npx genapi
+```
+
+```ts
+/*
+ * @title Swagger Petstore - OpenAPI 3.0
+ * ... other metadata ...
+ */
+
+import type { AxiosRequestConfig } from 'axios'
+import type * as Types from './index.type'
+import http from 'axios'
+
+/**
+ * @summary Update an existing pet.
+ * @description Update an existing pet by Id.
+ * @method put
+ * @tags pet
+ */
+export function putPet(data?: Types.Pet, config?: AxiosRequestConfig) {
+  const url = '/pet'
+  return http.request<Types.Pet>({ method: 'put', url, data, ...config })
+}
+
+/**
+ * @summary Add a new pet to the store.
+ * @description Add a new pet to the store.
+ * @method post
+ * @tags pet
+ */
+export function postPet(data?: Types.Pet, config?: AxiosRequestConfig) {
+  const url = '/pet'
+  return http.request<Types.Pet>({ method: 'post', url, data, ...config })
+}
 ```
 
 For more details and features, visit the [documentation site](http://genapi-docs.vercel.app/).
