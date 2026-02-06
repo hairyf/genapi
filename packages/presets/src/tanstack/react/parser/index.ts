@@ -69,10 +69,14 @@ export const parser = createParser((config, { configRead, functions, interfaces 
     functions.push({
       export: true,
       name: hook,
-      description: description ? [...(Array.isArray(description) ? description : [description]), `@wraps ${name}`] : [`@wraps ${name}`],
+      description: [`@wraps ${name}`],
       parameters: fetcherParams,
       body: [
-        `return useQuery({ queryKey: [${queryKeyItems}], queryFn: () => ${name}(${paramNames}) })`,
+        `return useQuery({ 
+        queryKey: [${queryKeyItems}],
+        queryFn: () => ${name}(${paramNames}),
+        ...config,
+      })`,
       ],
     })
   }
@@ -80,7 +84,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
     functions.push({
       export: true,
       name: hook,
-      description: description ? [...(Array.isArray(description) ? description : [description]), `@wraps ${name}`] : [`@wraps ${name}`],
+      description: [`@wraps ${name}`],
       parameters: [],
       body: [
         `return useMutation({ mutationFn: ${name} })`,

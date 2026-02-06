@@ -69,7 +69,7 @@ import { ${preset.pkg} } from '@genapi/presets'
 
 export default defineConfig({
   preset: ${preset.pkg}.${mode},
-  input: '...',
+  input: 'https://petstore3.swagger.io/api/v3/openapi.json',
   output: {
     main: 'src/api/index.${extension}',
     ${mode !== 'js' ? 'type: \'src/api/index.type.ts\',' : ''}
