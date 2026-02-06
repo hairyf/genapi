@@ -6,9 +6,9 @@ description: Convert OpenAPI specifications into TypeScript/JavaScript API code 
 github: hairyf/genapi
 url: 'https://genapi.hairyf.com'
 lang: en
-themeColor: green
+themeColor: yellow
 landing:
-  heroCode: npm i @genapi/core @genapi/presets -D
+  heroCode: npx genapi init
   contributors: true
   features:
     - title: Multiple HTTP Clients
