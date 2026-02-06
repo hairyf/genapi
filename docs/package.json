@@ -6,7 +6,13 @@
     "build": "undocs build"
   },
   "dependencies": {
-    "nuxt": "catalog:docs"
+    "@genapi/core": "workspace:*",
+    "@genapi/pipeline": "workspace:*",
+    "@genapi/presets": "workspace:*",
+    "@vueuse/core": "catalog:",
+    "nuxt": "catalog:docs",
+    "p-pipe": "catalog:runtime",
+    "shiki": "catalog:"
   },
   "devDependencies": {
     "undocs": "catalog:docs"

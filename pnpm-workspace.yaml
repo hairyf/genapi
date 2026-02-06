@@ -11,7 +11,9 @@ packages:
 patchedDependencies:
   md4w@0.2.7: patches/md4w@0.2.7.patch
 catalog:
+  '@vueuse/core': ^14.2.0
   axios: ^1.13.4
+  shiki: ^3.22.0
 
 catalogs:
   cli:
@@ -52,7 +54,6 @@ catalogs:
     got: 11.8.6
     jiti: ^1.21.7
     knitwork-x: ^0.2.0
-    magicast: ^0.5.2
     nypm: ^0.6.4
     ora: ^5.4.1
     p-pipe: ^3.1.0

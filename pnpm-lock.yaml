@@ -46,9 +46,15 @@ catalogs:
       specifier: ^7.3.1
       version: 7.3.1
   default:
+    '@vueuse/core':
+      specifier: ^14.2.0
+      version: 14.2.0
     axios:
       specifier: ^1.13.4
       version: 1.13.4
+    shiki:
+      specifier: ^3.22.0
+      version: 3.22.0
   docs:
     nuxt:
       specifier: 4.3.0
@@ -109,9 +115,6 @@ catalogs:
     knitwork-x:
       specifier: ^0.2.0
       version: 0.2.0
-    magicast:
-      specifier: ^0.5.2
-      version: 0.5.2
     nypm:
       specifier: ^0.6.4
       version: 0.6.4
@@ -220,9 +223,27 @@ importers:
 
   docs:
     dependencies:
+      '@genapi/core':
+        specifier: workspace:*
+        version: link:../packages/core
+      '@genapi/pipeline':
+        specifier: workspace:*
+        version: link:../packages/pipeline
+      '@genapi/presets':
+        specifier: workspace:*
+        version: link:../packages/presets
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 14.2.0(vue@3.5.27(typescript@5.9.3))
       nuxt:
         specifier: catalog:docs
         version: 4.3.0(@parcel/watcher@2.5.6)(@types/node@22.19.7)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(commander@13.1.0)(db0@0.3.4)(eslint@9.39.2(jiti@2.6.1))(ioredis@5.9.2)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.1)(rollup@4.57.1)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.7)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(yaml@2.8.2)
+      p-pipe:
+        specifier: catalog:runtime
+        version: 3.1.0
+      shiki:
+        specifier: 'catalog:'
+        version: 3.22.0
     devDependencies:
       undocs:
         specifier: catalog:docs
@@ -257,9 +278,6 @@ importers:
       knitwork-x:
         specifier: catalog:runtime
         version: 0.2.0
-      magicast:
-        specifier: catalog:runtime
-        version: 0.5.2
       nypm:
         specifier: catalog:runtime
         version: 0.6.4
@@ -10363,14 +10381,6 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.0.3
 
-  '@vitest/mocker@4.0.18(vite@7.3.1(@types/node@22.19.7)(jiti@1.21.7)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))':
-    dependencies:
-      '@vitest/spy': 4.0.18
-      estree-walker: 3.0.3
-      magic-string: 0.30.21
-    optionalDependencies:
-      vite: 7.3.1(@types/node@22.19.7)(jiti@1.21.7)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
-
   '@vitest/mocker@4.0.18(vite@7.3.1(@types/node@22.19.7)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
       '@vitest/spy': 4.0.18
@@ -15868,7 +15878,7 @@ snapshots:
   vitest@4.0.18(@types/node@22.19.7)(jiti@1.21.7)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2):
     dependencies:
       '@vitest/expect': 4.0.18
-      '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@22.19.7)(jiti@1.21.7)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
+      '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@22.19.7)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
       '@vitest/pretty-format': 4.0.18
       '@vitest/runner': 4.0.18
       '@vitest/snapshot': 4.0.18

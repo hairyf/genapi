@@ -47,7 +47,6 @@
     "fs-extra": "catalog:runtime",
     "jiti": "catalog:runtime",
     "knitwork-x": "catalog:runtime",
-    "magicast": "catalog:runtime",
     "nypm": "catalog:runtime",
     "ora": "catalog:runtime",
     "unconfig": "catalog:runtime"
