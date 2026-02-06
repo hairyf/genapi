@@ -72,20 +72,23 @@ export function transformUrlSyntax(url: string, { baseURL }: BaseUrlSyntaxTransf
 export function transformBaseURL(source: OpenAPISpecificationV2) {
   const { configRead } = inject()
 
-  if (configRead.config.baseURL === false)
+  if (configRead.config.meta?.baseURL === false)
     return
 
-  if (!configRead.config.baseURL && source.schemes?.length && source.host) {
+  if (!configRead.config.meta?.baseURL && source.schemes?.length && source.host) {
     const prefix = source.schemes.includes('https') ? 'https://' : 'http://'
-    configRead.config.baseURL = `"${prefix}${source.host}${source.basePath}/"`
+    if (!configRead.config.meta) {
+      configRead.config.meta = {}
+    }
+    configRead.config.meta.baseURL = `"${prefix}${source.host}${source.basePath}/"`
   }
 
-  if (configRead.config.baseURL) {
+  if (configRead.config.meta?.baseURL) {
     configRead.graphs.variables.push({
       export: true,
       flag: 'const',
       name: 'baseURL',
-      value: configRead.config.baseURL,
+      value: configRead.config.meta.baseURL,
     })
   }
 }

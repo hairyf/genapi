@@ -21,8 +21,8 @@ export function readpack(cli: CAC) {
 
 export function options(options: any): Partial<ApiPipeline.Config> {
   const config: any = {}
-  if (options.pipe)
-    config.pipeline = options.pipe
+  if (options.preset)
+    config.preset = options.preset
   if (options.input) {
     if (isNetworkUrl(options.input))
       config.input = { uri: options.input }

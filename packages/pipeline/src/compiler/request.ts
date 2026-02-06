@@ -30,7 +30,7 @@ export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead)
     return genImport(item.value, imports, { type: isType })
   })
 
-  if (config.mockjs) {
+  if (config.meta?.mockjs) {
     importLines.push(genImport('better-mock', { name: 'Mock' }))
   }
   if (importLines.length)
@@ -151,7 +151,7 @@ export function genFunctionsWithMock(functions: StatementFunction[], interfaceMa
     const responseType = inject(item.name)?.responseType
 
     // Mock 注入逻辑
-    if (!config.mockjs || !responseType || responseType === 'void' || responseType === 'any') {
+    if (!config.meta?.mockjs || !responseType || responseType === 'void' || responseType === 'any') {
       return
     }
     const mockTemplate = generateMockTemplate(responseType, interfaceMap)

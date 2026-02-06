@@ -15,9 +15,9 @@ export async function operatePipelineGenerator(config: ApiPipeline.Config | ApiP
   const spinner = ora('Generate API File...\n').start()
 
   const process = configs.map((config) => {
-    const pipeline = inPipeline(config.pipeline || 'swag-axios-ts')
+    const pipeline = inPipeline(config.preset || 'swag-axios-ts')
     if (!pipeline)
-      throw new Error(`Pipeline not found ${config.pipeline}`)
+      throw new Error(`Pipeline not found ${config.preset}`)
     return pipeline(config)
   })
 

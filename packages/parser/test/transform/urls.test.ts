@@ -42,8 +42,8 @@ describe('transformUrlSyntax', () => {
   })
 
   it('prefixes baseURL when option provided', () => {
-    expect(transformUrlSyntax('/v1/pets', { baseURL: true })).toContain('baseURL')
-    expect(transformUrlSyntax('/v1/pets', { baseURL: true })).toContain('/v1/pets')
+    expect(transformUrlSyntax('/v1/pets', { baseURL: 'https://api.example.com' })).toContain('baseURL')
+    expect(transformUrlSyntax('/v1/pets', { baseURL: 'https://api.example.com' })).toContain('/v1/pets')
   })
 })
 

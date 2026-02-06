@@ -27,7 +27,7 @@ Compiles graphs to AST: request code and typings for each output.
 
 ### `config(userConfig)`
 
-Normalizes pipeline config: output paths, responseType, baseURL, and builds ConfigRead with inputs/outputs.
+Normalizes pipeline config: output paths, responseType, baseURL (from meta), and builds ConfigRead with inputs/outputs.
 
 ### `default(config, original, parser, compiler, generate, dest)`
 

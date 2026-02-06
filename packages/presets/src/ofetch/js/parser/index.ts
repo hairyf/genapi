@@ -24,7 +24,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   })
   options.push(['...', 'options'])
   options.unshift(['method', `"${config.method}"`])
-  if (configRead.config.baseURL)
+  if (configRead.config.meta?.baseURL)
     options.unshift('baseURL')
 
   transformParameters(parameters, {
@@ -36,7 +36,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   })
 
   url = transformQueryParams('query', { body, options, url })
-  url = transformUrlSyntax(url, { baseURL: configRead.config.baseURL })
+  url = transformUrlSyntax(url, { baseURL: configRead.config.meta?.baseURL })
 
   functions.push({
     export: true,

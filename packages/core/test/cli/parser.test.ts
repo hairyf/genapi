@@ -6,8 +6,8 @@ describe('parser.options', () => {
     expect(options({})).toEqual({})
   })
 
-  it('sets pipeline from --pipe', () => {
-    expect(options({ pipe: 'swag-axios-ts' })).toEqual({ pipeline: 'swag-axios-ts' })
+  it('sets preset from --preset', () => {
+    expect(options({ preset: 'swag-axios-ts' })).toEqual({ preset: 'swag-axios-ts' })
   })
 
   it('sets input as uri when input is network URL', () => {
@@ -37,14 +37,14 @@ describe('parser.options', () => {
 describe('parser.servers', () => {
   it('wraps single config with input into one server', () => {
     const config = {
-      pipeline: 'swag-axios-ts',
+      preset: 'swag-axios-ts',
       input: { uri: 'https://api.example.com' },
       output: { main: 'out.ts' },
     }
     const result = servers(config as any)
     expect(result).toHaveLength(1)
     expect(result[0]).toMatchObject({
-      pipeline: 'swag-axios-ts',
+      preset: 'swag-axios-ts',
       input: { uri: 'https://api.example.com' },
       output: { main: 'out.ts' },
     })
@@ -52,7 +52,7 @@ describe('parser.servers', () => {
 
   it('expands servers array and merges base config', () => {
     const config = {
-      pipeline: 'swag-axios-ts',
+      preset: 'swag-axios-ts',
       servers: [
         { input: { uri: 'https://a.com' }, output: { main: 'a.ts' } },
         { input: { uri: 'https://b.com' }, output: { main: 'b.ts' } },
@@ -60,13 +60,13 @@ describe('parser.servers', () => {
     }
     const result = servers(config as any)
     expect(result).toHaveLength(2)
-    expect(result[0]).toMatchObject({ pipeline: 'swag-axios-ts', input: { uri: 'https://a.com' }, output: { main: 'a.ts' } })
-    expect(result[1]).toMatchObject({ pipeline: 'swag-axios-ts', input: { uri: 'https://b.com' }, output: { main: 'b.ts' } })
+    expect(result[0]).toMatchObject({ preset: 'swag-axios-ts', input: { uri: 'https://a.com' }, output: { main: 'a.ts' } })
+    expect(result[1]).toMatchObject({ preset: 'swag-axios-ts', input: { uri: 'https://b.com' }, output: { main: 'b.ts' } })
   })
 
   it('initializes empty servers when servers undefined', () => {
     const config = {
-      pipeline: 'swag-axios-ts',
+      preset: 'swag-axios-ts',
       input: { json: './swagger.json' },
     }
     const result = servers(config as any)

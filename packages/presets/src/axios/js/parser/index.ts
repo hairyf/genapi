@@ -23,7 +23,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   })
   options.unshift('url')
   options.unshift(['method', `"${config.method}"`])
-  if (configRead.config.baseURL)
+  if (configRead.config.meta?.baseURL)
     options.unshift('baseURL')
 
   transformParameters(parameters, {

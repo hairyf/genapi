@@ -146,7 +146,12 @@ export namespace ApiPipeline {
     definition?: (name: string, type: StatementField[]) => Definition
   }
 
-  export interface Config extends PreInputs, PreOutput, Meta {
+  export interface Config extends PreInputs, PreOutput {
+    /**
+     * @description
+     * 运行时/生成的元数据
+     */
+    meta?: Meta
     /**
      * @description
      * Static patches: exact match modification
@@ -159,10 +164,10 @@ export namespace ApiPipeline {
      */
     transform?: Transform
     /**
-     * The compilation pipeline used supports npm package (add the prefix @genapi/ or genapi-) | local path
+     * The compilation preset used supports npm package (add the prefix @genapi/ or genapi-) | local path
      * @default 'swag-axios-ts'
      */
-    pipeline?: string | ApiPipeline.Pipeline
+    preset?: string | ApiPipeline.Pipeline
   }
 
   export interface Graphs {

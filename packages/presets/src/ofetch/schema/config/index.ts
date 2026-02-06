@@ -2,13 +2,14 @@ import type { ApiPipeline } from '@genapi/shared'
 import { config as _config } from '@genapi/pipeline'
 
 export function config(userConfig: ApiPipeline.Config): ApiPipeline.ConfigRead {
-  userConfig.import = userConfig.import || {}
-  userConfig.import.http = userConfig.import.http || 'ofetch'
+  userConfig.meta = userConfig.meta || {}
+  userConfig.meta.import = userConfig.meta.import || {}
+  userConfig.meta.import.http = userConfig.meta.import.http || 'ofetch'
 
   const configRead = _config(userConfig)
 
   configRead.graphs.imports.push({
-    value: userConfig.import.http,
+    value: userConfig.meta.import.http,
     names: ['ofetch'],
   })
 

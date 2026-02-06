@@ -49,18 +49,19 @@ import { defineConfig } from '@genapi/core'
 import { axios } from '@genapi/presets'
 
 export default defineConfig({
-  pipeline: axios.ts,
+  preset: axios.ts,
   // 你的输入源（swagger api url或json）
   input: 'http://example.com/api-docs',
   output: {
     main: 'src/api/index.ts',
     type: 'src/api/index.type.ts',
   },
-
-  // 你的API基础URL
-  baseURL: 'import.meta.env.VITE_APP_BASE_API',
-  // 自定义输出响应类型，默认为'T'
-  responseType: 'T extends { data?: infer V } ? V : void',
+  meta: {
+    // 你的API基础URL
+    baseURL: 'import.meta.env.VITE_APP_BASE_API',
+    // 自定义输出响应类型，默认为'T'
+    responseType: 'T extends { data?: infer V } ? V : void',
+  },
 })
 ```
 
@@ -89,10 +90,12 @@ export default defineConfig({
 
 ```ts
 export default defineConfig({
-  // 你的API基础URL，此配置将传递给axios请求
-  baseUrl: 'https://example.com/api',
   // 所有服务器继承上层配置
-  server: [
+  meta: {
+    // 你的API基础URL，此配置将传递给axios请求
+    baseURL: 'https://example.com/api',
+  },
+  servers: [
     { input: 'http://service1/api-docs', output: { main: 'src/api/service1.ts' } },
     { input: 'http://service2/api-docs', output: { main: 'src/api/service2.ts' } },
     { input: 'http://service3/api-docs', output: { main: 'src/api/service3.ts' } },
@@ -109,7 +112,7 @@ import { defineConfig } from '@genapi/core'
 import { axios } from '@genapi/presets'
 
 export default defineConfig({
-  pipeline: axios.js,
+  preset: axios.js,
   input: {
     uri: 'https://petstore.swagger.io/v2/swagger.json',
   },
@@ -126,7 +129,7 @@ export default defineConfig({
 
 ```ts
 export default defineConfig({
-  pipeline: axios.ts,
+  preset: axios.ts,
   input: 'https://petstore.swagger.io/v2/swagger.json',
   patch: {
     operations: {
@@ -158,7 +161,7 @@ export default defineConfig({
 
 ```ts
 export default defineConfig({
-  pipeline: axios.ts,
+  preset: axios.ts,
   input: 'https://petstore.swagger.io/v2/swagger.json',
   transform: {
     operation: name => `api_${name}`, // 批量添加前缀
@@ -177,7 +180,7 @@ export default defineConfig({
 
 ```ts
 export default defineConfig({
-  pipeline: axios.ts,
+  preset: axios.ts,
   input: 'https://petstore.swagger.io/v2/swagger.json',
   mockjs: true,
 })
@@ -202,7 +205,7 @@ import pipeline, { compiler, dest, generate, original } from '@genapi/pipeline'
 import { axios } from '@genapi/presets'
 
 export default defineConfig({
-  pipeline: pipeline(
+  preset: pipeline(
     // 读取配置，转换为内部配置，并提供默认值
     config => axios.ts.config(config),
     // 获取数据源

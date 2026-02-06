@@ -32,8 +32,10 @@ describe('ofetch/schema config', () => {
   it('respects custom http import', () => {
     const configRead = config({
       input: 'test.json',
-      import: {
-        http: 'custom-fetch',
+      meta: {
+        import: {
+          http: 'custom-fetch',
+        },
       },
     } as any)
 

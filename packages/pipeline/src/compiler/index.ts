@@ -11,7 +11,7 @@ import { compilerTsTypingsDeclaration } from './typings'
  */
 export function compiler(configRead: ApiPipeline.ConfigRead) {
   for (const output of configRead.outputs) {
-    if (output.type === 'request' && !configRead.config.onlyDeclaration)
+    if (output.type === 'request' && !configRead.config.meta?.onlyDeclaration)
       output.code = compilerTsRequestDeclaration(configRead)
     if (output.type === 'typings')
       output.code = compilerTsTypingsDeclaration(configRead)

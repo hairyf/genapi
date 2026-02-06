@@ -5,13 +5,14 @@ import { defineConfig } from '@genapi/core'
 import { ofetch } from '@genapi/presets'
 
 const config = defineConfig({
+  preset: ofetch.schema,
+
   input: 'https://petstore.swagger.io/v2/swagger.json',
-  pipeline: ofetch.schema,
   output: {
     main: 'dist/index.ts',
     type: 'dist/index.type.ts',
   },
-  responseRequired: true,
+
 })
 
 export default config

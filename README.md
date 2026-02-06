@@ -51,18 +51,19 @@ import { defineConfig } from '@genapi/core'
 import { axios } from '@genapi/presets'
 
 export default defineConfig({
-  pipeline: axios.ts,
+  preset: axios.ts,
   // your input source (swagger api url or json)
   input: 'http://example.com/api-docs',
   output: {
     main: 'src/api/index.ts',
     type: 'src/api/index.type.ts',
   },
-
-  // your API baseUrl
-  baseURL: 'import.meta.env.VITE_APP_BASE_API',
-  // customize the output response type. default 'T'
-  responseType: 'T extends { data?: infer V } ? V : void',
+  meta: {
+    // your API baseUrl
+    baseURL: 'import.meta.env.VITE_APP_BASE_API',
+    // customize the output response type. default 'T'
+    responseType: 'T extends { data?: infer V } ? V : void',
+  },
 })
 ```
 
@@ -91,10 +92,12 @@ For projects with multiple services, use the `server` configuration:
 
 ```ts
 export default defineConfig({
-  // Your API baseUrl, this configuration will be passed to the axios request
-  baseUrl: 'https://example.com/api',
   // all servers inherit the upper layer configuration
-  server: [
+  meta: {
+    // Your API baseUrl, this configuration will be passed to the axios request
+    baseURL: 'https://example.com/api',
+  },
+  servers: [
     { input: 'http://service1/api-docs', output: { main: 'src/api/service1.ts' } },
     { input: 'http://service2/api-docs', output: { main: 'src/api/service2.ts' } },
     { input: 'http://service3/api-docs', output: { main: 'src/api/service3.ts' } },
@@ -111,7 +114,7 @@ import { defineConfig } from '@genapi/core'
 import { axios } from '@genapi/presets'
 
 export default defineConfig({
-  pipeline: axios.js,
+  preset: axios.js,
   input: {
     uri: 'https://petstore.swagger.io/v2/swagger.json',
   },
@@ -128,7 +131,7 @@ Make exact-match modifications to operations and type definitions:
 
 ```ts
 export default defineConfig({
-  pipeline: axios.ts,
+  preset: axios.ts,
   input: 'https://petstore.swagger.io/v2/swagger.json',
   patch: {
     operations: {
@@ -160,7 +163,7 @@ Batch transform operations and type definitions via functions:
 
 ```ts
 export default defineConfig({
-  pipeline: axios.ts,
+  preset: axios.ts,
   input: 'https://petstore.swagger.io/v2/swagger.json',
   transform: {
     operation: name => `api_${name}`, // Batch add prefix
@@ -179,7 +182,7 @@ Automatically generate mock methods for each API function (requires `better-mock
 
 ```ts
 export default defineConfig({
-  pipeline: axios.ts,
+  preset: axios.ts,
   input: 'https://petstore.swagger.io/v2/swagger.json',
   mockjs: true,
 })
@@ -204,7 +207,7 @@ import pipeline, { compiler, dest, generate, original } from '@genapi/pipeline'
 import { axios } from '@genapi/presets'
 
 export default defineConfig({
-  pipeline: pipeline(
+  preset: pipeline(
     // read config, convert to internal config, and provide default values
     config => axios.ts.config(config),
     // get data source

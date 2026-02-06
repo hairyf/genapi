@@ -38,7 +38,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
 
   transformBodyStringify('body', { options, parameters })
   url = transformQueryParams('query', { body, options, url })
-  url = transformUrlSyntax(url, { baseURL: configRead.config.baseURL })
+  url = transformUrlSyntax(url, { baseURL: configRead.config.meta?.baseURL })
   const fetch = transformFetchBody(url, options, spaceResponseType)
   functions.push({
     export: true,

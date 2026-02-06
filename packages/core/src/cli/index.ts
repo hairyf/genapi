@@ -8,7 +8,7 @@ import * as parser from './parser'
 const cli = cac('genapi')
 
 cli
-  .option('--pipe <pipeline>', 'The compilation pipeline used supports npm package (add the prefix genapi -) | local path')
+  .option('--preset <preset>', 'The compilation preset used supports npm package (add the prefix genapi -) | local path')
   .option('--input <source>', 'The incoming string resolves to a uri or json path.')
   .option('--outfile <path>', 'genapi output file options')
 

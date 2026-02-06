@@ -9,7 +9,7 @@ import type { ApiPipeline } from '@genapi/shared'
  * @example
  * ```ts
  * export default defineConfig({
- *   pipeline: axios.ts,
+ *   preset: axios.ts,
  *   input: 'http://example.com/api-docs',
  *   output: { main: 'src/api/index.ts', type: 'src/api/index.type.ts' },
  * })

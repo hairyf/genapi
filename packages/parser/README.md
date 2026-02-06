@@ -23,7 +23,7 @@ pnpm add @genapi/parser
 
 ### `transformBaseURL(source)`
 
-Injects baseURL from config into spec when config.baseURL is set.
+Injects baseURL from config into spec when config.meta?.baseURL is set.
 
 ### `transformQueryParams(name)`
 

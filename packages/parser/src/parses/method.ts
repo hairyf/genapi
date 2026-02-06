@@ -131,7 +131,7 @@ export function parseMethodMetadata({ method, path, responses, options: meta }: 
   let responseType = responseSchema ? parseSchemaType(responseSchema as any) : 'void'
 
   // 4. 强制必填标记逻辑 (递归优化)
-  if (configRead.config.responseRequired && responseType !== 'void') {
+  if (configRead.config.meta?.responseRequired && responseType !== 'void') {
     const processedTypes = new Set<string>() // 防止循环引用导致死循环
     const markRequiredRecursive = (typeName: string) => {
       if (processedTypes.has(typeName))

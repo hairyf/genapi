@@ -57,7 +57,7 @@ export function compiler(config: ApiPipeline.ConfigRead) {
 
   // 4. Output injection: precise slice replacement
   config.outputs.forEach((out: any) => {
-    if (out.type === 'request' && !config.config.onlyDeclaration) {
+    if (out.type === 'request' && !config.config.meta?.onlyDeclaration) {
       const code = compilerTsRequestDeclaration(config)
       const schema = `\n// API Schema\n${genInterface('APISchema', toObj(tree, true))}\n`
       const idx = code.lastIndexOf('import')

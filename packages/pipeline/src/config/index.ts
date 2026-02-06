@@ -11,9 +11,10 @@ import { provide } from '@genapi/shared'
  * @group Pipeline
  */
 export function config(userConfig: ApiPipeline.Config) {
-  userConfig.import = userConfig.import || {}
-
-  userConfig.responseType = userConfig.responseType || {}
+  // 初始化 meta 对象
+  userConfig.meta = userConfig.meta || {}
+  userConfig.meta.import = userConfig.meta.import || {}
+  userConfig.meta.responseType = userConfig.meta.responseType || {}
 
   if (typeof userConfig.output === 'string')
     userConfig.output = { main: userConfig.output }
@@ -21,21 +22,21 @@ export function config(userConfig: ApiPipeline.Config) {
   userConfig.output = userConfig.output || {}
   userConfig.output.main = userConfig.output.main || 'src/api/index.ts'
 
-  if (typeof userConfig.baseURL === 'string') {
-    userConfig.baseURL = userConfig.baseURL.endsWith('/"')
-      ? userConfig.baseURL = `${userConfig.baseURL.slice(0, userConfig.baseURL.length - 2)}"`
-      : userConfig.baseURL
+  if (typeof userConfig.meta.baseURL === 'string') {
+    userConfig.meta.baseURL = userConfig.meta.baseURL.endsWith('/"')
+      ? userConfig.meta.baseURL = `${userConfig.meta.baseURL.slice(0, userConfig.meta.baseURL.length - 2)}"`
+      : userConfig.meta.baseURL
   }
 
   if (userConfig.output?.type !== false)
     userConfig.output.type = userConfig.output.type || userConfig.output.main.replace(/\.ts|\.js/g, '.type.ts')
-  if (typeof userConfig.responseType === 'string')
-    userConfig.responseType = { infer: userConfig.responseType }
+  if (typeof userConfig.meta.responseType === 'string')
+    userConfig.meta.responseType = { infer: userConfig.meta.responseType }
 
   const userRoot = process.cwd()
   const isTypescript = userConfig.output.main.endsWith('.ts')
   const isGenerateType = userConfig.output?.type !== false
-  const importTypePath = userConfig.import.type || getImportTypePath(userConfig.output.main, userConfig.output.type || '')
+  const importTypePath = userConfig.meta.import.type || getImportTypePath(userConfig.output.main, userConfig.output.type || '')
 
   const imports: (StatementImported | false)[] = [
     isTypescript && isGenerateType && {
@@ -55,7 +56,7 @@ export function config(userConfig: ApiPipeline.Config) {
   ]
 
   const typings: (StatementTypeAlias | boolean)[] = [
-    !!userConfig.responseType.infer && { export: true, name: 'Infer<T>', value: userConfig.responseType.infer! },
+    !!userConfig.meta.responseType?.infer && { export: true, name: 'Infer<T>', value: userConfig.meta.responseType.infer! },
   ]
 
   if (userConfig.output.type !== false) {
@@ -85,7 +86,7 @@ export function config(userConfig: ApiPipeline.Config) {
       functions: [],
       interfaces: [],
       typings: typings.filter(Boolean) as StatementTypeAlias[],
-      response: userConfig.responseType,
+      response: userConfig.meta.responseType,
     },
   }
 
