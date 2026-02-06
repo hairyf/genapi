@@ -1,5 +1,5 @@
 import type { ApiPipeline } from '@genapi/shared'
-import got from 'got'
+import { ofetch } from 'ofetch'
 
 /**
  * Fetches source: resolves uri/http/json from configRead.inputs and sets configRead.source.
@@ -10,9 +10,11 @@ import got from 'got'
  */
 export async function original(configRead: ApiPipeline.ConfigRead) {
   if (configRead.inputs.uri)
-    configRead.source = await got({ url: configRead.inputs.uri, responseType: 'json' }).json<any>()
-  if (configRead.inputs.http)
-    configRead.source = await got({ ...configRead.inputs.http, responseType: 'json' }).json<any>()
+    configRead.source = await ofetch<any>(configRead.inputs.uri)
+  if (configRead.inputs.http) {
+    const { url, ...options } = configRead.inputs.http as any
+    configRead.source = await ofetch<any>(url || configRead.inputs.uri || '', options)
+  }
   if (configRead.inputs.json)
     configRead.source = await readJsonSource(configRead.inputs.json)
 

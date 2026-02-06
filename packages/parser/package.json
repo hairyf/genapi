@@ -35,7 +35,7 @@
     "@genapi/shared": "workspace:*",
     "@genapi/transform": "workspace:*",
     "@hairy/utils": "catalog:runtime",
-    "pascal-case": "catalog:runtime",
+    "scule": "catalog:runtime",
     "transliteration": "catalog:runtime"
   },
   "devDependencies": {

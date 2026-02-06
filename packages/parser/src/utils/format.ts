@@ -1,4 +1,4 @@
-import { pascalCase } from 'pascal-case'
+import { pascalCase } from 'scule'
 import { transliterate } from 'transliteration'
 
 /**

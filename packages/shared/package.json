@@ -31,7 +31,7 @@
     "prepublishOnly": "nr build"
   },
   "dependencies": {
-    "got": "catalog:runtime"
+    "ofetch": "catalog:runtime"
   },
   "publishConfig": {
     "exports": {

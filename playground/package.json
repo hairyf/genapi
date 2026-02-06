@@ -15,7 +15,7 @@
     "@genapi/core": "workspace:*",
     "@genapi/presets": "workspace:*",
     "@uni-helper/uni-network": "catalog:playground",
-    "axios": "catalog:",
+    "axios": "catalog:playground",
     "fetchdts": "catalog:inlined"
   }
 }

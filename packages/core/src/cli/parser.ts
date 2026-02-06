@@ -1,5 +1,4 @@
 import type { ApiPipeline } from '@genapi/shared'
-import type { CAC } from 'cac'
 import path, { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { cloneDeep, isUndefined, merge } from '@hairy/utils'
@@ -10,13 +9,13 @@ import { isNetworkUrl } from './utils'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-export function readpack(cli: CAC) {
+export function getVersion(): string {
   const pkgPath = join(__dirname, '../package.json')
 
   if (fs.existsSync(pkgPath))
-    cli.version(fs.readJSONSync(pkgPath).version)
+    return fs.readJSONSync(pkgPath).version
 
-  cli.help()
+  return '0.0.0'
 }
 
 export function options(options: any): Partial<ApiPipeline.Config> {

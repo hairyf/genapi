@@ -41,15 +41,14 @@
     "@clack/prompts": "catalog:runtime",
     "@genapi/shared": "workspace:*",
     "@hairy/utils": "catalog:runtime",
-    "cac": "catalog:runtime",
+    "c12": "catalog:runtime",
     "chalk": "catalog:runtime",
+    "citty": "catalog:runtime",
     "consola": "catalog:runtime",
     "fs-extra": "catalog:runtime",
     "jiti": "catalog:runtime",
     "knitwork-x": "catalog:runtime",
-    "nypm": "catalog:runtime",
-    "ora": "catalog:runtime",
-    "unconfig": "catalog:runtime"
+    "nypm": "catalog:runtime"
   },
   "devDependencies": {
     "@types/fs-extra": "catalog:types",

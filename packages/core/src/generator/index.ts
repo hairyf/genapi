@@ -1,6 +1,6 @@
 import type { ApiPipeline } from '@genapi/shared'
 import { exit } from 'node:process'
-import ora from 'ora'
+import { spinner } from '@clack/prompts'
 import { inPipeline } from '../internal'
 
 /**
@@ -12,7 +12,8 @@ import { inPipeline } from '../internal'
  */
 export async function operatePipelineGenerator(config: ApiPipeline.Config | ApiPipeline.Config[]) {
   const configs: ApiPipeline.Config[] = Array.isArray(config) ? config : [config]
-  const spinner = ora('Generate API File...\n').start()
+  const s = spinner()
+  s.start('Generate API File...')
 
   const process = configs.map((config) => {
     const pipeline = inPipeline(config.preset || 'swag-axios-ts')
@@ -23,12 +24,10 @@ export async function operatePipelineGenerator(config: ApiPipeline.Config | ApiP
 
   try {
     await Promise.all(process)
-    spinner.succeed()
-    spinner.clear()
+    s.stop('✅ Generated successfully')
   }
   catch (error: any) {
-    spinner.clear()
-    spinner.fail('Generate API File Error')
+    s.stop('❌ Generate API File Error')
     console.error(error)
     exit()
   }

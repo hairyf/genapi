@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://unpkg.com/undocs/schema/config.json
 
 name: genapi
-shortDescription: API generator that converts OpenAPI (v2~v3) and other input sources into TypeScript/JavaScript APIs
+shortDescription: Generate TS/JS APIs from OpenAPI and other specs.
 description: Convert OpenAPI specifications into TypeScript/JavaScript API code with flexible customization options.
 github: hairyf/genapi
 url: 'https://genapi.hairyf.com'

@@ -9,10 +9,10 @@
     "@genapi/core": "workspace:*",
     "@genapi/pipeline": "workspace:*",
     "@genapi/presets": "workspace:*",
-    "@vueuse/core": "catalog:",
+    "@vueuse/core": "catalog:docs",
     "nuxt": "catalog:docs",
     "p-pipe": "catalog:runtime",
-    "shiki": "catalog:"
+    "shiki": "catalog:docs"
   },
   "devDependencies": {
     "undocs": "catalog:docs"
