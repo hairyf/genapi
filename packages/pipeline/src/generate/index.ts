@@ -8,14 +8,14 @@ import { format } from 'prettier'
  * @returns Same configRead with outputs[].code formatted
  * @group Pipeline
  */
-export function generate(configRead: ApiPipeline.ConfigRead, options?: any) {
+export async function generate(configRead: ApiPipeline.ConfigRead, options?: any) {
   for (const output of configRead.outputs || []) {
     if (output.code)
-      output.code = formatTypescript(output.code, options)
+      output.code = await formatTypescript(output.code, options)
   }
   return configRead
 }
 
-export function formatTypescript(code: string, options?: any) {
-  return format(code, { printWidth: 800, ...options, parser: 'typescript' })
+export async function formatTypescript(code: string, options?: any) {
+  return await format(code, { printWidth: 800, ...options, parser: 'typescript' })
 }

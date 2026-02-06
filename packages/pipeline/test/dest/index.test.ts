@@ -47,10 +47,7 @@ describe('dest', () => {
       },
     }
 
-    dest(configRead)
-
-    // Wait for async operations
-    await new Promise(resolve => setTimeout(resolve, 10))
+    await dest(configRead)
 
     expect(fs.ensureDir).toHaveBeenCalledTimes(2)
     expect(fs.ensureDir).toHaveBeenCalledWith('./dist')
@@ -84,9 +81,7 @@ describe('dest', () => {
       },
     }
 
-    dest(configRead)
-
-    await new Promise(resolve => setTimeout(resolve, 10))
+    await dest(configRead)
 
     expect(fs.writeFile).toHaveBeenCalledWith('./dist/index.ts', '', { flag: 'w' })
   })
@@ -116,9 +111,7 @@ describe('dest', () => {
       },
     }
 
-    dest(configRead)
-
-    await new Promise(resolve => setTimeout(resolve, 10))
+    await dest(configRead)
 
     expect(fs.writeFile).toHaveBeenCalledWith('./dist/index.ts', '', { flag: 'w' })
   })
@@ -141,9 +134,7 @@ describe('dest', () => {
       },
     }
 
-    dest(configRead)
-
-    await new Promise(resolve => setTimeout(resolve, 10))
+    await dest(configRead)
 
     expect(fs.ensureDir).not.toHaveBeenCalled()
     expect(fs.writeFile).not.toHaveBeenCalled()
@@ -174,9 +165,7 @@ describe('dest', () => {
       },
     }
 
-    dest(configRead)
-
-    await new Promise(resolve => setTimeout(resolve, 10))
+    await dest(configRead)
 
     expect(fs.ensureDir).toHaveBeenCalledWith('./custom/dist')
     expect(fs.writeFile).toHaveBeenCalledWith('./custom/dist/index.ts', 'export const api = {}', { flag: 'w' })

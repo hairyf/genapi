@@ -12,3 +12,5 @@ temp
 cache
 .eslintcache
 skills
+
+test/fixtures

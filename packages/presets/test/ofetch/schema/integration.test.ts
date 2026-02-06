@@ -40,7 +40,7 @@ describe('ofetch/schema integration', () => {
     configRead.inputs = {}
     const afterParser = ofetch.schema.parser(configRead)
     const afterCompiler = ofetch.schema.compiler(afterParser)
-    const afterGenerate = ofetch.schema.generate(afterCompiler)
+    const afterGenerate = await ofetch.schema.generate(afterCompiler)
 
     const output = afterGenerate.outputs[0]
     expect(output.code).toBeDefined()
@@ -118,7 +118,7 @@ describe('ofetch/schema integration', () => {
     configRead.inputs = {}
     const afterParser = ofetch.schema.parser(configRead)
     const afterCompiler = ofetch.schema.compiler(afterParser)
-    const afterGenerate = ofetch.schema.generate(afterCompiler)
+    const afterGenerate = await ofetch.schema.generate(afterCompiler)
 
     const output = afterGenerate.outputs[0]
     const code = output.code

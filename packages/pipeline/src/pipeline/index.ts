@@ -17,7 +17,7 @@ export type PipelineFlow<ConfigRead> = (configRead: ConfigRead) => ConfigRead | 
 /**
  * Pipeline dest (output) step: writes files from config read.
  */
-export type PipelineDest<ConfigRead> = (configRead: ApiPipeline.ConfigRead) => void
+export type PipelineDest<ConfigRead> = (configRead: ApiPipeline.ConfigRead) => void | Promise<void>
 
 /**
  * Builds a GenAPI pipeline from five steps: config → original → parser → compiler → generate → dest.
