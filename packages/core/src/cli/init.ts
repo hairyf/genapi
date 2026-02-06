@@ -9,13 +9,15 @@ const logger = consola.withTag('genapi:init')
 
 const CONFIG = {
   presets: {
-    axios: { deps: ['axios'], schema: false },
-    fetch: { deps: [], schema: true },
-    ky: { deps: ['ky'], schema: false },
-    got: { deps: ['got'], schema: false },
-    ofetch: { deps: ['ofetch'], schema: true },
-    uni: { deps: ['@uni-helper/uni-network'], schema: false },
-  } as Record<string, { deps: string[], schema: boolean }>,
+    axios: { deps: ['axios'], schema: false, supportsJs: true },
+    fetch: { deps: [], schema: true, supportsJs: true },
+    ky: { deps: ['ky'], schema: false, supportsJs: true },
+    got: { deps: ['got'], schema: false, supportsJs: true },
+    ofetch: { deps: ['ofetch'], schema: true, supportsJs: true },
+    reactQuery: { deps: ['@tanstack/react-query'], schema: false, supportsJs: false },
+    uni: { deps: ['@uni-helper/uni-network'], schema: false, supportsJs: true },
+    vueQuery: { deps: ['@tanstack/vue-query'], schema: false, supportsJs: false },
+  } as Record<string, { deps: string[], schema: boolean, supportsJs?: boolean }>,
 }
 
 async function mandate<T>(promise: Promise<any>): Promise<T> {
@@ -35,18 +37,19 @@ export async function initCommand() {
     options: Object.keys(CONFIG.presets).map(v => ({ value: v, label: v })),
   }))
 
+  const presetConfig = CONFIG.presets[preset]
   const mode = await mandate<('ts' | 'js' | 'schema')>(select({
     message: 'Select mode:',
     options: [
       { value: 'ts', label: 'TS' },
-      { value: 'js', label: 'JS' },
-      ...(CONFIG.presets[preset].schema ? [{ value: 'schema', label: 'Schema' }] : []),
+      ...(presetConfig.supportsJs !== false ? [{ value: 'js', label: 'JS' }] : []),
+      ...(presetConfig.schema ? [{ value: 'schema', label: 'Schema' }] : []),
     ],
   }))
 
   const isTS = mode !== 'js'
   const fileName = `genapi.config.${isTS ? 'ts' : 'js'}`
-  const presetValue = `${preset}.${mode}`
+  const presetValue = presetConfig.supportsJs === false ? preset : `${preset}.${mode}`
   const content = isTS
     ? `import { defineConfig } from '@genapi/core'
 import { ${preset} } from '@genapi/presets'

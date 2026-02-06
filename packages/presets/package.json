@@ -27,7 +27,9 @@
     "./swag-ky-js": "./src/ky/js/index.ts",
     "./swag-ky-ts": "./src/ky/ts/index.ts",
     "./swag-ofetch-js": "./src/ofetch/js/index.ts",
-    "./swag-ofetch-ts": "./src/ofetch/ts/index.ts"
+    "./swag-ofetch-ts": "./src/ofetch/ts/index.ts",
+    "./react-query": "./src/react-query/index.ts",
+    "./vue-query": "./src/vue-query/index.ts"
   },
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
@@ -86,6 +88,14 @@
       "./swag-ofetch-ts": {
         "types": "./dist/ofetch/ts/index.d.mts",
         "default": "./dist/ofetch/ts/index.mjs"
+      },
+      "./reactQuery": {
+        "types": "./dist/react-query/index.d.mts",
+        "default": "./dist/react-query/index.mjs"
+      },
+      "./vueQuery": {
+        "types": "./dist/vue-query/index.d.mts",
+        "default": "./dist/vue-query/index.mjs"
       }
     }
   },

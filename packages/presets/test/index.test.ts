@@ -27,6 +27,15 @@ describe('presets/src/index', () => {
     expect(presetsModule.ofetch).toBeDefined()
   })
 
+  it('exports tanstack preset', () => {
+    expect(presetsModule).toHaveProperty('tanstackQuery ')
+    expect(presetsModule.tanstackQuery).toBeDefined()
+    expect(presetsModule.tanstackQuery).toHaveProperty('react')
+    expect(presetsModule.tanstackQuery).toHaveProperty('vue')
+    expect(presetsModule.tanstackQuery.react).toBeDefined()
+    expect(presetsModule.tanstackQuery.vue).toBeDefined()
+  })
+
   it('exports uni preset', () => {
     expect(presetsModule).toHaveProperty('uni')
     expect(presetsModule.uni).toBeDefined()
@@ -39,6 +48,7 @@ describe('presets/src/index', () => {
     expect(presetsModule.default).toHaveProperty('got')
     expect(presetsModule.default).toHaveProperty('ky')
     expect(presetsModule.default).toHaveProperty('ofetch')
+    expect(presetsModule.default).toHaveProperty('tanstack')
     expect(presetsModule.default).toHaveProperty('uni')
   })
 })

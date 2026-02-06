@@ -1,8 +1,8 @@
 import { defineConfig } from '@genapi/core'
-import { axios } from '@genapi/presets'
+import { tanstackQuery } from '@genapi/presets'
 
 export default defineConfig({
-  preset: axios.ts,
+  preset: tanstackQuery.vue,
   input: 'https://petstore3.swagger.io/api/v3/openapi.yaml',
   meta: {
     baseURL: false,
