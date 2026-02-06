@@ -59,4 +59,29 @@ describe('tanstack integration', () => {
     expect(output!.code).toContain('queryKey')
     expect(output!.code).toContain('queryFn')
   })
+
+  it('colada preset generates fetcher and useQuery with key and query', async () => {
+    const source = parseOpenapiSpecification(swagger2Minimal)
+    const config = {
+      input: { json: source },
+      output: { main: 'src/api.ts', type: false },
+    } as any
+
+    const configRead = tanstack.colada.config(config)
+    configRead.source = source
+    configRead.inputs = {}
+    const afterParser = tanstack.colada.parser(configRead)
+    const afterCompiler = tanstack.colada.compiler(afterParser)
+    const afterGenerate = await tanstack.colada.generate(afterCompiler)
+
+    const output = afterGenerate.outputs?.find(o => o.type === 'request')
+    expect(output?.code).toBeDefined()
+    expect(output!.code).toContain('@pinia/colada')
+    expect(output!.code).toContain('useQuery')
+    expect(output!.code).toContain('useMutation')
+    expect(output!.code).toContain('getPets')
+    expect(output!.code).toContain('useGetPets')
+    expect(output!.code).toContain('key:')
+    expect(output!.code).toContain('query:')
+  })
 })

@@ -49,7 +49,6 @@ catalogs:
     chalk: ^5.6.2
     citty: ^0.2.0
     confbox: ^0.2.4
-    consola: ^3.4.2
     fs-extra: ^11.3.3
     jiti: ^2.6.1
     knitwork-x: ^0.2.0

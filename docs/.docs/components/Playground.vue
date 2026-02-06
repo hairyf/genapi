@@ -104,6 +104,7 @@ const activeTab = ref<'main' | 'type'>('main')
 const generatedCode = ref<{ main?: string; type?: string }>({})
 const highlighter = ref<Highlighter | null>(null)
 
+const isTanstackPreset = computed(() => selectedPreset.value === 'tanstackQuery')
 const supportsSchema = computed(() => {
   return selectedPreset.value === 'fetch' || selectedPreset.value === 'ofetch'
 })
@@ -115,9 +116,16 @@ const presetOptions = computed(() => [
   { value: 'got', label: 'got' },
   { value: 'ofetch', label: 'ofetch' },
   { value: 'uni', label: 'uni' },
+  { value: 'tanstackQuery', label: 'TanStack Query' },
 ])
 
 const modeOptions = computed(() => {
+  if (isTanstackPreset.value) {
+    return [
+      { value: 'react', label: 'React' },
+      { value: 'vue', label: 'Vue' },
+    ]
+  }
   const options = [
     { value: 'ts', label: 'TypeScript' },
     { value: 'js', label: 'JavaScript' },
@@ -159,7 +167,8 @@ const jsonHighlighted = computed(() => {
 const codeHighlighted = computed(() => {
   if (!highlighter.value || !activeCode.value)
     return ''
-  const lang = activeTab.value === 'type' ? 'typescript' : (selectedMode.value === 'ts' ? 'typescript' : 'javascript')
+  const isTsLike = ['ts', 'react', 'vue'].includes(selectedMode.value)
+  const lang = activeTab.value === 'type' ? 'typescript' : (isTsLike ? 'typescript' : 'javascript')
   return highlighter.value.codeToHtml(activeCode.value, {
     lang,
     theme: theme.value,
@@ -167,14 +176,21 @@ const codeHighlighted = computed(() => {
 })
 
 function handlePresetChange() {
-  // If current mode is schema but new preset doesn't support it, switch to ts
-  if (selectedMode.value === 'schema' && !supportsSchema.value) {
-    selectedMode.value = 'ts'
+  if (isTanstackPreset.value) {
+    if (selectedMode.value !== 'react' && selectedMode.value !== 'vue') {
+      selectedMode.value = 'react'
+    }
+  } else {
+    if (selectedMode.value === 'schema' && !supportsSchema.value) {
+      selectedMode.value = 'ts'
+    }
+    if (selectedMode.value === 'react' || selectedMode.value === 'vue') {
+      selectedMode.value = 'ts'
+    }
   }
 }
 
 function handleModeChange() {
-  // If schema is selected but current preset doesn't support it, switch to fetch
   if (selectedMode.value === 'schema' && !supportsSchema.value) {
     selectedPreset.value = 'fetch'
   }
@@ -185,12 +201,12 @@ async function generateCode() {
     return
   }
 
-  const jsonData = JSON.parse(swaggerJson.value)
+  JSON.parse(swaggerJson.value) // validate JSON
 
   const response = await $fetch<{ main?: string; type?: string; error?: string }>('/api/generate', {
     method: 'POST',
     body: {
-      swagger: jsonData,
+      swagger: swaggerJson.value,
       preset: selectedPreset.value,
       mode: selectedMode.value,
     },

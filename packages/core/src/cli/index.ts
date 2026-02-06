@@ -7,6 +7,7 @@ import { operatePipelineGenerator } from '../generator'
 import { initCommand } from './init'
 import * as parser from './parser'
 
+let isInitCommand = false
 const main = defineCommand({
   meta: {
     name: 'genapi',
@@ -31,10 +32,16 @@ const main = defineCommand({
       meta: {
         description: 'Initialize genapi config file',
       },
-      run: initCommand,
+      run: async () => {
+        isInitCommand = true
+        return initCommand()
+      },
     }),
   },
   async run({ args }) {
+    if (isInitCommand) {
+      return
+    }
     const options = {
       preset: args.preset,
       input: args.input,

@@ -6,8 +6,8 @@ import pPipe from 'p-pipe'
 export default defineEventHandler(async (event) => {
   const body = await readBody<{
     swagger: string
-    preset: 'axios' | 'fetch' | 'got' | 'ky' | 'ofetch' | 'uni'
-    mode: 'ts' | 'js' | 'schema'
+    preset: 'axios' | 'fetch' | 'got' | 'ky' | 'ofetch' | 'uni' | 'tanstackQuery'
+    mode: 'ts' | 'js' | 'schema' | 'react' | 'vue'
   }>(event)
 
   if (!body.swagger) {

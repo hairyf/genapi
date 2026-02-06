@@ -16,6 +16,11 @@ describe('presets/src/tanstack', () => {
     expect(tanstackModule.vue).toBeDefined()
   })
 
+  it('exports colada preset', () => {
+    expect(tanstackModule).toHaveProperty('colada')
+    expect(tanstackModule.colada).toBeDefined()
+  })
+
   it('react preset has config, parser, compiler, generate, dest, original', () => {
     expect(tanstackModule.react).toHaveProperty('config')
     expect(tanstackModule.react).toHaveProperty('parser')
@@ -46,6 +51,17 @@ describe('presets/src/tanstack', () => {
     expect(typeof tanstackModule.vue.original).toBe('function')
   })
 
+  it('colada preset has config, parser, compiler, generate, dest, original', () => {
+    expect(tanstackModule.colada).toHaveProperty('config')
+    expect(tanstackModule.colada).toHaveProperty('parser')
+    expect(tanstackModule.colada).toHaveProperty('compiler')
+    expect(tanstackModule.colada).toHaveProperty('generate')
+    expect(tanstackModule.colada).toHaveProperty('dest')
+    expect(tanstackModule.colada).toHaveProperty('original')
+    expect(typeof tanstackModule.colada.config).toBe('function')
+    expect(typeof tanstackModule.colada.parser).toBe('function')
+  })
+
   it('react preset can be called as function', async () => {
     provide({ interfaces: [], functions: [], configRead: undefined })
     const source = parseOpenapiSpecification(swagger2Minimal)
@@ -62,6 +78,16 @@ describe('presets/src/tanstack', () => {
     const result = await tanstackModule.vue({
       input: { json: source },
       output: { main: 'test/fixtures/generated/tanstack-vue-output.ts', type: false },
+    } as any)
+    expect(result).toBeUndefined()
+  })
+
+  it('colada preset can be called as function', async () => {
+    provide({ interfaces: [], functions: [], configRead: undefined })
+    const source = parseOpenapiSpecification(swagger2Minimal)
+    const result = await tanstackModule.colada({
+      input: { json: source },
+      output: { main: 'test/fixtures/generated/colada-output.ts', type: false },
     } as any)
     expect(result).toBeUndefined()
   })

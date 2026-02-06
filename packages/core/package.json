@@ -44,7 +44,6 @@
     "c12": "catalog:runtime",
     "chalk": "catalog:runtime",
     "citty": "catalog:runtime",
-    "consola": "catalog:runtime",
     "fs-extra": "catalog:runtime",
     "jiti": "catalog:runtime",
     "knitwork-x": "catalog:runtime",
