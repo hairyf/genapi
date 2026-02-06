@@ -24,7 +24,7 @@
           v-model="swaggerJson"
           :highlighted="jsonHighlighted"
           :editable="true"
-          placeholder="请输入 Swagger/OpenAPI JSON..."
+          placeholder="Enter Swagger/OpenAPI JSON..."
           @input="handleJsonChange"
         />
       </div>
@@ -40,7 +40,7 @@
           :model-value="activeCode"
           :highlighted="codeHighlighted"
           :editable="false"
-          placeholder="代码将在这里显示..."
+          placeholder="Code will appear here..."
         />
       </div>
     </div>
@@ -167,14 +167,14 @@ const codeHighlighted = computed(() => {
 })
 
 function handlePresetChange() {
-  // 如果当前模式是 schema 但新预设不支持，切换到 ts
+  // If current mode is schema but new preset doesn't support it, switch to ts
   if (selectedMode.value === 'schema' && !supportsSchema.value) {
     selectedMode.value = 'ts'
   }
 }
 
 function handleModeChange() {
-  // 如果选择了 schema 但当前预设不支持，切换到 fetch
+  // If schema is selected but current preset doesn't support it, switch to fetch
   if (selectedMode.value === 'schema' && !supportsSchema.value) {
     selectedPreset.value = 'fetch'
   }
@@ -205,14 +205,14 @@ async function generateCode() {
     type: response.type || '',
   }
 
-  // 如果有类型文件，默认显示主文件
+  // If type file exists, show main file by default
   if (generatedCode.value.main) {
     activeTab.value = 'main'
   }
 }
 
 function handleJsonChange() {
-  // 自动生成代码
+  // Auto-generate code
   if (!swaggerJson.value.trim()) {
     generatedCode.value = {}
     return
@@ -220,13 +220,13 @@ function handleJsonChange() {
   debouncedGenerateCode()
 }
 
-// 使用 VueUse 的防抖函数
+// Use VueUse debounce function
 const debouncedGenerateCode = useDebounceFn(generateCode, 500)
 
-// 监听预设和模式变化，自动生成代码
+// Watch preset and mode changes, auto-generate code
 watch([selectedPreset, selectedMode], debouncedGenerateCode, { immediate: true })
 
-// 初始化 shiki 高亮器
+// Initialize shiki highlighter
 onMounted(async () => {
   highlighter.value = await createHighlighter({
     themes: ['github-dark'],
@@ -236,7 +236,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* 响应式布局 */
+/* Responsive layout */
 @media (max-width: 768px) {
   .flex.flex-1.overflow-hidden.min-h-0 {
     flex-direction: column;

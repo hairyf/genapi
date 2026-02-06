@@ -25,7 +25,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   editable: false,
-  placeholder: '代码将在这里显示...',
+  placeholder: 'Code will appear here...',
 })
 
 const emit = defineEmits<{
@@ -41,7 +41,7 @@ function handleInput(event: Event) {
 </script>
 
 <style scoped>
-/* 代码高亮样式 */
+/* Code highlighting styles */
 :deep(.shiki) {
   margin: 0;
   padding: 0;
