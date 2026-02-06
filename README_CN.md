@@ -6,43 +6,46 @@
 [![JSDocs][jsdocs-src]][jsdocs-href]
 [![License][license-src]][license-href]
 
+> **中文** | [English](./README.md)
+<!-- > [中文文档](http://genapi.vercel.app/?lang=zh-CN) -->
 API生成器，用于将OpenAPI（v2~v3）和其他输入源转换为TypeScript/JavaScript API。
 
 ## 特性
 
-- 🚀 **多种HTTP客户端** - 支持各种HTTP客户端:
-  - `axios` - 流行的基于Promise的HTTP客户端
-  - `fetch` - 原生浏览器fetch API
-  - `ky` - 小巧优雅的HTTP客户端
-  - `got` - 人性化的HTTP请求库
-  - `ofetch` - 更好的fetch API，带有TypeScript支持
-  - `uni` - `@uni-helper/uni-network` uniapp 的网络请求库
-
-- 🔄 **语言支持** - 生成TypeScript和JavaScript API:
-  - `swag-axios-ts` / `swag-axios-js`
-  - `swag-fetch-ts` / `swag-fetch-js`
-  - `swag-ky-ts` / `swag-ky-js`
-  - `swag-got-ts` / `swag-got-js`
-  - `swag-ofetch-ts` / `swag-ofetch-js`
-  - `swag-uni-ts` / `swag-uni-js`
-- 🛠️ **可定制** - 灵活的管道系统，用于自定义生成过程
-
-## 安装
-
-```bash
-# pnpm
-npm i @genapi/core @genapi/presets -D
-```
-
-> 你也可以全局安装，但不推荐这样做。
+- 🚀 **多种HTTP客户端** - 支持 [axios](https://github.com/axios/axios)、[fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API)、[ky](https://github.com/sindresorhus/ky)、[got](https://github.com/sindresorhus/got)、[ofetch](https://github.com/unjs/ofetch)、[uni](https://github.com/uni-helper/uni-network)
+- 🔄 **TypeScript & JavaScript** - 生成完整的 TS 和 JS API，包含完整的类型定义
+- 📋 **Schema 模式** - 基于 schema 的类型安全 fetch API（支持 `fetch` 和 `ofetch` 预设）
+- 📖 **OpenAPI 支持** - 完整支持 OpenAPI 2.0 (Swagger) 和 OpenAPI 3.x 规范
+- 🔧 **交互式 CLI** - 使用 `genapi init` 进行引导式设置，选择预设配置
+- 🛠️ **可定制管道** - 灵活的管道系统，用于自定义生成过程
+- 🔀 **转换与补丁** - 批量转换操作和类型，或进行精确匹配的修改
+- 🎭 **Mock 数据** - 为每个 API 函数自动生成 mock 方法（需要 `better-mock`）
+- 🌐 **多服务支持** - 通过 `servers` 配置支持多个 API 服务
+- ⚡️ **类型安全** - 完整的 TypeScript 支持，包含类型推断和 IntelliSense
+- 📦 **零配置** - 开箱即用，提供合理的默认值，可按需自定义
 
 ## 使用方法
 
-在项目根目录创建配置文件:
+### 初始化项目
 
-- `genapi.config.ts`
-- `genapi.config.js`
-- `genapi.config.json`
+运行以下命令来初始化你的项目：
+
+```bash
+# pnpm (推荐)
+pnpm dlx genapi init
+# npm
+npx genapi init
+# yarn
+yarn dlx genapi init
+```
+
+或手动安装和配置：
+
+```bash
+npm i @genapi/core @genapi/presets -D
+```
+
+创建 `genapi.config.ts`：
 
 ```ts
 import { defineConfig } from '@genapi/core'
@@ -50,177 +53,21 @@ import { axios } from '@genapi/presets'
 
 export default defineConfig({
   preset: axios.ts,
-  // 你的输入源（swagger api url或json）
   input: 'http://example.com/api-docs',
   output: {
     main: 'src/api/index.ts',
     type: 'src/api/index.type.ts',
   },
-  meta: {
-    // 你的API基础URL
-    baseURL: 'import.meta.env.VITE_APP_BASE_API',
-    // 自定义输出响应类型，默认为'T'
-    responseType: 'T extends { data?: infer V } ? V : void',
-  },
 })
 ```
 
-然后运行:
+然后运行：
 
 ```bash
 npm run genapi
 ```
 
-## 输入源
-
-输入支持URL或JSON格式:
-
-```ts
-export default defineConfig({
-  // 直接传入url
-  input: 'http://example.com/api-docs',
-  // 或JSON对象
-  input: { /* url|json */ }
-})
-```
-
-## 多服务配置
-
-对于有多个服务的项目，使用`server`配置:
-
-```ts
-export default defineConfig({
-  // 所有服务器继承上层配置
-  meta: {
-    // 你的API基础URL，此配置将传递给axios请求
-    baseURL: 'https://example.com/api',
-  },
-  servers: [
-    { input: 'http://service1/api-docs', output: { main: 'src/api/service1.ts' } },
-    { input: 'http://service2/api-docs', output: { main: 'src/api/service2.ts' } },
-    { input: 'http://service3/api-docs', output: { main: 'src/api/service3.ts' } },
-  ]
-})
-```
-
-## swag-axios-js
-
-使用任何`js`管道生成带有类型的JavaScript文件:
-
-```ts
-import { defineConfig } from '@genapi/core'
-import { axios } from '@genapi/presets'
-
-export default defineConfig({
-  preset: axios.js,
-  input: {
-    uri: 'https://petstore.swagger.io/v2/swagger.json',
-  },
-})
-```
-
-运行`genapi`后得到:
-
-![swag-axios-js](public/swag-axios-js.png)
-
-## Patch - 静态补丁
-
-精确匹配修改操作和类型定义：
-
-```ts
-export default defineConfig({
-  preset: axios.ts,
-  input: 'https://petstore.swagger.io/v2/swagger.json',
-  patch: {
-    operations: {
-      // 重命名函数
-      postUpdateUserUsingPOST: 'updateUserInfo',
-      // 修改参数和返回类型
-      getUserUsingGET: {
-        name: 'getUser',
-        parameters: [{ name: 'id', type: 'string', required: true }],
-        responseType: 'UserResponse'
-      }
-    },
-    definitions: {
-      // 重命名类型
-      UserDto: 'User',
-      // 覆盖类型（创建类型别名）
-      SessionDto: {
-        name: 'Session',
-        type: '{ name: string, age: number }'
-      }
-    }
-  }
-})
-```
-
-## Transform - 全局转换
-
-通过函数批量转换操作和类型定义：
-
-```ts
-export default defineConfig({
-  preset: axios.ts,
-  input: 'https://petstore.swagger.io/v2/swagger.json',
-  transform: {
-    operation: name => `api_${name}`, // 批量添加前缀
-    definition: name => name.endsWith('Dto') ? name.slice(0, -3) : name
-  },
-  patch: {
-    // transform 先执行，patch 后执行
-    operations: { api_getUser: 'fetchUser' }
-  }
-})
-```
-
-## MockJS - Mock 数据生成
-
-为每个 API 函数自动生成 mock 方法（需要安装 `better-mock`）：
-
-```ts
-export default defineConfig({
-  preset: axios.ts,
-  input: 'https://petstore.swagger.io/v2/swagger.json',
-  mockjs: true,
-})
-```
-
-使用示例：
-
-```ts
-import { getUser } from './api'
-
-const mockUser = getUser.mock() // 返回符合类型的模拟数据
-```
-
-## 自定义管道
-
-管道是genapi的核心。你可以创建自定义管道:
-
-```ts
-// 使用genapi提供的管道创建API管道生成器
-import pipeline, { compiler, dest, generate, original } from '@genapi/pipeline'
-// 每个管道都暴露相应的方法，可以重用和重组
-import { axios } from '@genapi/presets'
-
-export default defineConfig({
-  preset: pipeline(
-    // 读取配置，转换为内部配置，并提供默认值
-    config => axios.ts.config(config),
-    // 获取数据源
-    configRead => original(configRead),
-    // 将数据源解析为数据图
-    configRead => axios.ts.parser(configRead),
-    // 编译数据并转换为抽象语法树（AST）
-    configRead => compiler(configRead),
-    // 生成代码字符串
-    configRead => generate(configRead),
-    // 使用输出到输出文件
-    configRead => dest(configRead),
-  ),
-})
-```
+更多详情和高级功能，请访问[文档网站](http://genapi.vercel.app/)。
 
 ## License
 
