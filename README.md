@@ -13,7 +13,7 @@ A lightweight API code generator—only the code you need.
 
 ## Features
 
-- 🚀 **Multiple HTTP Clients** - Support for [axios](https://github.com/axios/axios), [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), [ky](https://github.com/sindresorhus/ky), [got](https://github.com/sindresorhus/got), [ofetch](https://github.com/unjs/ofetch), [uni](https://github.com/uni-helper/uni-network)
+- 🚀 **Multiple HTTP Clients** - Support for [axios](https://github.com/axios/axios), [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), [ky](https://github.com/sindresorhus/ky), [got](https://github.com/sindresorhus/got), [ofetch](https://github.com/unjs/ofetch), [TanStack Query](https://github.com/TanStack/query) (React/Vue), [uni](https://github.com/uni-helper/uni-network)
 - 🔄 **TypeScript & JavaScript** - Generate both TS and JS APIs with full type definitions
 - 📋 **Schema Mode** - Type-safe fetch APIs with schema-based typing (supports `fetch` and `ofetch` presets)
 - 📖 **Multiple Data Sources** - Support for OpenAPI 2.0/3.x, Swagger and other input sources
