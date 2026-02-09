@@ -205,4 +205,47 @@ describe('transformBaseURL', () => {
 
     expect(configRead.config.meta.baseURL).toBe('https://custom.api.com')
   })
+
+  it('uses host as full baseURL when OAS3-normalized (host is full server URL)', () => {
+    const source = {
+      openapi: '3.0.0',
+      schemes: ['https://petstore3.swagger.io/api/v3'],
+      host: 'https://petstore3.swagger.io/api/v3',
+      basePath: 'https://petstore3.swagger.io/api/v3',
+      paths: {},
+    }
+
+    transformBaseURL(source as any)
+
+    expect(configRead.config.meta?.baseURL).toBe('"https://petstore3.swagger.io/api/v3/"')
+  })
+
+  it('uses path once when OAS3 server url is relative (host and basePath same path, no duplicate)', () => {
+    const source = {
+      openapi: '3.0.0',
+      schemes: ['/api/v3'],
+      host: '/api/v3',
+      basePath: '/api/v3',
+      paths: {},
+    }
+
+    transformBaseURL(source as any)
+
+    expect(configRead.config.meta?.baseURL).toBe('"/api/v3/"')
+  })
+
+  it('resolves relative server path to full URL when input.uri is provided', () => {
+    configRead.inputs = { uri: 'https://petstore3.swagger.io/api/v3/openapi.json' }
+    const source = {
+      openapi: '3.0.0',
+      schemes: ['/api/v3'],
+      host: '/api/v3',
+      basePath: '/api/v3',
+      paths: {},
+    }
+
+    transformBaseURL(source as any)
+
+    expect(configRead.config.meta?.baseURL).toBe('"https://petstore3.swagger.io/api/v3/"')
+  })
 })

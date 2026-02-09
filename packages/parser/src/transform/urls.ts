@@ -91,21 +91,48 @@ export function transformBaseURL(source: OpenAPISpecificationV2) {
     return
 
   if (!configRead.config.meta?.baseURL && source.schemes?.length && source.host) {
-    const prefix = source.schemes.includes('https') ? 'https://' : 'http://'
     if (!configRead.config.meta) {
       configRead.config.meta = {}
     }
-    configRead.config.meta.baseURL = `"${prefix}${source.host}${source.basePath}/"`
+    const host = source.host!
+    const basePath = source.basePath ?? ''
+    const isFullUrl = /^https?:\/\//.test(host)
+    const isRelativePath = host.startsWith('/') || host === basePath
+    let baseURLStr: string
+    if (isFullUrl) {
+      baseURLStr = host.endsWith('/') ? host : `${host}/`
+    }
+    else if (isRelativePath) {
+      const single = `${(host || basePath).replace(/\/$/, '')}/`
+      const inputUri = configRead.inputs?.uri
+      if (typeof inputUri === 'string' && /^https?:\/\//.test(inputUri)) {
+        baseURLStr = new URL(single, inputUri).href
+        if (!baseURLStr.endsWith('/'))
+          baseURLStr += '/'
+      }
+      else {
+        baseURLStr = single.startsWith('/') ? single : `/${single}`
+      }
+    }
+    else {
+      baseURLStr = `${source.schemes!.includes('https') ? 'https://' : 'http://'}${host}${basePath}${basePath.endsWith('/') ? '' : '/'}`
+    }
+    configRead.config.meta.baseURL = `"${baseURLStr}"`
   }
 
   if (configRead.config.meta?.baseURL) {
     const ctx = inject()
-    ctx.variables.add('main', {
+    const baseURLVar = {
       export: true,
-      flag: 'const',
+      flag: 'const' as const,
       name: 'baseURL',
       value: configRead.config.meta.baseURL,
-    })
+    }
+    const hasApiOutput = configRead.outputs?.some(o => o.type === 'api')
+    if (hasApiOutput)
+      ctx.variables.add('api', baseURLVar)
+    else
+      ctx.variables.add('main', baseURLVar)
   }
 }
 

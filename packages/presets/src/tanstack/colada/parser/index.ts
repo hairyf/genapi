@@ -46,7 +46,11 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   url = transformUrlSyntax(url, { baseURL: configRead.config.meta?.baseURL })
   const fetchBody = transformFetchBody(url, options, spaceResponseType)
 
-  functions.add('main', {
+  const hasApiOutput = configRead.outputs.some(o => o.type === 'api')
+  const fetcherScope = hasApiOutput ? 'api' : 'main'
+  const fetcherRef = hasApiOutput ? `Api.${name}` : name
+
+  functions.add(fetcherScope, {
     export: true,
     async: true,
     name,
@@ -63,7 +67,6 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   const paramNames = fetcherParams.map(p => p.name).join(', ')
 
   if (isRead) {
-    // @pinia/colada useQuery: key + query (not queryKey/queryFn)
     const keyItems = `'${name}', ${paramNames}`
     functions.add('main', {
       export: true,
@@ -71,19 +74,18 @@ export const parser = createParser((config, { configRead, functions, interfaces 
       description: [`@wraps ${name}`],
       parameters: fetcherParams,
       body: [
-        `return useQuery({ key: [${keyItems}], query: () => ${name}(${paramNames}) })`,
+        `return useQuery({ key: [${keyItems}], query: () => ${fetcherRef}(${paramNames}) })`,
       ],
     })
   }
   else {
-    // @pinia/colada useMutation: mutation (not mutationFn)
     functions.add('main', {
       export: true,
       name: hook,
       description: description ? [...(Array.isArray(description) ? description : [description]), `@wraps ${name}`] : [`@wraps ${name}`],
       parameters: [],
       body: [
-        `return useMutation({ mutation: ${name} })`,
+        `return useMutation({ mutation: ${fetcherRef} })`,
       ],
     })
   }

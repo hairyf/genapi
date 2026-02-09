@@ -39,7 +39,8 @@ export namespace ApiPipeline {
   export interface PreOutput {
     /**
      * genapi output file options
-     * main: 主入口, type: 类型声明, api: hooks 等, 任意 key
+     * main: 主入口, type: 类型声明, api: apis（仅 query preset 生效）
+     * Query preset 默认三文件：main=index.ts(hooks)、api=index.api.ts(apis)、type=index.type.ts(types)；可设置 output.main / output.api / output.type 覆盖路径
      */
     output?: string | { main?: string, type?: string | false, api?: string, [key: string]: string | false | undefined }
   }

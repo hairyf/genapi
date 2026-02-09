@@ -46,7 +46,11 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   url = transformUrlSyntax(url, { baseURL: configRead.config.meta?.baseURL })
   const fetchBody = transformFetchBody(url, options, spaceResponseType)
 
-  functions.add('main', {
+  const hasApiOutput = configRead.outputs.some(o => o.type === 'api')
+  const fetcherScope = hasApiOutput ? 'api' : 'main'
+  const fetcherRef = hasApiOutput ? `Api.${name}` : name
+
+  functions.add(fetcherScope, {
     export: true,
     async: true,
     name,
@@ -70,7 +74,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
       description: [`@wraps ${name}`],
       parameters: fetcherParams,
       body: [
-        `return useQuery({ queryKey: [${queryKeyItems}], queryFn: () => ${name}(${paramNames}) })`,
+        `return useQuery({ queryKey: [${queryKeyItems}], queryFn: () => ${fetcherRef}(${paramNames}) })`,
       ],
     })
   }
@@ -81,7 +85,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
       description: description ? [...(Array.isArray(description) ? description : [description]), `@wraps ${name}`] : [`@wraps ${name}`],
       parameters: [],
       body: [
-        `return useMutation({ mutationFn: ${name} })`,
+        `return useMutation({ mutationFn: ${fetcherRef} })`,
       ],
     })
   }
