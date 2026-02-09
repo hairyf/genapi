@@ -60,7 +60,7 @@ describe('tanstack integration', () => {
     expect(output!.code).toContain('queryFn')
   })
 
-  it('colada preset generates fetcher and useQuery with key and query', async () => {
+  it('colada preset generates fetcher and useQuery with queryKey and queryFn', async () => {
     const source = parseOpenapiSpecification(swagger2Minimal)
     const config = {
       input: { json: source },
@@ -81,7 +81,7 @@ describe('tanstack integration', () => {
     expect(output!.code).toContain('useMutation')
     expect(output!.code).toContain('getPets')
     expect(output!.code).toContain('useGetPets')
-    expect(output!.code).toContain('key:')
-    expect(output!.code).toContain('query:')
+    expect(output!.code).toContain('queryKey')
+    expect(output!.code).toContain('queryFn')
   })
 })

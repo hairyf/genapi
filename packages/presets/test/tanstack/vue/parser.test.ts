@@ -34,8 +34,10 @@ describe('tanstack/vue parser', () => {
 
     const result = parser(configRead)
 
-    expect(result.graphs.scopes.main.functions).toHaveLength(2)
-    const [fetcher, hook] = result.graphs.scopes.main.functions
+    expect(result.graphs.scopes.api.functions).toHaveLength(1)
+    expect(result.graphs.scopes.main.functions).toHaveLength(1)
+    const fetcher = result.graphs.scopes.api.functions[0]
+    const hook = result.graphs.scopes.main.functions[0]
     expect(fetcher.name).toBe('getPets')
     expect(fetcher.export).toBe(true)
     expect(fetcher.async).toBe(true)
@@ -51,7 +53,7 @@ describe('tanstack/vue parser', () => {
     configRead.source = source
 
     const result = parser(configRead)
-    const fetcher = result.graphs.scopes.main.functions[0]
+    const fetcher = result.graphs.scopes.api.functions[0]
     const configParam = fetcher.parameters?.find((p: any) => p.name === 'config')
     expect(configParam).toBeDefined()
     expect(configParam?.type).toBe('RequestInit')
@@ -63,7 +65,8 @@ describe('tanstack/vue parser', () => {
     configRead.source = source
 
     const result = parser(configRead)
-    const [fetcher, hook] = result.graphs.scopes.main.functions
+    const fetcher = result.graphs.scopes.api.functions[0]
+    const hook = result.graphs.scopes.main.functions[0]
     expect(fetcher.parameters?.length).toBe(hook.parameters?.length)
     expect(hook.body?.some(line => line.includes('queryKey') && line.includes('queryFn'))).toBe(true)
   })

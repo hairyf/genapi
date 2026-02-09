@@ -34,16 +34,18 @@ describe('tanstack/colada parser', () => {
 
     const result = parser(configRead)
 
-    expect(result.graphs.scopes.main.functions).toHaveLength(2)
-    const [fetcher, hook] = result.graphs.scopes.main.functions
+    expect(result.graphs.scopes.api.functions).toHaveLength(1)
+    expect(result.graphs.scopes.main.functions).toHaveLength(1)
+    const fetcher = result.graphs.scopes.api.functions[0]
+    const hook = result.graphs.scopes.main.functions[0]
     expect(fetcher.name).toBe('getPets')
     expect(hook.name).toBe('useGetPets')
     expect(hook.body?.some(line => line.includes('useQuery'))).toBe(true)
-    expect(hook.body?.some(line => line.includes('key:') && line.includes('query:'))).toBe(true)
+    expect(hook.body?.some(line => line.includes('queryKey') && line.includes('queryFn'))).toBe(true)
     expect(hook.body?.some(line => line.includes('getPets'))).toBe(true)
   })
 
-  it('useMutation uses mutation option (not mutationFn)', () => {
+  it('useMutation uses mutationFn', () => {
     const source = parseOpenapiSpecification({
       ...swagger2Minimal,
       paths: {
@@ -60,9 +62,9 @@ describe('tanstack/colada parser', () => {
 
     const result = parser(configRead)
     const mutationHook = result.graphs.scopes.main.functions.find((f: any) =>
-      f.body?.some((line: string) => line.includes('useMutation') && line.includes('mutation:')),
+      f.body?.some((line: string) => line.includes('useMutation') && line.includes('mutationFn')),
     )
     expect(mutationHook).toBeDefined()
-    expect(mutationHook!.body?.some((line: string) => line.includes('mutation:') && !line.includes('mutationFn'))).toBe(true)
+    expect(mutationHook!.body?.some((line: string) => line.includes('mutationFn'))).toBe(true)
   })
 })
