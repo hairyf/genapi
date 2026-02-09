@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm -C docs build",
+  "outputDirectory": "docs/.docs/.vercel/output/static",
+  "framework": null
+}
