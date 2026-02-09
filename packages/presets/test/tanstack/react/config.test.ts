@@ -36,7 +36,7 @@ describe('tanstack/react config', () => {
     expect(main?.path).toMatch(/[\\/]src[\\/]api[\\/]index\.ts$/)
     expect(api?.path).toMatch(/[\\/]src[\\/]api[\\/]index\.api\.ts$/)
     expect(type?.path).toMatch(/[\\/]src[\\/]api[\\/]index\.type\.ts$/)
-    expect(configRead.graphs.scopes.main.imports.some(i => i.name === 'Api')).toBe(true)
+    expect(configRead.graphs.scopes.main.imports.some(i => i.name === 'apis')).toBe(true)
     expect(configRead.graphs.scopes.api?.imports.some(i => i.name === 'Types')).toBe(true)
   })
 

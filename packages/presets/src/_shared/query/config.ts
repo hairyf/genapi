@@ -13,7 +13,7 @@ export function ensureQueryOutput(userConfig: ApiPipeline.Config) {
     out.api = out.api ?? (typeof out.main === 'string' ? out.main.replace(/index\.(ts|js)$/, 'index.api.$1') : 'src/api/index.api.ts')
 }
 
-/** main import api file (api.xxx reference); api import type file (Types reference) */
+/** main import api file (apis.xxx reference); api import type file (Types reference) */
 export function addApiImportToMain(configRead: ApiPipeline.ConfigRead) {
   const mainOut = configRead.outputs.find(o => o.type === 'main')
   const apiOut = configRead.outputs.find(o => o.type === 'api')
@@ -22,7 +22,7 @@ export function addApiImportToMain(configRead: ApiPipeline.ConfigRead) {
   if (mainOut && apiOut) {
     const rel = path.relative(path.dirname(mainOut.path), apiOut.path).replace(/\.(ts|js)$/, '')
     const value = (rel.startsWith('.') ? rel : `./${rel}`).replace(/\\/g, '/')
-    imports.add('main', { value, namespace: true, name: 'api' })
+    imports.add('main', { value, namespace: true, name: 'apis' })
   }
   if (apiOut && typeOut) {
     const rel = path.relative(path.dirname(apiOut.path), typeOut.path).replace(/\.(ts|js)$/, '')

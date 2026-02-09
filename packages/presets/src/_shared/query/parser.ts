@@ -49,7 +49,7 @@ export function createQueryParser() {
     url = transformUrlSyntax(url, { baseURL: configRead.config.meta?.baseURL })
     const fetchBody = transformFetchBody(url, optList, spaceResponseType)
 
-    const fetcherRef = `api.${name}`
+    const fetcherRef = `apis.${name}`
     functions.add('api', {
       export: true,
       async: true,
@@ -67,7 +67,7 @@ export function createQueryParser() {
     const paramNames = fetcherParams.map(p => p.name).join(', ')
 
     if (isRead) {
-      const keyItems = `'${name}', ${paramNames}`
+      const keyItems = `${fetcherRef}.name, ${paramNames}`
       functions.add('main', {
         export: true,
         name: hook,

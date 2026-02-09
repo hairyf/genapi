@@ -32,6 +32,7 @@
         <div
           class="px-4 py-3 border-b border-[var(--ui-border)] bg-[var(--ui-bg-muted)] flex items-center font-medium text-sm flex-shrink-0">
           <Tabs
+            v-if="tabs.length"
             v-model="activeTab"
             :tabs="tabs"
           />
@@ -100,8 +101,10 @@ const swaggerJson = ref(`{
 
 const selectedPreset = ref('axios')
 const selectedMode = ref('ts')
-const activeTab = ref<'main' | 'type'>('main')
-const generatedCode = ref<{ main?: string; type?: string }>({})
+/** 当前选中的文件名，如 index.ts */
+const activeTab = ref('index.ts')
+/** 接口返回的文件列表，main 为 index.ts，type 为 index.type.ts 等 */
+const generatedFiles = ref<{ filename: string; code: string }[]>([])
 const highlighter = ref<Highlighter | null>(null)
 
 const isTanstackPreset = computed(() => selectedPreset.value === 'tanstackQuery')
@@ -136,23 +139,16 @@ const modeOptions = computed(() => {
   return options
 })
 
-const tabs = computed(() => {
-  const items = [
-    { value: 'main', label: 'index.ts' },
-  ]
-  if (generatedCode.value.type) {
-    items.push({ value: 'type', label: 'index.type.ts' })
-  }
-  return items
-})
+const tabs = computed(() =>
+  generatedFiles.value.map(file => ({
+    value: file.filename,
+    label: file.filename,
+  })),
+)
 
-const activeCode = computed(() => {
-  if (activeTab.value === 'main') {
-    return generatedCode.value.main || ''
-  } else {
-    return generatedCode.value.type || ''
-  }
-})
+const activeCode = computed(() =>
+  generatedFiles.value.find(f => f.filename === activeTab.value)?.code ?? '',
+)
 
 const jsonHighlighted = computed(() => {
   if (!highlighter.value || !swaggerJson.value.trim()) {
@@ -168,7 +164,8 @@ const codeHighlighted = computed(() => {
   if (!highlighter.value || !activeCode.value)
     return ''
   const isTsLike = ['ts', 'react', 'vue'].includes(selectedMode.value)
-  const lang = activeTab.value === 'type' ? 'typescript' : (isTsLike ? 'typescript' : 'javascript')
+  const isTypeFile = activeTab.value.endsWith('.type.ts')
+  const lang = isTypeFile ? 'typescript' : (isTsLike ? 'typescript' : 'javascript')
   return highlighter.value.codeToHtml(activeCode.value, {
     lang,
     theme: theme.value,
@@ -203,7 +200,7 @@ async function generateCode() {
 
   JSON.parse(swaggerJson.value) // validate JSON
 
-  const response = await $fetch<{ main?: string; type?: string; error?: string }>('/api/generate', {
+  const response = await $fetch<{ files?: { filename: string; code: string }[]; error?: string }>('/api/generate', {
     method: 'POST',
     body: {
       swagger: swaggerJson.value,
@@ -212,25 +209,18 @@ async function generateCode() {
     },
   })
 
-  if (response.error) {
+  if (response.error || !response.files?.length) {
     return
   }
 
-  generatedCode.value = {
-    main: response.main || '',
-    type: response.type || '',
-  }
-
-  // If type file exists, show main file by default
-  if (generatedCode.value.main) {
-    activeTab.value = 'main'
-  }
+  generatedFiles.value = response.files
+  activeTab.value = response.files[0].filename
 }
 
 function handleJsonChange() {
   // Auto-generate code
   if (!swaggerJson.value.trim()) {
-    generatedCode.value = {}
+    generatedFiles.value = []
     return
   }
   debouncedGenerateCode()
