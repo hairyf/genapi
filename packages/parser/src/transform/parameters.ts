@@ -1,5 +1,8 @@
 import type { ApiPipeline, StatementField, StatementInterface } from '@genapi/shared'
 
+/**
+ * Options for parameter/response type transform (syntax, namespace, generic, infer).
+ */
 export interface ParameterTransformOptions {
   configRead: ApiPipeline.ConfigRead
   interfaces: StatementInterface[]
@@ -8,6 +11,18 @@ export interface ParameterTransformOptions {
   syntax: 'typescript' | 'ecmascript'
   generic?: string
 }
+
+/**
+ * Transforms parameter types and response type for target syntax (TypeScript vs ECMAScript JSDoc); mutates parameters and description.
+ *
+ * @param parameters - Statement fields for the operation (mutated: type spliced with namespace for ecmascript)
+ * @param options - ConfigRead, interfaces, description array, responseType, syntax, optional generic
+ * @returns Object with spaceResponseType (final response type string for codegen)
+ * @example
+ * ```ts
+ * const { spaceResponseType } = transformParameters(parameters, { configRead, interfaces, description: [], responseType: 'User', syntax: 'typescript' })
+ * ```
+ */
 export function transformParameters(parameters: StatementField[], options: ParameterTransformOptions) {
   const { configRead, syntax, interfaces, description, responseType } = options
   const importType = configRead.outputs.find(v => v.type === 'typings')?.import

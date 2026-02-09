@@ -7,6 +7,11 @@ import type { OpenAPISpecificationV2, OpenAPISpecificationV3 } from 'openapi-spe
  * @param source - OpenAPI 3.x document
  * @returns Same object with Swagger 2–style fields set
  * @group Transform
+ * @example
+ * ```ts
+ * const swagger2Like = swagger2ToSwagger3(openApi3Spec)
+ * // swagger2Like.host, basePath, definitions, schemes set from servers/components
+ * ```
  */
 export function swagger2ToSwagger3(source: OpenAPISpecificationV3) {
   const change = source as unknown as OpenAPISpecificationV2

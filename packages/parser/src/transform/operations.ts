@@ -29,6 +29,11 @@ export interface OperationTransformOptions {
  * using a `const` reference remain valid.
  *
  * @group Transform
+ * @example
+ * ```ts
+ * const result = transformOperation({ configRead, name: 'getUserUsingGET', parameters, responseType: 'User' })
+ * // result.name, result.parameters, result.responseType (after transform + patch)
+ * ```
  */
 export function transformOperation(options: OperationTransformOptions) {
   const {

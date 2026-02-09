@@ -8,14 +8,17 @@ import { original } from '../original'
 
 /**
  * Pipeline read (input) step: turns raw config into internal config + inputs.
+ * @description First step: normalizes user config and builds ConfigRead (inputs, outputs, graphs).
  */
 export type PipelineRead<Config, ConfigRead> = (config: Config) => ConfigRead | Promise<ConfigRead>
 /**
  * Middle step that receives and returns config read; used for original, parser, compiler, generate.
+ * @description Each step may mutate configRead (e.g. set source, graphs, output.code).
  */
 export type PipelineFlow<ConfigRead> = (configRead: ConfigRead) => ConfigRead | Promise<ConfigRead>
 /**
  * Pipeline dest (output) step: writes files from config read.
+ * @description Last step: writes configRead.outputs[].code to configRead.outputs[].path.
  */
 export type PipelineDest<ConfigRead> = (configRead: ApiPipeline.ConfigRead) => void | Promise<void>
 
@@ -30,6 +33,11 @@ export type PipelineDest<ConfigRead> = (configRead: ApiPipeline.ConfigRead) => v
  * @param dest - Writes output files
  * @returns A function that runs the pipeline for a given config
  * @group Pipeline
+ * @example
+ * ```ts
+ * const run = pipeline(config, original, parser, compiler, generate, dest)
+ * await run(defineConfig({ input: 'openapi.json', output: { main: 'src/api.ts' } }))
+ * ```
  */
 export function pipeline<Config = ApiPipeline.Config, ConfigRead = ApiPipeline.ConfigRead>(
   config: PipelineRead<Config, ConfigRead>,

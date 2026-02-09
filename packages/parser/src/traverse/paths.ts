@@ -10,6 +10,9 @@ function isOperationObject(value: unknown): value is Method {
   return value != null && typeof value === 'object' && 'responses' in value
 }
 
+/**
+ * Aggregated path + method data: path, merged parameters, HTTP method, operation options, and responses.
+ */
 export interface PathMethod {
   path: string
   parameters: Parameter[]
@@ -24,6 +27,13 @@ export interface PathMethod {
  * @param paths - OpenAPI paths object
  * @param callback - Called for each (path, method) with path, parameters, method, options, responses
  * @group Traverse
+ * @example
+ * ```ts
+ * traversePaths(spec.paths, (config) => {
+ *   const { path, method, parameters } = config
+ *   // handle each operation
+ * })
+ * ```
  */
 export function traversePaths(paths: Paths, callback: (options: PathMethod) => void) {
   for (const [path, _others] of Object.entries(paths)) {

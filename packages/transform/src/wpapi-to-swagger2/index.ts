@@ -8,6 +8,11 @@ import { convertEndpoint, getParametersFromArgs, getParametersFromEndpoint } fro
  * @param source - WordPress REST API schema (routes + endpoints)
  * @returns Swagger 2.0 document
  * @group Transform
+ * @example
+ * ```ts
+ * const swagger = wpapiToSwagger2({ routes: { '/wp/v2': { namespace: 'wp/v2', endpoints: [...] } } })
+ * // Use with parser or pipeline as OpenAPI 2.0 input
+ * ```
  */
 export function wpapiToSwagger2(source: WordPressAPISchema): OpenAPISpecificationV2 {
   const swagger: OpenAPISpecificationV2 = {

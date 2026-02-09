@@ -1,6 +1,13 @@
 import type { ApiPipeline, StatementField, StatementFunction, StatementInterface } from '../types'
 /**
  * Context passed through pipeline steps (config, configRead, interfaces, functions, parameters).
+ * @description Used by inject()/provide() to pass data between parser, compiler, and presets.
+ * @example
+ * ```ts
+ * provide({ configRead, interfaces: [], functions: [] })
+ * const ctx = inject()
+ * ctx.configRead.outputs
+ * ```
  */
 export interface Context {
   config?: ApiPipeline.Config
@@ -21,6 +28,11 @@ export const context: Record<string, Context> = {
  * @param scope - Context key
  * @returns Current context for that scope
  * @group Inject
+ * @example
+ * ```ts
+ * const { configRead, interfaces } = inject()
+ * const config = inject('get/user/1')
+ * ```
  */
 export function inject(scope = 'default') {
   const currentContext = context[scope] || {}
@@ -31,6 +43,11 @@ export function inject(scope = 'default') {
  * Sets context for a scope. Call with `(value)` for default scope or `(scope, value)` for a named scope.
  *
  * @group Inject
+ * @example
+ * ```ts
+ * provide({ configRead, interfaces: [] })
+ * provide('get/user', { parameters: [...] })
+ * ```
  */
 export function provide(value: Context): void
 export function provide(scope: string, value: Context): void

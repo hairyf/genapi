@@ -12,9 +12,19 @@ import { parseSchemaType } from './schema'
 export type { InSchemas }
 
 /**
- * parse params to function options
- * @param {PathMethod} [pathMethod] { method, parameters, path }
- * @param {InSchemas} [schemas]
+ * Parses path/method parameters into function options (body, query, path, header, etc.) and provides config for codegen.
+ *
+ * @param pathMethod - Path, method, and merged parameters for one operation
+ * @param pathMethod.method - HTTP method
+ * @param pathMethod.parameters - Merged path + operation parameters
+ * @param pathMethod.path - Path pattern (e.g. /user/{id})
+ * @param schemas - Optional schema names for body/query/path/header to customize option keys
+ * @returns Config with options, parameters, and interfaces; also provides config into context for this path/method
+ * @example
+ * ```ts
+ * const config = parseMethodParameters({ method: 'get', path: '/user/{id}', parameters }, schemas)
+ * // config.parameters, config.options, config.interfaces
+ * ```
  */
 export function parseMethodParameters({ method, parameters, path }: PathMethod, schemas?: InSchemas) {
   const requestConfigs: Record<string, StatementField[]> = {
@@ -93,6 +103,21 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
   return config
 }
 
+/**
+ * Builds method metadata (name, url template, response type, comments) from path/method and applies transform/patch.
+ *
+ * @param pathMethod - Path, method, responses, and operation options
+ * @param pathMethod.method - HTTP method
+ * @param pathMethod.path - Path pattern
+ * @param pathMethod.responses - OpenAPI responses map
+ * @param pathMethod.options - Operation object (summary, description, tags, etc.)
+ * @returns Object with name, url, responseType, description, body; also provides responseType into context
+ * @example
+ * ```ts
+ * const meta = parseMethodMetadata(pathMethod)
+ * // meta.name, meta.url, meta.responseType, meta.description
+ * ```
+ */
 export function parseMethodMetadata({ method, path, responses, options: meta }: PathMethod) {
   const { configRead, interfaces } = inject()
   const metaAny = meta as { consumes?: string[] }

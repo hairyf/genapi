@@ -17,8 +17,16 @@ function schemaRequired(schema: SchemaLike, field?: string): boolean {
 }
 
 /**
- * parse schema to type
- * @param propertie
+ * Resolves an OpenAPI schema (or property) to a TypeScript type string; handles $ref, allOf, object, array, primitives.
+ *
+ * @param propertie - Schema or schema-like (e.g. from definitions, properties, or parameter schema)
+ * @returns Type string (interface name, primitive, or inline object/array type)
+ * @example
+ * ```ts
+ * parseSchemaType({ type: 'string' }) // 'string'
+ * parseSchemaType({ $ref: '#/definitions/User' }) // 'User'
+ * parseSchemaType({ type: 'array', items: { type: 'number' } }) // 'number[]'
+ * ```
  */
 export function parseSchemaType(propertie: SchemaWithAllOf): string {
   const { interfaces = [], configRead } = inject()

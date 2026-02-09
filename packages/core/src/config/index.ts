@@ -14,6 +14,7 @@ import type { ApiPipeline } from '@genapi/shared'
  *   output: { main: 'src/api/index.ts', type: 'src/api/index.type.ts' },
  * })
  * ```
+ * @description Identity function for type inference; supports single config or servers array.
  */
 export function defineConfig(config: ApiPipeline.Config): ApiPipeline.Config
 export function defineConfig(config: ApiPipeline.ConfigServers): ApiPipeline.ConfigServers

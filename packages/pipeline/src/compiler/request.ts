@@ -3,6 +3,17 @@ import { inject } from '@genapi/shared'
 import { genComment, genFunction, genImport, genVariable } from 'knitwork-x'
 import { compilerTsTypingsDeclaration } from './typings'
 
+/**
+ * Compiles configRead graphs to TypeScript request module code (imports, variables, functions).
+ *
+ * @param configRead - ConfigRead with graphs (comments, imports, variables, functions) and config
+ * @returns Generated request module source string
+ * @example
+ * ```ts
+ * const code = compilerTsRequestDeclaration(configRead)
+ * await fs.writeFile('src/api.ts', code)
+ * ```
+ */
 export function compilerTsRequestDeclaration(configRead: ApiPipeline.ConfigRead): string {
   const { graphs, config, outputs } = configRead
   const sections: string[] = []

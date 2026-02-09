@@ -4,10 +4,23 @@ import { inject } from '@genapi/shared'
 import { parseSchemaType } from '../parses'
 import { varFiled, varName } from '../utils'
 
+/**
+ * Options for definition transform (e.g. target interfaces array).
+ */
 export interface DefinitionTransformOptions {
   interfaces: StatementInterface[]
 }
 
+/**
+ * Converts OpenAPI definitions (schemas) to StatementInterface entries and pushes to context interfaces; applies config transform/patch.
+ *
+ * @param definitions - OpenAPI definitions object (Swagger 2 style)
+ * @example
+ * ```ts
+ * transformDefinitions(spec.definitions)
+ * // inject().interfaces now includes User, Order, etc.
+ * ```
+ */
 export function transformDefinitions(definitions: Definitions) {
   const { interfaces, configRead } = inject()
   const config = configRead?.config || {} as ApiPipeline.Config

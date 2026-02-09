@@ -2,7 +2,16 @@ import type { ApiPipeline } from '@genapi/shared'
 import { genComment, genInterface, genTypeAlias } from 'knitwork-x'
 
 /**
- * Compiles configRead graphs to typings code string using knitwork-x.
+ * Compiles configRead graphs to TypeScript typings code (type aliases, interfaces, optional header comment).
+ *
+ * @param configRead - ConfigRead with graphs (comments, typings, interfaces)
+ * @param comment - Whether to include leading block comment from graphs.comments
+ * @returns Generated typings module source string
+ * @example
+ * ```ts
+ * const code = compilerTsTypingsDeclaration(configRead)
+ * await fs.writeFile('src/api.type.ts', code)
+ * ```
  */
 export function compilerTsTypingsDeclaration(configRead: ApiPipeline.ConfigRead, comment = true): string {
   configRead.graphs.comments = configRead.graphs.comments || []

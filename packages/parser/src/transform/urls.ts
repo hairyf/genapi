@@ -29,6 +29,11 @@ export interface BaseUrlTransformOptions {
  * @param options.url - Optional URL string to append query to
  * @returns Updated url fragment
  * @group Transform
+ * @example
+ * ```ts
+ * const urlSuffix = transformQueryParams('query', { body: [], options: ['query'], url: '/api' })
+ * // urlSuffix may be '?${querystr}', body/options mutated
+ * ```
  */
 export function transformQueryParams(name: string, { body, options, optionKey, url }: QueryUrlTransformOptions) {
   url = url || ''
@@ -53,6 +58,11 @@ export function transformQueryParams(name: string, { body, options, optionKey, u
  * @param options.baseURL - Optional base URL to prefix
  * @returns Code string for the URL
  * @group Transform
+ * @example
+ * ```ts
+ * transformUrlSyntax('/user/${paths.id}', { baseURL: true }) // '${baseURL}/user/${paths.id}' as template
+ * transformUrlSyntax('/api') // "'/api'"
+ * ```
  */
 export function transformUrlSyntax(url: string, { baseURL }: BaseUrlSyntaxTransformOptions = {}) {
   if (baseURL)
@@ -68,6 +78,11 @@ export function transformUrlSyntax(url: string, { baseURL }: BaseUrlSyntaxTransf
  *
  * @param source - Swagger/OpenAPI spec (mutated)
  * @group Transform
+ * @example
+ * ```ts
+ * transformBaseURL(spec)
+ * // configRead.config.meta.baseURL and configRead.graphs.variables may be set from spec.host/schemes
+ * ```
  */
 export function transformBaseURL(source: OpenAPISpecificationV2) {
   const { configRead } = inject()
@@ -93,6 +108,18 @@ export function transformBaseURL(source: OpenAPISpecificationV2) {
   }
 }
 
+/**
+ * Returns the request/response body snippet for fetch-based clients (json/text/none/void) based on response type.
+ *
+ * @param url - Code expression for the URL (e.g. template literal)
+ * @param options - Literal options for fetch (method, headers, body, etc.)
+ * @param spaceResponseType - Resolved response type (void, string, number, any, or interface name)
+ * @returns Array of statement strings (e.g. fetch + return response.json())
+ * @example
+ * ```ts
+ * transformFetchBody('url', ['method: "GET"'], 'User') // ['const response = await fetch(url, {...})', 'return response.json() as Promise<User>']
+ * ```
+ */
 export function transformFetchBody(url: string, options: LiteralField[], spaceResponseType: string) {
   const bodies = {
     json: [

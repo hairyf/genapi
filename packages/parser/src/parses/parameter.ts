@@ -4,8 +4,15 @@ import { spliceEnumDescription, varFiled } from '../utils'
 import { parseSchemaType } from './schema'
 
 /**
- * parse parameter to filed
- * @param parameter
+ * Converts a single OpenAPI parameter into a StatementField (name, type, required, description).
+ *
+ * @param parameter - OpenAPI parameter (query, path, header, body, etc.)
+ * @returns StatementField for codegen (supports enum description for query arrays)
+ * @example
+ * ```ts
+ * const field = parseParameterFiled({ name: 'id', in: 'path', type: 'string', required: true })
+ * // { name: 'id', type: 'string', required: true }
+ * ```
  */
 export function parseParameterFiled(parameter: Parameter) {
   const field: StatementField = {

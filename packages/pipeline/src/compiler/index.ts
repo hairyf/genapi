@@ -8,6 +8,11 @@ import { compilerTsTypingsDeclaration } from './typings'
  * @param configRead - ConfigRead with graphs and outputs
  * @returns Same configRead with output.code set
  * @group Pipeline
+ * @example
+ * ```ts
+ * compiler(configRead)
+ * configRead.outputs.forEach(o => console.log(o.code))
+ * ```
  */
 export function compiler(configRead: ApiPipeline.ConfigRead) {
   for (const output of configRead.outputs) {

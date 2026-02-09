@@ -6,9 +6,14 @@ import { inPipeline } from '../internal'
 /**
  * Runs the GenAPI pipeline for one or more configs.
  * Resolves pipeline by name (e.g. `swag-axios-ts`), then runs config → original → parser → compiler → generate → dest.
- *·
+ *
  * @param config - Single config or array of configs (e.g. from `servers`)
  * @group Core
+ * @example
+ * ```ts
+ * await generate(defineConfig({ preset: 'swag-axios-ts', input: 'openapi.json', output: { main: 'src/api.ts' } }))
+ * await generate([config1, config2])
+ * ```
  */
 export async function generate(config: ApiPipeline.Config | ApiPipeline.Config[]) {
   const configs: ApiPipeline.Config[] = Array.isArray(config) ? config : [config]

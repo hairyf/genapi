@@ -20,7 +20,12 @@ export {
 
 /**
  * Preset pipelines by HTTP client: axios, fetch, ky, got, ofetch, tanstack (react/vue/colada), uni.
- * Each key has `.ts` and `.js` (e.g. `presets.axios.ts`, `presets.axios.js`).
+ * @description Each key exposes `.ts` and `.js` pipeline modules (e.g. use `@genapi/presets/swag-axios-ts`).
+ * @example
+ * ```ts
+ * import presets from '@genapi/presets'
+ * // presets.axios, presets.fetch, presets.ofetch, presets.tanstackQuery, presets.uni, presets.colada
+ * ```
  */
 export default {
   axios,

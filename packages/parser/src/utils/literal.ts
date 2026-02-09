@@ -1,13 +1,18 @@
 /**
- * @example 'a' > { a }
- * @example ['a', 'b'] > { a: b }
- * @example ['...', 'c'] > { ...c }
+ * A single option for codegen: either a bare identifier or a [key, value] pair (or spread).
+ * @example 'a' yields { a }; ['a', 'b'] yields { a: b }; ['...', 'c'] yields { ...c }
  */
 export type LiteralField = string | [string | '...', string]
 
 /**
- * Convert literal fields to string
- * @param fields
+ * Converts an array of LiteralField into a single comma-separated code string for object literals.
+ *
+ * @param fields - Array of literal fields (identifiers or [key, value] or spread)
+ * @returns String like "method: 'GET', body: data" or "...headers"
+ * @example
+ * ```ts
+ * literalFieldsToString([['method', "'GET'"], 'body']) // "method:'GET', body"
+ * ```
  */
 export function literalFieldsToString(fields: LiteralField[]) {
   function parse(field: LiteralField) {

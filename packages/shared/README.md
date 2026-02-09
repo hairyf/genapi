@@ -25,6 +25,13 @@ pnpm add @genapi/shared
 
 Gets the current pipeline context for the given scope (default: `'default'`). Used inside pipeline steps to read config/graphs.
 
+**Example:**
+
+```ts
+const { configRead, interfaces } = inject()
+const config = inject('get/user/1')
+```
+
 ### `ApiPipeline`
 
 - **Type**: `undefined`

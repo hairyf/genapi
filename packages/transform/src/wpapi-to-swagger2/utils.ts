@@ -4,10 +4,13 @@ import type { Parameter, SchemaType } from 'openapi-specification-types'
 import type { WordPressArgument } from './types'
 
 /**
- * Converts WordPress-style endpoints to Swagger style
- * Example: /wp/v2/posts/(?P<id>[\d]+) -> /wp/v2/posts/{id}
- * @param endpoint WordPress endpoint path
- * @returns Swagger-compatible path
+ * Converts WordPress-style path patterns to Swagger path format.
+ * @param endpoint - WordPress endpoint path (e.g. with (?P<id>[\d]+))
+ * @returns Swagger-compatible path with {param} placeholders
+ * @example
+ * ```ts
+ * convertEndpoint('/wp/v2/posts/(?P<id>[\\d]+)') // '/wp/v2/posts/{id}'
+ * ```
  */
 export function convertEndpoint(endpoint: string): string {
   if (endpoint.includes('(?P<'))
@@ -17,9 +20,13 @@ export function convertEndpoint(endpoint: string): string {
 }
 
 /**
- * Extracts path parameters from an endpoint
- * @param endpoint WordPress endpoint path
- * @returns Array of Swagger parameters
+ * Extracts path parameters from a WordPress-style endpoint pattern.
+ * @param endpoint - Endpoint path containing (?P<name>pattern) groups
+ * @returns Array of OpenAPI path parameters (name, in: 'path', type, required)
+ * @example
+ * ```ts
+ * getParametersFromEndpoint('/posts/(?P<id>[\\d]+)') // [{ name: 'id', in: 'path', type: 'integer', required: true }]
+ * ```
  */
 export function getParametersFromEndpoint(endpoint: string): Parameter[] {
   const pathParams: Parameter[] = []
@@ -49,12 +56,16 @@ export function getParametersFromEndpoint(endpoint: string): Parameter[] {
 }
 
 /**
- * Builds a parameter object from parameter definition
- * @param name Parameter name
- * @param method HTTP method
- * @param endpoint Endpoint path
- * @param detail Parameter details
- * @returns Swagger parameter object
+ * Builds a single OpenAPI parameter from WordPress argument definition.
+ * @param name - Parameter name
+ * @param method - HTTP method (for context)
+ * @param endpoint - Endpoint path (to detect path vs query)
+ * @param detail - WordPress argument (type, description, etc.)
+ * @returns OpenAPI Parameter object
+ * @example
+ * ```ts
+ * buildParam('id', 'GET', '/posts/{id}', { type: 'integer' }) // { name: 'id', in: 'path', type: 'integer', ... }
+ * ```
  */
 export function buildParam(name: string, method: string, endpoint: string, detail: WordPressArgument): Parameter {
   // Determine parameter type
@@ -128,11 +139,15 @@ export function buildParam(name: string, method: string, endpoint: string, detai
 }
 
 /**
- * Extracts parameters from argument definitions
- * @param endpoint Endpoint path
- * @param args Argument definitions
- * @param method HTTP method
- * @returns Array of Swagger parameters
+ * Builds OpenAPI parameters from WordPress endpoint args.
+ * @param endpoint - Converted endpoint path (with {param})
+ * @param args - Map of argument name to WordPress argument definition
+ * @param method - HTTP method
+ * @returns Array of OpenAPI Parameter objects
+ * @example
+ * ```ts
+ * getParametersFromArgs('/posts/{id}', { id: { type: 'integer' } }, 'GET')
+ * ```
  */
 export function getParametersFromArgs(endpoint: string, args: Record<string, WordPressArgument>, method: string): Parameter[] {
   const parameters: Parameter[] = []

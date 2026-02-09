@@ -1,11 +1,27 @@
 import type { StatementField } from '@genapi/shared'
 import type { LiteralField } from '../utils'
 
+/**
+ * Options for header transform: option list and parameter list.
+ */
 export interface HeadersTransformOptions {
   options: LiteralField[]
   parameters: StatementField[]
 }
 
+/**
+ * Injects Content-Type headers (application/json or multipart/form-data) into options and removes standalone 'headers' option when present.
+ *
+ * @param name - Parameter name (e.g. 'headers')
+ * @param options - Object with parameters and options (mutated)
+ * @param options.parameters - Statement fields
+ * @param options.options - Literal field list
+ * @example
+ * ```ts
+ * transformHeaderOptions('headers', { parameters: [...], options: ['headers', 'body'] })
+ * // options get 'headers' replaced with literal { 'Content-Type': 'application/json', ...headers }
+ * ```
+ */
 export function transformHeaderOptions(name: string, { parameters, options }: HeadersTransformOptions) {
   const applicationJSONFields = [
     '\'Content-Type\': \'application/json\'',

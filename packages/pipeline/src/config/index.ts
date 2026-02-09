@@ -9,6 +9,10 @@ import { provide } from '@genapi/shared'
  * @param userConfig - Raw config from defineConfig
  * @returns ConfigRead (config + inputs + outputs)
  * @group Pipeline
+ * @example
+ * ```ts
+ * const configRead = config(defineConfig({ input: 'openapi.json', output: { main: 'src/api.ts' } }))
+ * ```
  */
 export function config(userConfig: ApiPipeline.Config) {
   // 初始化 meta 对象

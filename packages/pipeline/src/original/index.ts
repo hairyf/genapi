@@ -31,6 +31,11 @@ async function fetchSource(url: string, options?: Record<string, any>) {
  * @param configRead - ConfigRead with inputs (uri, http, or json)
  * @returns Same configRead with source set and transformed if needed
  * @group Pipeline
+ * @example
+ * ```ts
+ * await original(configRead)
+ * // configRead.source is set from uri/http/json; wpapi transformed to swagger2 if parser is 'wpapi'
+ * ```
  */
 export async function original(configRead: ApiPipeline.ConfigRead) {
   if (configRead.inputs.uri)

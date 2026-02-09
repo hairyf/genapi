@@ -2,8 +2,15 @@ import { pascalCase } from 'scule'
 import { transliterate } from 'transliteration'
 
 /**
- * Get available variable names
- * @param {*} string_
+ * Converts a string or path segments into a valid PascalCase identifier (transliterates, strips non-alphanumeric).
+ *
+ * @param string_ - Single string or array of segments (e.g. path + method)
+ * @returns PascalCase variable name safe for TypeScript
+ * @example
+ * ```ts
+ * varName('get /user/info') // 'UserInfo'
+ * varName(['get', 'user', 'id']) // 'UserId'
+ * ```
  */
 export function varName(string_: string | string[]) {
   if (!string_) {
@@ -26,17 +33,29 @@ export function varName(string_: string | string[]) {
 }
 
 /**
- * ref map
- * @param ref
+ * Extracts the last segment from a $ref path (e.g. '#/definitions/User' -> 'User').
+ *
+ * @param ref - OpenAPI $ref string
+ * @returns Definition or schema name
+ * @example
+ * ```ts
+ * useRefMap('#/definitions/UserDto') // 'UserDto'
+ * ```
  */
 export function useRefMap(ref: string) {
   return ref.split('/').pop()!
 }
 
 /**
- * splice enum description
- * @param name
- * @param enums
+ * Builds JSDoc @param line for an enum query parameter (allowed values and example query string).
+ *
+ * @param name - Parameter name
+ * @param enums - Allowed enum values
+ * @returns JSDoc string or empty string if no enums
+ * @example
+ * ```ts
+ * spliceEnumDescription('status', ['a', 'b']) // "@param status 'a,b' | 'status=a&status=b'"
+ * ```
  */
 export function spliceEnumDescription(name: string, enums: string[] = []) {
   if (!enums?.length)
@@ -47,8 +66,14 @@ export function spliceEnumDescription(name: string, enums: string[] = []) {
 }
 
 /**
- * splice enum type
- * @param enums
+ * Builds a TypeScript union array type from enum strings (e.g. 'a' | 'b' for array).
+ *
+ * @param enums - Enum string values
+ * @returns Type string like "'a' | 'b'" or "('a' | 'b')[]", or ''
+ * @example
+ * ```ts
+ * spliceEnumType(['draft', 'published']) // "('draft' | 'published')[]"
+ * ```
  */
 export function spliceEnumType(enums: string[] = []) {
   if (!enums.length)
@@ -58,6 +83,17 @@ export function spliceEnumType(enums: string[] = []) {
   return `${stringTypes}[]`
 }
 
+/**
+ * Escapes a property name for codegen: wraps in quotes if it contains non-identifier characters.
+ *
+ * @param name - Property or field name
+ * @returns name or quoted name (e.g. 'data-id' -> "'data-id'")
+ * @example
+ * ```ts
+ * varFiled('userId') // 'userId'
+ * varFiled('data-id') // "'data-id'"
+ * ```
+ */
 export function varFiled(name: string) {
   if (/[^A-Z]/i.test(name))
     name = `'${name}'`
