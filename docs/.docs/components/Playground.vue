@@ -17,7 +17,7 @@
     <div class="flex">
       <div class="flex flex-col flex-1 border-r border-[var(--ui-border)] min-w-0">
         <div
-          class="px-4 py-3 border-b border-[var(--ui-border)] bg-[var(--ui-bg-muted)] flex items-center font-medium text-sm flex-shrink-0 text-[var(--ui-text)]">
+          class="px-4 py-3 border-b min-h-[45px] border-[var(--ui-border)] bg-[var(--ui-bg-muted)] flex items-center font-medium text-sm flex-shrink-0 text-[var(--ui-text)]">
           Swagger JSON
         </div>
         <CodeHighlighter
@@ -30,7 +30,7 @@
       </div>
       <div class="flex flex-col flex-1 min-w-0">
         <div
-          class="px-4 py-3 border-b border-[var(--ui-border)] bg-[var(--ui-bg-muted)] flex items-center font-medium text-sm flex-shrink-0">
+          class="px-4 py-3 border-b min-h-[45px] border-[var(--ui-border)] bg-[var(--ui-bg-muted)] flex items-center font-medium text-sm flex-shrink-0">
           <Tabs
             v-if="tabs.length"
             v-model="activeTab"
@@ -114,12 +114,12 @@ const supportsSchema = computed(() => {
 
 const presetOptions = computed(() => [
   { value: 'axios', label: 'axios' },
+  { value: 'tanstackQuery', label: 'Tanstack Query' },
   { value: 'fetch', label: 'fetch' },
   { value: 'ky', label: 'ky' },
   { value: 'got', label: 'got' },
   { value: 'ofetch', label: 'ofetch' },
   { value: 'uni', label: 'uni' },
-  { value: 'tanstackQuery', label: 'TanStack Query' },
 ])
 
 const modeOptions = computed(() => {
@@ -130,8 +130,8 @@ const modeOptions = computed(() => {
     ]
   }
   const options = [
-    { value: 'ts', label: 'TypeScript' },
-    { value: 'js', label: 'JavaScript' },
+    { value: 'ts', label: 'typescript' },
+    { value: 'js', label: 'javascript' },
   ]
   if (supportsSchema.value) {
     options.push({ value: 'schema', label: 'Schema' })

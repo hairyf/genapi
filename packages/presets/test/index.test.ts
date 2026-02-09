@@ -27,11 +27,6 @@ describe('presets/src/index', () => {
     expect(presetsModule.ofetch).toBeDefined()
   })
 
-  it('exports colada preset', () => {
-    expect(presetsModule).toHaveProperty('colada')
-    expect(presetsModule.colada).toBeDefined()
-  })
-
   it('exports tanstack preset', () => {
     expect(presetsModule).toHaveProperty('tanstackQuery')
     expect(presetsModule.tanstackQuery).toBeDefined()
@@ -51,7 +46,6 @@ describe('presets/src/index', () => {
   it('exports default object with all presets', () => {
     expect(presetsModule.default).toBeDefined()
     expect(presetsModule.default).toHaveProperty('axios')
-    expect(presetsModule.default).toHaveProperty('colada')
     expect(presetsModule.default).toHaveProperty('fetch')
     expect(presetsModule.default).toHaveProperty('got')
     expect(presetsModule.default).toHaveProperty('ky')

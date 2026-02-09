@@ -42,7 +42,7 @@ function handleChange(event: Event) {
   border-radius: var(--ui-radius);
   background: var(--ui-bg);
   color: var(--ui-text);
-  min-width: 120px;
+  min-width: 160px;
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s;

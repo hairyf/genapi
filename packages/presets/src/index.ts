@@ -4,12 +4,10 @@ import * as got from './got'
 import * as ky from './ky'
 import * as ofetch from './ofetch'
 import * as tanstackQuery from './tanstack'
-import colada from './tanstack/colada'
 import * as uni from './uni'
 
 export {
   axios,
-  colada,
   fetch,
   got,
   ky,
@@ -28,12 +26,11 @@ export {
  * ```
  */
 export default {
+  tanstackQuery,
+  ofetch,
   axios,
-  colada,
   fetch,
+  uni,
   got,
   ky,
-  ofetch,
-  tanstackQuery,
-  uni,
 }
