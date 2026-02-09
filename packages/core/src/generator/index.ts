@@ -11,9 +11,10 @@ import { inPipeline } from '../internal'
  * @group Core
  * @example
  * ```ts
- * await generate(defineConfig({ preset: 'swag-axios-ts', input: 'openapi.json', output: { main: 'src/api.ts' } }))
+ * await generate(defineConfig({ preset: 'swag-axios-ts', input: './openapi.json', output: { main: 'src/api.ts' } }))
  * await generate([config1, config2])
  * ```
+ *
  */
 export async function generate(config: ApiPipeline.Config | ApiPipeline.Config[]) {
   const configs: ApiPipeline.Config[] = Array.isArray(config) ? config : [config]
