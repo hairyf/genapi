@@ -10,7 +10,6 @@ packages:
 
 patchedDependencies:
   md4w@0.2.7: patches/md4w@0.2.7.patch
-  undocs@0.4.16: patches/undocs@0.4.16.patch
 catalogs:
   cli:
     '@antfu/eslint-config': ^7.2.0
