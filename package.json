@@ -5,7 +5,7 @@
   "packageManager": "pnpm@10.28.2",
   "scripts": {
     "dev": "pnpm -r run dev",
-    "build": "pnpm -r run build",
+    "build": "pnpm -r --filter '@genapi/*' run build",
     "play": "pnpm -C playground run dev",
     "docs:dev": "pnpm -C docs run dev",
     "docs:build": "pnpm -C docs run build",

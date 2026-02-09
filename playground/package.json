@@ -3,7 +3,6 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "genapi",
     "init": "genapi init"
   },
   "dependencies": {

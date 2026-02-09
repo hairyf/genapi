@@ -17,27 +17,13 @@
 
 <script setup lang="ts">
 interface Props {
-  modelValue: string
   highlighted?: string
-  editable?: boolean
   placeholder?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  editable: false,
   placeholder: 'Code will appear here...',
 })
-
-const emit = defineEmits<{
-  'update:modelValue': [value: string]
-  input: [value: string]
-}>()
-
-function handleInput(event: Event) {
-  const target = event.target as HTMLTextAreaElement
-  emit('update:modelValue', target.value)
-  emit('input', target.value)
-}
 </script>
 
 <style scoped>

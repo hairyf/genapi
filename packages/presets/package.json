@@ -28,8 +28,8 @@
     "./swag-ky-ts": "./src/ky/ts/index.ts",
     "./swag-ofetch-js": "./src/ofetch/js/index.ts",
     "./swag-ofetch-ts": "./src/ofetch/ts/index.ts",
-    "./react-query": "./src/react-query/index.ts",
-    "./vue-query": "./src/vue-query/index.ts",
+    "./tanstack-react": "./src/tanstack/react/index.ts",
+    "./tanstack-vue": "./src/tanstack/vue/index.ts",
     "./colada": "./src/tanstack/colada/index.ts"
   },
   "main": "./dist/index.mjs",
@@ -90,13 +90,13 @@
         "types": "./dist/ofetch/ts/index.d.mts",
         "default": "./dist/ofetch/ts/index.mjs"
       },
-      "./reactQuery": {
-        "types": "./dist/react-query/index.d.mts",
-        "default": "./dist/react-query/index.mjs"
+      "./tanstack-react": {
+        "types": "./dist/tanstack/react/index.d.mts",
+        "default": "./dist/tanstack/react/index.mjs"
       },
-      "./vueQuery": {
-        "types": "./dist/vue-query/index.d.mts",
-        "default": "./dist/vue-query/index.mjs"
+      "./tanstack-vue": {
+        "types": "./dist/tanstack/vue/index.d.mts",
+        "default": "./dist/tanstack/vue/index.mjs"
       },
       "./colada": {
         "types": "./dist/tanstack/colada/index.d.mts",
