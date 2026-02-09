@@ -66,11 +66,14 @@ export async function original(configRead: ApiPipeline.ConfigRead) {
   return configRead
 }
 
-function readJsonSource(json: string | Record<string, any>) {
+function readJsonSource(json: string | Record<string, any>): Promise<Record<string, any> | undefined> {
   if (!json)
-    return
+    return Promise.resolve(undefined)
   if (typeof json === 'object')
-    return json
-  else
-    return import(json).then(mod => mod.default)
+    return Promise.resolve(json)
+  const trimmed = String(json).trim()
+  // 内联 JSON 字符串（例如 API 传入的 spec 内容）与文件路径区分：以 { 或 [ 开头则解析为 JSON
+  if (trimmed.startsWith('{') || trimmed.startsWith('['))
+    return Promise.resolve(JSON.parse(json as string) as Record<string, any>)
+  return import(json as string).then(mod => mod.default)
 }

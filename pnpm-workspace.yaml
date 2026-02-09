@@ -70,3 +70,7 @@ onlyBuiltDependencies:
   - esbuild
   - simple-git-hooks
   - vue-demi
+packageExtensions:
+  undocs:
+    dependencies:
+      ufo: '*'

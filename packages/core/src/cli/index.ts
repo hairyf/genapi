@@ -3,7 +3,7 @@ import process from 'node:process'
 import { merge } from '@hairy/utils'
 import { loadConfig } from 'c12'
 import { defineCommand, runMain } from 'citty'
-import { operatePipelineGenerator } from '../generator'
+import { generate } from '../generator'
 import { initCommand } from './init'
 import * as parser from './parser'
 
@@ -19,7 +19,7 @@ const main = defineCommand({
       description: 'The compilation preset used supports npm package (add the prefix genapi -) | local path',
     },
     input: {
-      type: 'string',
+      type: 'positional',
       description: 'The incoming string resolves to a uri or json path.',
     },
     outfile: {
@@ -42,6 +42,7 @@ const main = defineCommand({
     if (isInitCommand) {
       return
     }
+
     const options = {
       preset: args.preset,
       input: args.input,
@@ -65,7 +66,7 @@ const main = defineCommand({
     }
 
     const servers = parser.servers(config)
-    await operatePipelineGenerator(servers)
+    await generate(servers)
   },
 })
 

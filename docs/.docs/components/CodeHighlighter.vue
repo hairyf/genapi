@@ -2,7 +2,7 @@
    <div
       v-if="highlighted"
       ref="highlightRef"
-      class="p-4 font-mono text-sm leading-relaxed pointer-events-none [&_pre]:!p-3 [&_pre]:!m-0 [&_pre]:!rounded [&_pre]:!bg-transparent [&_pre]:!leading-3"
+      class="p-4 font-mono text-sm leading-relaxed pointer-events-none [&_pre]:!p-3 [&_pre]:!m-0 [&_pre]:!rounded [&_pre]:!bg-transparent [&_pre]:!leading-3 [&_pre]:!whitespace-pre-wrap [&_pre]:break-words"
       v-html="highlighted"
     />
     <div

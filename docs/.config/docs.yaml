@@ -8,7 +8,6 @@ url: 'https://genapi.hairyf.com'
 lang: en
 themeColor: yellow
 landing:
-  heroCode: npx genapi init
   contributors: true
   features:
     - title: Multiple HTTP Clients

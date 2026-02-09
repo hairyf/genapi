@@ -217,6 +217,33 @@ describe('original', () => {
     expect(ofetch).not.toHaveBeenCalled()
   })
 
+  it('reads source from inline json string input', async () => {
+    const jsonSource = {
+      swagger: '2.0',
+      info: { title: 'Example API', version: '1.0.0' },
+      paths: {},
+    }
+    const configRead: ApiPipeline.ConfigRead = {
+      config: { input: '' } as ApiPipeline.Config,
+      inputs: { json: JSON.stringify(jsonSource) },
+      outputs: [],
+      graphs: {
+        comments: [],
+        functions: [],
+        imports: [],
+        interfaces: [],
+        typings: [],
+        variables: [],
+        response: {},
+      },
+    }
+
+    const result = await original(configRead)
+
+    expect(result.source).toEqual(jsonSource)
+    expect(ofetch).not.toHaveBeenCalled()
+  })
+
   it('reads source from json string path input', async () => {
     // This test is skipped because dynamic import() requires actual file system
     // and cannot be easily mocked in the test environment

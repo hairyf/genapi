@@ -25,7 +25,7 @@ Create `genapi.config.ts` or `genapi.config.js` in your project root, then run t
 
 ## Core
 
-### `operatePipelineGenerator(config)`
+### `generate(config)`
 
 Runs the GenAPI pipeline for one or more configs. Resolves pipeline by name (e.g. `swag-axios-ts`), then runs config → original → parser → compiler → generate → dest.
 
