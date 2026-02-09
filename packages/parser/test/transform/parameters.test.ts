@@ -115,6 +115,32 @@ describe('transformParameters', () => {
     expect(parameters[0].type).toBe('Types.User')
   })
 
+  it('prefixes type names inside inline response type with Types when typings output exists', () => {
+    configRead.outputs = [
+      {
+        type: 'typings',
+        root: './dist',
+        path: './dist/index.type.d.ts',
+        import: './index.type',
+      },
+    ]
+
+    const inlineResponseType = '{ success: boolean; message: string; data: ExchangeRateDto; timestamp: string }'
+    const description: string[] = []
+    const result = transformParameters(parameters, {
+      configRead,
+      interfaces,
+      description,
+      responseType: inlineResponseType,
+      syntax: 'typescript',
+    })
+
+    // 内联响应类型中的 schema 类型名应带 Types. 前缀，便于生成代码中正确引用
+    expect(result.spaceResponseType).toContain('Types.ExchangeRateDto')
+    expect(result.spaceResponseType).not.toContain('data: ExchangeRateDto')
+    expect(result.spaceResponseType).toContain('data: Types.ExchangeRateDto')
+  })
+
   it('does not add namespace for non-existent interfaces', () => {
     const customParams: StatementField[] = [
       { name: 'id', type: 'NonExistentType', required: true },

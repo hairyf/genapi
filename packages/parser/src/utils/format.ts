@@ -83,19 +83,23 @@ export function spliceEnumType(enums: string[] = []) {
   return `${stringTypes}[]`
 }
 
+/** TypeScript/JS 合法标识符：首字符为字母、下划线或 $，后续可为字母、数字、下划线或 $ */
+const VALID_IDENTIFIER_RE = /^[a-z_$][\w$]*$/i
+
 /**
- * Escapes a property name for codegen: wraps in quotes if it contains non-identifier characters.
+ * Escapes a property name for codegen: wraps in quotes only if not a valid TypeScript identifier.
  *
  * @param name - Property or field name
- * @returns name or quoted name (e.g. 'data-id' -> "'data-id'")
+ * @returns name or quoted name (e.g. 'data-id' -> "'data-id'", api_key -> api_key)
  * @example
  * ```ts
  * varFiled('userId') // 'userId'
+ * varFiled('api_key') // 'api_key'
  * varFiled('data-id') // "'data-id'"
  * ```
  */
 export function varFiled(name: string) {
-  if (/[^A-Z]/i.test(name))
+  if (!VALID_IDENTIFIER_RE.test(name))
     name = `'${name}'`
   return name
 }

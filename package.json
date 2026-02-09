@@ -16,7 +16,8 @@
     "test:coverage": "vitest run --coverage",
     "automd": "pnpm --filter '@genapi/*' exec automd",
     "release": "bumpp -r && pnpm -r publish --access public",
-    "prepare": "simple-git-hooks && skills-manifest install"
+    "prepare": "simple-git-hooks",
+    "install": "skills-manifest install"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:cli",

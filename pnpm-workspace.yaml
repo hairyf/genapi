@@ -51,7 +51,7 @@ catalogs:
     confbox: ^0.2.4
     fs-extra: ^11.3.3
     jiti: ^2.6.1
-    knitwork-x: ^0.2.0
+    knitwork-x: ^0.3.1
     nypm: ^0.6.5
     ofetch: ^1.5.1
     p-pipe: ^4.0.0

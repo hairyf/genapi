@@ -31,8 +31,13 @@ export function transformParameters(parameters: StatementField[], options: Param
   const infer = configRead.graphs.response.infer || ''
   const generic = parseGenericType(configRead.graphs.response.generic || options.generic, syntax)
 
+  const responseTypeSpliced = spliceTypeSpace(responseType)
+  const responseTypePrefixed = isGenerate && namespace
+    ? prefixTypeNamesInResponseType(responseTypeSpliced, namespace)
+    : responseTypeSpliced
+
   const spaceResponseType = parseResponseType({
-    responseType: spliceTypeSpace(responseType),
+    responseType: responseTypePrefixed,
     generic,
     infer,
     namespace,
@@ -76,6 +81,34 @@ export function transformParameters(parameters: StatementField[], options: Param
   }
 
   return { spaceResponseType }
+}
+
+/** 不应加 namespace 前缀的内置/关键字类型名 */
+const BUILTIN_TYPE_NAMES = new Set([
+  'Array',
+  'Record',
+  'Promise',
+  'RequestInit',
+  'FormData',
+  'string',
+  'number',
+  'boolean',
+  'any',
+  'void',
+  'null',
+  'undefined',
+  'object',
+])
+
+/**
+ * 在 response 类型字符串中，为内联对象内的类型引用加上 namespace 前缀（如 Types.），
+ * 使生成代码中的嵌套类型能正确引用 typings 中的类型。
+ */
+function prefixTypeNamesInResponseType(responseTypeStr: string, namespace: string): string {
+  return responseTypeStr.replace(
+    /(?<![.\w])([A-Z][a-zA-Z0-9]+)\b/g,
+    (_, id: string) => (BUILTIN_TYPE_NAMES.has(id) || id === namespace) ? id : `${namespace}.${id}`,
+  )
 }
 
 function parseGenericType(generic = '', syntax: 'typescript' | 'ecmascript') {

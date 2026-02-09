@@ -57,6 +57,7 @@ describe('varFiled', () => {
   it('leaves valid identifiers unchanged', () => {
     expect(varFiled('petId')).toBe('petId')
     expect(varFiled('limit')).toBe('limit')
+    expect(varFiled('api_key')).toBe('api_key')
   })
 })
 
