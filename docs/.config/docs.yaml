@@ -1,7 +1,8 @@
 # yaml-language-server: $schema=https://unpkg.com/undocs/schema/config.json
 
-# 保留 server API（playground /api/generate），否则静态构建会返回 405
+# 保留 server API（playground /api/generate），否则静态构建会返回 404
 nitro:
+  preset: vercel
   static: false
 
 name: genapi

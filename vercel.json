@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm -C docs build",
-  "outputDirectory": "docs/.docs/.vercel/output/static",
+  "buildCommand": "NITRO_PRESET=vercel pnpm -C docs build",
+  "outputDirectory": "docs/.docs/.vercel/output",
   "framework": null
 }
