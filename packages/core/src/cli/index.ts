@@ -11,6 +11,7 @@ let isInitCommand = false
 const main = defineCommand({
   meta: {
     name: 'genapi',
+    description: 'Generate API client from OpenAPI/Swagger',
     version: parser.getVersion(),
   },
   args: {
@@ -21,6 +22,7 @@ const main = defineCommand({
     input: {
       type: 'positional',
       description: 'The incoming string resolves to a uri or json path.',
+      required: false,
     },
     outfile: {
       type: 'string',
