@@ -60,7 +60,9 @@ export async function original(configRead: ApiPipeline.ConfigRead) {
       schemes.push('https', 'http')
     if (effectiveUrl.startsWith('http://'))
       schemes.push('http')
-    configRead.source.schemes = schemes
+    // 仅当从 URI 推断出 schemes 时才写入，避免给内联 JSON 等无 URI 的 source 注入空 schemes
+    if (schemes.length > 0)
+      configRead.source.schemes = schemes
   }
 
   return configRead
