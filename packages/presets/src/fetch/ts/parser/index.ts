@@ -14,7 +14,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   const { parameters, interfaces: attachInters, options } = parseMethodParameters(config)
   let { name, description, url, responseType, body } = parseMethodMetadata(config)
 
-  interfaces.push(...attachInters)
+  attachInters.forEach(i => interfaces.add('type', i))
   parameters.push({
     name: 'config',
     type: 'RequestInit',
@@ -32,7 +32,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
     syntax: 'typescript',
     configRead,
     description,
-    interfaces,
+    interfaces: interfaces.all(),
     responseType,
   })
 
@@ -40,7 +40,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   url = transformQueryParams('query', { body, options, url })
   url = transformUrlSyntax(url, { baseURL: configRead.config.meta?.baseURL })
   const fetch = transformFetchBody(url, options, spaceResponseType)
-  functions.push({
+  functions.add('main', {
     export: true,
     async: true,
     name,

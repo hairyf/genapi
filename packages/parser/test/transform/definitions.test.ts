@@ -5,8 +5,10 @@ import { transformDefinitions } from '../../src/transform/definitions'
 
 describe('transformDefinitions', () => {
   let configRead: ApiPipeline.ConfigRead
+  let typeInterfaces: any[]
 
   beforeEach(() => {
+    typeInterfaces = []
     configRead = {
       config: {
         input: '',
@@ -14,21 +16,27 @@ describe('transformDefinitions', () => {
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] }, type: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
-    provide({ interfaces: [], configRead })
+    provide({
+      configRead,
+      interfaces: {
+        add: (_scope: string, item: any) => { typeInterfaces.push(item) },
+        values: (_s: string) => typeInterfaces,
+        all: () => typeInterfaces,
+      },
+    })
   })
 
   it('pushes one interface per definition with varName and properties', () => {
-    const interfaces: any[] = []
-    provide({ interfaces })
+    const block = {
+      add: (_s: string, item: any) => { typeInterfaces.push(item) },
+      values: (_s: string) => typeInterfaces,
+      all: () => typeInterfaces,
+    }
+    provide({ configRead, interfaces: block })
     const definitions = {
       Category: {
         type: 'object',
@@ -39,18 +47,23 @@ describe('transformDefinitions', () => {
       },
     }
     transformDefinitions(definitions as any)
-    expect(interfaces).toHaveLength(1)
-    expect(interfaces[0].name).toBe('Category')
-    expect(interfaces[0].export).toBe(true)
-    expect(interfaces[0].properties).toHaveLength(2)
-    const names = interfaces[0].properties.map((p: any) => p.name)
+    expect(typeInterfaces).toHaveLength(1)
+    expect(typeInterfaces[0].name).toBe('Category')
+    expect(typeInterfaces[0].export).toBe(true)
+    expect(typeInterfaces[0].properties).toHaveLength(2)
+    const names = typeInterfaces[0].properties.map((p: any) => p.name)
     expect(names).toContain('id')
     expect(names).toContain('name')
   })
 
   it('respects definition.required for required flag', () => {
-    const interfaces: any[] = []
-    provide({ interfaces })
+    typeInterfaces = []
+    const block = {
+      add: (_s: string, item: any) => { typeInterfaces.push(item) },
+      values: (_s: string) => typeInterfaces,
+      all: () => typeInterfaces,
+    }
+    provide({ configRead, interfaces: block })
     const definitions = {
       Pet: {
         type: 'object',
@@ -62,39 +75,44 @@ describe('transformDefinitions', () => {
       },
     }
     transformDefinitions(definitions as any)
-    const pet = interfaces.find((i: any) => i.name === 'Pet')
+    const pet = typeInterfaces.find((i: any) => i.name === 'Pet')
     expect(pet).toBeDefined()
     const nameField = pet!.properties.find((p: any) => p.name === 'name')
     expect(nameField?.required).toBe(true)
   })
 
   it('handles definition with empty properties', () => {
-    const interfaces: any[] = []
-    provide({ interfaces })
+    typeInterfaces = []
+    const block = {
+      add: (_s: string, item: any) => { typeInterfaces.push(item) },
+      values: (_s: string) => typeInterfaces,
+      all: () => typeInterfaces,
+    }
+    provide({ configRead, interfaces: block })
     const definitions = {
       Empty: { type: 'object', properties: {} },
     }
     transformDefinitions(definitions as any)
-    expect(interfaces).toHaveLength(1)
-    expect(interfaces[0].name).toBe('Empty')
-    expect(interfaces[0].properties).toHaveLength(0)
+    expect(typeInterfaces).toHaveLength(1)
+    expect(typeInterfaces[0].name).toBe('Empty')
+    expect(typeInterfaces[0].properties).toHaveLength(0)
   })
 
   it('handles definition without properties (undefined)', () => {
-    const interfaces: any[] = []
-    provide({ interfaces, configRead })
+    typeInterfaces = []
+    provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
     const definitions = {
       NoProps: { type: 'object' }, // No properties field
     }
     transformDefinitions(definitions as any)
-    expect(interfaces).toHaveLength(1)
-    expect(interfaces[0].name).toBe('NoProps')
-    expect(interfaces[0].properties).toHaveLength(0)
+    expect(typeInterfaces).toHaveLength(1)
+    expect(typeInterfaces[0].name).toBe('NoProps')
+    expect(typeInterfaces[0].properties).toHaveLength(0)
   })
 
   it('handles definition with property that has boolean required field', () => {
-    const interfaces: any[] = []
-    provide({ interfaces, configRead })
+    typeInterfaces = []
+    provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
     const definitions = {
       Test: {
         type: 'object',
@@ -105,7 +123,7 @@ describe('transformDefinitions', () => {
       },
     }
     transformDefinitions(definitions as any)
-    const testInterface = interfaces.find((i: any) => i.name === 'Test')
+    const testInterface = typeInterfaces.find((i: any) => i.name === 'Test')
     expect(testInterface).toBeDefined()
     const idField = testInterface!.properties.find((p: any) => p.name === 'id')
     const nameField = testInterface!.properties.find((p: any) => p.name === 'name')
@@ -114,8 +132,8 @@ describe('transformDefinitions', () => {
   })
 
   it('handles definition with property description', () => {
-    const interfaces: any[] = []
-    provide({ interfaces, configRead })
+    typeInterfaces = []
+    provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
     const definitions = {
       Test: {
         type: 'object',
@@ -125,15 +143,15 @@ describe('transformDefinitions', () => {
       },
     }
     transformDefinitions(definitions as any)
-    const testInterface = interfaces.find((i: any) => i.name === 'Test')
+    const testInterface = typeInterfaces.find((i: any) => i.name === 'Test')
     expect(testInterface).toBeDefined()
     const idField = testInterface!.properties.find((p: any) => p.name === 'id')
     expect(idField?.description).toBe('@description The unique identifier')
   })
 
   it('handles $ref in definition properties', () => {
-    const interfaces: any[] = []
-    provide({ interfaces })
+    typeInterfaces = []
+    provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
     const definitions = {
       Ref: {
         type: 'object',
@@ -147,7 +165,7 @@ describe('transformDefinitions', () => {
       },
     }
     transformDefinitions(definitions as any)
-    const ref = interfaces.find((i: any) => i.name === 'Ref')
+    const ref = typeInterfaces.find((i: any) => i.name === 'Ref')
     expect(ref).toBeDefined()
     const catField = ref!.properties.find((p: any) => p.name === 'category')
     expect(catField?.type).toBe('Category')
@@ -155,8 +173,8 @@ describe('transformDefinitions', () => {
 
   describe('patch.definitions', () => {
     it('renames interface when patch renames definition with string', () => {
-      const interfaces: any[] = []
-      provide({ interfaces, configRead })
+      typeInterfaces = []
+      provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
       configRead.config.patch = {
         definitions: {
           UserDto: 'User',
@@ -175,13 +193,13 @@ describe('transformDefinitions', () => {
       transformDefinitions(definitions as any)
 
       // Interface renamed to User
-      expect(interfaces.find((i: any) => i.name === 'User')).toBeDefined()
-      expect(interfaces.find((i: any) => i.name === 'UserDto')).toBeUndefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'User')).toBeDefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'UserDto')).toBeUndefined()
     })
 
     it('applies name and type when patch provides both', () => {
-      const interfaces: any[] = []
-      provide({ interfaces, configRead })
+      typeInterfaces = []
+      provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
       configRead.config.patch = {
         definitions: {
           SessionDto: {
@@ -203,16 +221,16 @@ describe('transformDefinitions', () => {
       transformDefinitions(definitions as any)
 
       // Interface renamed to Session with patch type as properties
-      const session = interfaces.find((i: any) => i.name === 'Session')
+      const session = typeInterfaces.find((i: any) => i.name === 'Session')
       expect(session).toBeDefined()
       expect(session!.properties).toHaveLength(2)
       expect(session!.properties.map((p: any) => p.name)).toEqual(['name', 'age'])
-      expect(interfaces.find((i: any) => i.name === 'SessionDto')).toBeUndefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'SessionDto')).toBeUndefined()
     })
 
     it('handles multiple definition patches', () => {
-      const interfaces: any[] = []
-      provide({ interfaces, configRead })
+      typeInterfaces = []
+      provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
       configRead.config.patch = {
         definitions: {
           UserDto: 'User',
@@ -233,13 +251,13 @@ describe('transformDefinitions', () => {
       transformDefinitions(definitions as any)
 
       // Interfaces renamed
-      expect(interfaces.find((i: any) => i.name === 'User')).toBeDefined()
-      expect(interfaces.find((i: any) => i.name === 'Order')).toBeDefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'User')).toBeDefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'Order')).toBeDefined()
     })
 
     it('renames interface when patch matches transformed name', () => {
-      const interfaces: any[] = []
-      provide({ interfaces, configRead })
+      typeInterfaces = []
+      provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
       configRead.config.transform = {
         operation: () => '',
         definition: (name) => {
@@ -263,12 +281,12 @@ describe('transformDefinitions', () => {
       transformDefinitions(definitions as any)
 
       // Interface renamed to UserAlias (transform: UserDto -> User, patch: User -> UserAlias)
-      expect(interfaces.find((i: any) => i.name === 'UserAlias')).toBeDefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'UserAlias')).toBeDefined()
     })
 
     it('renames interface when patch only renames', () => {
-      const interfaces: any[] = []
-      provide({ interfaces, configRead })
+      typeInterfaces = []
+      provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
       configRead.config.patch = {
         definitions: {
           PetDto: 'Pet',
@@ -287,17 +305,17 @@ describe('transformDefinitions', () => {
       transformDefinitions(definitions as any)
 
       // Interface renamed to Pet
-      const renamedInterface = interfaces.find((i: any) => i.name === 'Pet')
+      const renamedInterface = typeInterfaces.find((i: any) => i.name === 'Pet')
       expect(renamedInterface).toBeDefined()
       expect(renamedInterface!.properties).toHaveLength(2)
-      expect(interfaces.find((i: any) => i.name === 'PetDto')).toBeUndefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'PetDto')).toBeUndefined()
     })
   })
 
   describe('transform.definition', () => {
     it('applies global transform before static patch', () => {
-      const interfaces: any[] = []
-      provide({ interfaces, configRead })
+      typeInterfaces = []
+      provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
       configRead.config.transform = {
         operation: () => '',
         definition: (name) => {
@@ -323,14 +341,14 @@ describe('transformDefinitions', () => {
 
       // Transform: UserDto -> User
       // Patch: User -> UserEntity
-      expect(interfaces.find((i: any) => i.name === 'UserEntity')).toBeDefined()
-      expect(interfaces.find((i: any) => i.name === 'User')).toBeUndefined()
-      expect(interfaces.find((i: any) => i.name === 'UserDto')).toBeUndefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'UserEntity')).toBeDefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'User')).toBeUndefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'UserDto')).toBeUndefined()
     })
 
     it('renames interface when transform returns string', () => {
-      const interfaces: any[] = []
-      provide({ interfaces, configRead })
+      typeInterfaces = []
+      provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
       configRead.config.transform = {
         operation: () => '',
         definition: () => 'RenamedType',
@@ -345,13 +363,13 @@ describe('transformDefinitions', () => {
       transformDefinitions(definitions as any)
 
       // Interface renamed to RenamedType
-      expect(interfaces.find((i: any) => i.name === 'RenamedType')).toBeDefined()
-      expect(interfaces.find((i: any) => i.name === 'OriginalType')).toBeUndefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'RenamedType')).toBeDefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'OriginalType')).toBeUndefined()
     })
 
     it('applies name and type when transform returns object with type', () => {
-      const interfaces: any[] = []
-      provide({ interfaces, configRead })
+      typeInterfaces = []
+      provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
       configRead.config.transform = {
         operation: () => '',
         definition: (name) => {
@@ -371,15 +389,15 @@ describe('transformDefinitions', () => {
       transformDefinitions(definitions as any)
 
       // Interface renamed to TestAlias with transform type as properties
-      const testAlias = interfaces.find((i: any) => i.name === 'TestAlias')
+      const testAlias = typeInterfaces.find((i: any) => i.name === 'TestAlias')
       expect(testAlias).toBeDefined()
       expect(testAlias!.properties).toHaveLength(1)
       expect(testAlias!.properties[0]).toEqual({ name: 'id', type: 'integer', required: undefined, description: undefined })
     })
 
     it('keeps interface unchanged when transform returns same name and type', () => {
-      const interfaces: any[] = []
-      provide({ interfaces, configRead })
+      typeInterfaces = []
+      provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
       configRead.config.transform = {
         operation: () => '',
         definition: (name, properties) => ({ name, type: properties }), // No-op transform
@@ -393,13 +411,13 @@ describe('transformDefinitions', () => {
       }
       transformDefinitions(definitions as any)
 
-      expect(interfaces.find((i: any) => i.name === 'Unchanged')).toBeDefined()
-      expect(interfaces.find((i: any) => i.name === 'Unchanged')!.properties).toHaveLength(1)
+      expect(typeInterfaces.find((i: any) => i.name === 'Unchanged')).toBeDefined()
+      expect(typeInterfaces.find((i: any) => i.name === 'Unchanged')!.properties).toHaveLength(1)
     })
 
     it('handles patch with only name (no type)', () => {
-      const interfaces: any[] = []
-      provide({ interfaces, configRead })
+      typeInterfaces = []
+      provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
       configRead.config.patch = {
         definitions: {
           OldName: {
@@ -417,14 +435,14 @@ describe('transformDefinitions', () => {
       }
       transformDefinitions(definitions as any)
 
-      const renamed = interfaces.find((i: any) => i.name === 'NewName')
+      const renamed = typeInterfaces.find((i: any) => i.name === 'NewName')
       expect(renamed).toBeDefined()
       expect(renamed!.properties).toHaveLength(1) // Properties preserved
     })
 
     it('handles patch with only type (no name)', () => {
-      const interfaces: any[] = []
-      provide({ interfaces, configRead })
+      typeInterfaces = []
+      provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
       configRead.config.patch = {
         definitions: {
           Original: {
@@ -442,7 +460,7 @@ describe('transformDefinitions', () => {
       }
       transformDefinitions(definitions as any)
 
-      const patched = interfaces.find((i: any) => i.name === 'Original')
+      const patched = typeInterfaces.find((i: any) => i.name === 'Original')
       expect(patched).toBeDefined()
       expect(patched!.properties).toHaveLength(1)
       expect(patched!.properties[0].name).toBe('custom')
@@ -450,8 +468,11 @@ describe('transformDefinitions', () => {
   })
 
   it('handles configRead without config (undefined)', () => {
-    const interfaces: any[] = []
-    provide({ interfaces, configRead: undefined as any })
+    typeInterfaces = []
+    provide({
+      configRead: undefined as any,
+      interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces },
+    })
     const definitions = {
       Test: {
         type: 'object',
@@ -459,8 +480,7 @@ describe('transformDefinitions', () => {
       },
     }
     transformDefinitions(definitions as any)
-    // Should not crash when configRead is undefined
-    expect(interfaces).toHaveLength(1)
-    expect(interfaces[0].name).toBe('Test')
+    expect(typeInterfaces).toHaveLength(1)
+    expect(typeInterfaces[0].name).toBe('Test')
   })
 })

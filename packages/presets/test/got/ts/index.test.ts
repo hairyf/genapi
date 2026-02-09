@@ -7,7 +7,7 @@ import * as gotTsModule from '../../../src/got/ts'
 
 describe('presets/src/got/ts', () => {
   beforeEach(() => {
-    provide({ interfaces: [], functions: [], configRead: undefined })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] }, configRead: undefined })
   })
 
   it('exports default openapiPipeline function', () => {

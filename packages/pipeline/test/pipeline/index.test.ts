@@ -10,12 +10,7 @@ describe('pipeline', () => {
         inputs: {},
         outputs: [],
         graphs: {
-          comments: [],
-          functions: [],
-          imports: [],
-          interfaces: [],
-          typings: [],
-          variables: [],
+          scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
           response: {},
         },
       } as ApiPipeline.ConfigRead
@@ -57,12 +52,7 @@ describe('pipeline', () => {
         inputs: {},
         outputs: [],
         graphs: {
-          comments: [],
-          functions: [],
-          imports: [],
-          interfaces: [],
-          typings: [],
-          variables: [],
+          scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
           response: {},
         },
       } as ApiPipeline.ConfigRead
@@ -112,12 +102,7 @@ describe('pipeline', () => {
         inputs: {},
         outputs: [],
         graphs: {
-          comments: [],
-          functions: [],
-          imports: [],
-          interfaces: [],
-          typings: [],
-          variables: [],
+          scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
           response: {},
         },
       } as ApiPipeline.ConfigRead

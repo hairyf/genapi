@@ -42,34 +42,34 @@ export function config(userConfig: ApiPipeline.Config) {
   const isGenerateType = userConfig.output?.type !== false
   const importTypePath = userConfig.meta.import.type || getImportTypePath(userConfig.output.main, userConfig.output.type || '')
 
-  const imports: (StatementImported | false)[] = [
-    isTypescript && isGenerateType && {
-      name: 'Types',
-      value: importTypePath,
-      type: true,
-      namespace: true,
-    },
-  ]
+  const outputs: ApiPipeline.Output[] = []
+  const scopes: Record<string, ApiPipeline.GraphSlice> = {}
 
-  const outputs: ApiPipeline.Output[] = [
-    {
-      type: 'request',
-      root: path.join(userRoot, path.dirname(userConfig.output.main)),
-      path: path.join(userRoot, userConfig.output.main),
-    },
-  ]
-
-  const typings: (StatementTypeAlias | boolean)[] = [
-    !!userConfig.meta.responseType?.infer && { export: true, name: 'Infer<T>', value: userConfig.meta.responseType.infer! },
-  ]
-
-  if (userConfig.output.type !== false) {
+  const outputKeys = ['main', ...(userConfig.output.type !== false ? ['type' as const] : []), ...objectOutputKeys(userConfig.output)]
+  for (const key of outputKeys) {
+    const outPath = key === 'main' ? userConfig.output.main! : (key === 'type' ? userConfig.output.type : (userConfig.output as Record<string, string | false | undefined>)[key])
+    if (typeof outPath !== 'string')
+      continue
     outputs.push({
-      type: 'typings',
-      root: path.join(userRoot, path.dirname(userConfig.output.type)),
-      import: importTypePath,
-      path: path.join(userRoot, userConfig.output.type),
+      type: key,
+      root: path.join(userRoot, path.dirname(outPath)),
+      path: path.join(userRoot, outPath),
+      ...(key === 'type' ? { import: importTypePath } : {}),
     })
+    const mainImports: StatementImported[] = key === 'main' && isTypescript && isGenerateType
+      ? [{ name: 'Types', value: importTypePath, type: true, namespace: true }]
+      : []
+    const typeTypings: StatementTypeAlias[] = key === 'type' && userConfig.meta.responseType?.infer
+      ? [{ export: true, name: 'Infer<T>', value: userConfig.meta.responseType.infer }]
+      : []
+    scopes[key] = {
+      comments: [],
+      functions: [],
+      imports: mainImports,
+      variables: [],
+      typings: typeTypings,
+      interfaces: [],
+    }
   }
 
   const inputs: ApiPipeline.Inputs = {}
@@ -84,27 +84,40 @@ export function config(userConfig: ApiPipeline.Config) {
     inputs,
     outputs,
     graphs: {
-      imports: imports.filter(Boolean) as StatementImported[],
-      variables: [],
-      comments: [],
-      functions: [],
-      interfaces: [],
-      typings: typings.filter(Boolean) as StatementTypeAlias[],
+      scopes,
       response: userConfig.meta.responseType,
     },
   }
 
-  // Inject config and configRead into default context
-  // Referenced at:
-  // - packages/parser/src/parses/method.ts:20 (inject() gets config)
-  // - packages/parser/src/parses/method.ts:95 (inject() gets configRead)
-  // - packages/parser/src/parses/schema.ts:24 (inject() gets configRead)
-  // - packages/parser/src/transform/definitions.ts:12 (inject() gets configRead)
-  // - packages/parser/src/transform/urls.ts:73 (inject() gets configRead)
-  // - packages/parser/src/create-parser.ts:43 (inject() gets configRead)
-  provide({ config: userConfig, configRead })
+  // Inject config, configRead, and Block(imports) so preset config steps can use inject().imports.add(scope, item)
+  provide({
+    config: userConfig,
+    configRead,
+    imports: block(configRead, 'imports'),
+  })
 
   return configRead
+}
+
+function block<T>(configRead: ApiPipeline.ConfigRead, key: keyof ApiPipeline.GraphSlice): ApiPipeline.Block<T> {
+  return {
+    add(scope, item) {
+      let slice = configRead.graphs.scopes[scope]
+      if (!slice) {
+        slice = { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] }
+        configRead.graphs.scopes[scope] = slice
+      }
+      if (Array.isArray(slice[key]))
+        (slice[key] as T[]).push(item)
+    },
+    values(scope) {
+      const slice = configRead.graphs.scopes[scope]
+      return (slice && Array.isArray(slice[key]) ? slice[key] : []) as T[]
+    },
+    all() {
+      return Object.values(configRead.graphs.scopes).flatMap(s => (s[key] || []) as T[])
+    },
+  }
 }
 
 function prefix(path: string) {
@@ -116,4 +129,11 @@ function getImportTypePath(main: string, type: string) {
   importTypePath = path.relative(importTypePath, type || '')
   importTypePath = prefix(importTypePath).replace('.ts', '')
   return importTypePath
+}
+
+/** 从 output 对象中取除 main/type 外的 key（如 api），且值为 string 的 */
+function objectOutputKeys(output: ApiPipeline.PreOutput['output']): string[] {
+  if (typeof output !== 'object' || output == null)
+    return []
+  return Object.keys(output).filter(k => k !== 'main' && k !== 'type' && typeof (output as Record<string, unknown>)[k] === 'string')
 }

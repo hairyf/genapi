@@ -7,7 +7,7 @@ describe('got/js config', () => {
       input: 'test.json',
     } as any)
 
-    const gotImport = configRead.graphs.imports.find(i => i.name === 'http')
+    const gotImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http')
     expect(gotImport).toBeDefined()
     expect(gotImport?.value).toBe('got')
   })
@@ -30,7 +30,7 @@ describe('got/js config', () => {
       },
     } as any)
 
-    const customImport = configRead.graphs.imports.find(i => i.name === 'http')
+    const customImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http')
     expect(customImport).toBeDefined()
     expect(customImport?.value).toBe('custom-got')
   })

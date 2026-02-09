@@ -7,7 +7,7 @@ describe('ky/js config', () => {
       input: 'test.json',
     } as any)
 
-    const kyImport = configRead.graphs.imports.find(i => i.name === 'http')
+    const kyImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http')
     expect(kyImport).toBeDefined()
     expect(kyImport?.value).toBe('ky')
   })
@@ -30,7 +30,7 @@ describe('ky/js config', () => {
       },
     } as any)
 
-    const customImport = configRead.graphs.imports.find(i => i.name === 'http')
+    const customImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http')
     expect(customImport).toBeDefined()
     expect(customImport?.value).toBe('custom-ky')
   })

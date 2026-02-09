@@ -16,7 +16,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
 
   let { name, description, url, responseType, body } = parseMethodMetadata(config)
 
-  interfaces.push(...attachInters)
+  attachInters.forEach(i => interfaces.add('type', i))
   parameters.push({
     name: 'options',
     type: 'import(\'ofetch\').FetchOptions',
@@ -31,14 +31,14 @@ export const parser = createParser((config, { configRead, functions, interfaces 
     syntax: 'ecmascript',
     configRead,
     description,
-    interfaces,
+    interfaces: interfaces.all(),
     responseType,
   })
 
   url = transformQueryParams('query', { body, options, url })
   url = transformUrlSyntax(url, { baseURL: configRead.config.meta?.baseURL })
 
-  functions.push({
+  functions.add('main', {
     export: true,
     async: true,
     name,

@@ -49,12 +49,7 @@ describe('original', () => {
       },
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -78,12 +73,7 @@ describe('original', () => {
       },
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -122,12 +112,7 @@ describe('original', () => {
       },
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -165,12 +150,7 @@ describe('original', () => {
       },
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -201,12 +181,7 @@ describe('original', () => {
       },
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -228,12 +203,7 @@ describe('original', () => {
       inputs: { json: JSON.stringify(jsonSource) },
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -261,12 +231,7 @@ describe('original', () => {
       },
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -284,12 +249,7 @@ describe('original', () => {
       },
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -305,12 +265,7 @@ describe('original', () => {
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -336,12 +291,7 @@ describe('original', () => {
       },
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -369,12 +319,7 @@ describe('original', () => {
       },
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -403,12 +348,7 @@ describe('original', () => {
       },
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -434,12 +374,7 @@ describe('original', () => {
       },
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -498,12 +433,7 @@ describe('original', () => {
         },
         outputs: [],
         graphs: {
-          comments: [],
-          functions: [],
-          imports: [],
-          interfaces: [],
-          typings: [],
-          variables: [],
+          scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
           response: {},
         },
       }
@@ -531,12 +461,7 @@ describe('original', () => {
         },
         outputs: [],
         graphs: {
-          comments: [],
-          functions: [],
-          imports: [],
-          interfaces: [],
-          typings: [],
-          variables: [],
+          scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
           response: {},
         },
       }
@@ -563,12 +488,7 @@ describe('original', () => {
         },
         outputs: [],
         graphs: {
-          comments: [],
-          functions: [],
-          imports: [],
-          interfaces: [],
-          typings: [],
-          variables: [],
+          scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
           response: {},
         },
       }
@@ -608,12 +528,7 @@ describe('original', () => {
         },
         outputs: [],
         graphs: {
-          comments: [],
-          functions: [],
-          imports: [],
-          interfaces: [],
-          typings: [],
-          variables: [],
+          scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
           response: {},
         },
       }

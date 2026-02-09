@@ -1,65 +1,52 @@
 import type { ApiPipeline, StatementFunction, StatementInterface } from '@genapi/shared'
 import { provide } from '@genapi/shared'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { compilerTsRequestDeclaration, genFunctionsWithMock } from '../../src/compiler/request'
+import { compile, genFunctionsWithMock } from '../../src/compiler/scope'
 
-describe('compilerTsRequestDeclaration', () => {
+describe('compile(configRead, "main")', () => {
   let configRead: ApiPipeline.ConfigRead
 
   beforeEach(() => {
+    const scopes = {
+      main: { comments: [] as string[], functions: [] as any[], imports: [] as any[], variables: [] as any[], typings: [] as any[], interfaces: [] as any[] },
+      type: { comments: [] as string[], functions: [] as any[], imports: [] as any[], variables: [] as any[], typings: [] as any[], interfaces: [] as any[] },
+    }
     configRead = {
-      config: {
-        input: '',
-        meta: {},
-      } as ApiPipeline.Config,
+      config: { input: '', meta: {} } as ApiPipeline.Config,
       inputs: {},
-      outputs: [
-        {
-          type: 'request',
-          root: './dist',
-          path: './dist/index.ts',
-        },
-      ],
-      graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
-        response: {},
-      },
+      outputs: [{ type: 'main', root: './dist', path: './dist/index.ts' }],
+      graphs: { scopes, response: {} },
     }
     provide({ configRead })
   })
 
   it('generates empty code when graphs are empty', () => {
-    const result = compilerTsRequestDeclaration(configRead)
+    const result = compile(configRead, 'main')
     expect(result).toBe('')
   })
 
   it('includes comments when present', () => {
-    configRead.graphs.comments = ['@title Test API', '@version 1.0.0']
-    const result = compilerTsRequestDeclaration(configRead)
+    configRead.graphs.scopes.main.comments = ['@title Test API', '@version 1.0.0']
+    const result = compile(configRead, 'main')
     expect(result).toContain('@title Test API')
     expect(result).toContain('@version 1.0.0')
   })
 
   it('includes imports when present', () => {
-    configRead.graphs.imports = [
+    configRead.graphs.scopes.main.imports = [
       {
         name: 'ofetch',
         value: 'ofetch',
         type: false,
       },
     ]
-    const result = compilerTsRequestDeclaration(configRead)
+    const result = compile(configRead, 'main')
     expect(result).toContain('import')
     expect(result).toContain('ofetch')
   })
 
   it('includes type imports', () => {
-    configRead.graphs.imports = [
+    configRead.graphs.scopes.main.imports = [
       {
         name: 'Types',
         value: './types',
@@ -67,13 +54,13 @@ describe('compilerTsRequestDeclaration', () => {
         namespace: true,
       },
     ]
-    const result = compilerTsRequestDeclaration(configRead)
+    const result = compile(configRead, 'main')
     expect(result).toContain('import type')
     expect(result).toContain('Types')
   })
 
   it('includes namespace imports', () => {
-    configRead.graphs.imports = [
+    configRead.graphs.scopes.main.imports = [
       {
         name: 'Types',
         value: './types',
@@ -81,14 +68,14 @@ describe('compilerTsRequestDeclaration', () => {
         namespace: true,
       },
     ]
-    const result = compilerTsRequestDeclaration(configRead)
+    const result = compile(configRead, 'main')
     expect(result).toContain('import')
     expect(result).toContain('Types')
     expect(result).toContain('./types')
   })
 
   it('includes default and named imports', () => {
-    configRead.graphs.imports = [
+    configRead.graphs.scopes.main.imports = [
       {
         name: 'defaultExport',
         value: './module',
@@ -96,14 +83,14 @@ describe('compilerTsRequestDeclaration', () => {
         type: false,
       },
     ]
-    const result = compilerTsRequestDeclaration(configRead)
+    const result = compile(configRead, 'main')
     expect(result).toContain('defaultExport')
     expect(result).toContain('named1')
     expect(result).toContain('named2')
   })
 
   it('includes variables when present', () => {
-    configRead.graphs.variables = [
+    configRead.graphs.scopes.main.variables = [
       {
         name: 'baseURL',
         value: '\'https://api.example.com\'',
@@ -111,13 +98,13 @@ describe('compilerTsRequestDeclaration', () => {
         flag: 'const',
       },
     ]
-    const result = compilerTsRequestDeclaration(configRead)
+    const result = compile(configRead, 'main')
     expect(result).toContain('baseURL')
     expect(result).toContain('https://api.example.com')
   })
 
   it('includes functions when present', () => {
-    configRead.graphs.functions = [
+    configRead.graphs.scopes.main.functions = [
       {
         name: 'getUser',
         parameters: [
@@ -127,14 +114,14 @@ describe('compilerTsRequestDeclaration', () => {
         returnType: 'Promise<User>',
       },
     ]
-    const result = compilerTsRequestDeclaration(configRead)
+    const result = compile(configRead, 'main')
     expect(result).toContain('getUser')
     expect(result).toContain('id')
   })
 
   it('includes mockjs import when meta.mockjs is true', () => {
     configRead.config.meta = { mockjs: true }
-    const result = compilerTsRequestDeclaration(configRead)
+    const result = compile(configRead, 'main')
     expect(result).toContain('better-mock')
     expect(result).toContain('Mock')
   })
@@ -147,7 +134,7 @@ describe('compilerTsRequestDeclaration', () => {
         path: './dist/index.ts',
       },
     ]
-    configRead.graphs.interfaces = [
+    configRead.graphs.scopes.main.interfaces = [
       {
         name: 'User',
         properties: [
@@ -156,7 +143,7 @@ describe('compilerTsRequestDeclaration', () => {
         export: true,
       },
     ]
-    const result = compilerTsRequestDeclaration(configRead)
+    const result = compile(configRead, 'main')
     expect(result).toContain('User')
   })
 
@@ -173,14 +160,14 @@ describe('compilerTsRequestDeclaration', () => {
         path: './dist/types.d.ts',
       },
     ]
-    configRead.graphs.interfaces = [
+    configRead.graphs.scopes.main.interfaces = [
       {
         name: 'User',
         properties: [],
         export: true,
       },
     ]
-    const result = compilerTsRequestDeclaration(configRead)
+    const result = compile(configRead, 'main')
     // Should not include typings inline when separate typings file exists
     // Result may be empty if no other content, but should not contain interface definitions
     expect(typeof result).toBe('string')
@@ -194,14 +181,14 @@ describe('compilerTsRequestDeclaration', () => {
         path: './dist/index.js',
       },
     ]
-    configRead.graphs.interfaces = [
+    configRead.graphs.scopes.main.interfaces = [
       {
         name: 'User',
         properties: [],
         export: true,
       },
     ]
-    const result = compilerTsRequestDeclaration(configRead)
+    const result = compile(configRead, 'main')
     // Should not include typings for JS files
     // Result may be empty if no other content
     expect(typeof result).toBe('string')
@@ -221,13 +208,8 @@ describe('genFunctionsWithMock', () => {
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
-        response: {},
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
+        response: { generic: '', infer: '' },
       },
     }
     provide({ configRead })

@@ -7,7 +7,7 @@ import * as tanstackReactModule from '../../../src/tanstack/react'
 
 describe('presets/src/tanstack/react', () => {
   beforeEach(() => {
-    provide({ interfaces: [], functions: [], configRead: undefined })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] }, configRead: undefined })
   })
 
   it('exports default openapiPipeline function', () => {

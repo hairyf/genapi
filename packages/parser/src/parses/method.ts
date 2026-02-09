@@ -1,5 +1,6 @@
 import type { StatementField, StatementInterface } from '@genapi/shared'
 import type { Parameter } from 'openapi-specification-types'
+import type { ParserContext } from '../parser'
 import type { PathMethod } from '../traverse'
 import type { InSchemas, LiteralField } from '../utils'
 import { inject, provide } from '@genapi/shared'
@@ -96,10 +97,8 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
   // fix: for path required parameters, move to the end
   config.parameters.sort(a => (a.required ? -1 : 1))
 
-  // Inject method parameter config into named context `${method}/${path}`
-  // Referenced at:
-  // - packages/parser/src/parses/method.ts:133 (inject(\`${method}/${path}\`) gets config)
-  provide(`${method}/${path}`, config)
+  // Inject method parameter config into named context `${method}/${path}` (parameters + options)
+  provide(`${method}/${path}`, { parameters: config.parameters, options: config.options })
   return config
 }
 
@@ -119,7 +118,8 @@ export function parseMethodParameters({ method, parameters, path }: PathMethod, 
  * ```
  */
 export function parseMethodMetadata({ method, path, responses, options: meta }: PathMethod) {
-  const { configRead, interfaces } = inject()
+  const { configRead, interfaces } = inject<ParserContext>()
+  const allInterfaces = interfaces.all()
   const metaAny = meta as { consumes?: string[] }
 
   // 1. 结构化注释生成
@@ -162,8 +162,8 @@ export function parseMethodMetadata({ method, path, responses, options: meta }: 
       if (processedTypes.has(typeName))
         return
       processedTypes.add(typeName)
-      const targetInterface = interfaces.find(v => v.name === typeName)
-      targetInterface?.properties?.forEach((prop) => {
+      const targetInterface = allInterfaces.find((v: StatementInterface) => v.name === typeName)
+      targetInterface?.properties?.forEach((prop: StatementField) => {
         prop.required = true
         if (prop.type)
           markRequiredRecursive(prop.type)

@@ -9,11 +9,7 @@ describe('pipeline/src/index', () => {
 
   it('exports compiler functions', () => {
     expect(pipelineModule).toHaveProperty('compiler')
-    expect(pipelineModule).toHaveProperty('compilerTsRequestDeclaration')
-    expect(pipelineModule).toHaveProperty('compilerTsTypingsDeclaration')
     expect(typeof pipelineModule.compiler).toBe('function')
-    expect(typeof pipelineModule.compilerTsRequestDeclaration).toBe('function')
-    expect(typeof pipelineModule.compilerTsTypingsDeclaration).toBe('function')
   })
 
   it('exports config functions', () => {

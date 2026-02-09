@@ -7,7 +7,7 @@ import * as tanstack from '../../src/tanstack'
 
 describe('tanstack integration', () => {
   beforeEach(() => {
-    provide({ interfaces: [], functions: [], configRead: undefined })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] }, configRead: undefined })
   })
 
   it('react preset generates fetcher and useQuery hook in code', async () => {
@@ -24,7 +24,7 @@ describe('tanstack integration', () => {
     const afterCompiler = tanstack.react.compiler(afterParser)
     const afterGenerate = await tanstack.react.generate(afterCompiler)
 
-    const output = afterGenerate.outputs?.find(o => o.type === 'request')
+    const output = afterGenerate.outputs?.find(o => o.type === 'main')
     expect(output?.code).toBeDefined()
     expect(output!.code).toContain('@tanstack/react-query')
     expect(output!.code).toContain('useQuery')
@@ -49,7 +49,7 @@ describe('tanstack integration', () => {
     const afterCompiler = tanstack.vue.compiler(afterParser)
     const afterGenerate = await tanstack.vue.generate(afterCompiler)
 
-    const output = afterGenerate.outputs?.find(o => o.type === 'request')
+    const output = afterGenerate.outputs?.find(o => o.type === 'main')
     expect(output?.code).toBeDefined()
     expect(output!.code).toContain('@tanstack/vue-query')
     expect(output!.code).toContain('useQuery')
@@ -74,7 +74,7 @@ describe('tanstack integration', () => {
     const afterCompiler = tanstack.colada.compiler(afterParser)
     const afterGenerate = await tanstack.colada.generate(afterCompiler)
 
-    const output = afterGenerate.outputs?.find(o => o.type === 'request')
+    const output = afterGenerate.outputs?.find(o => o.type === 'main')
     expect(output?.code).toBeDefined()
     expect(output!.code).toContain('@pinia/colada')
     expect(output!.code).toContain('useQuery')

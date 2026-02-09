@@ -7,7 +7,7 @@ describe('tanstack/colada config', () => {
       input: 'test.json',
     } as any)
 
-    const coladaImport = configRead.graphs.imports.find(
+    const coladaImport = configRead.graphs.scopes.main.imports.find(
       i => i.value === '@pinia/colada' && i.names?.includes('useQuery') && i.names?.includes('useMutation'),
     )
     expect(coladaImport).toBeDefined()

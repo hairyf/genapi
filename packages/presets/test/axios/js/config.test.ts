@@ -7,7 +7,7 @@ describe('axios/js config', () => {
       input: 'test.json',
     } as any)
 
-    const axiosImport = configRead.graphs.imports.find(i => i.name === 'http')
+    const axiosImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http')
     expect(axiosImport).toBeDefined()
     expect(axiosImport?.value).toBe('axios')
   })
@@ -39,7 +39,7 @@ describe('axios/js config', () => {
       },
     } as any)
 
-    const customImport = configRead.graphs.imports.find(i => i.name === 'http')
+    const customImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http')
     expect(customImport).toBeDefined()
     expect(customImport?.value).toBe('custom-axios')
   })

@@ -1,5 +1,5 @@
 import type { ApiPipeline } from '@genapi/shared'
-import { compilerTsRequestDeclaration, compilerTsTypingsDeclaration } from '@genapi/pipeline'
+import { compile } from '@genapi/pipeline'
 import { genInterface, genTypeObject } from 'knitwork-x'
 
 const [Endpoint, Dynamic] = [Symbol.for('Endpoint'), Symbol.for('DynamicParam')]
@@ -17,9 +17,14 @@ function convert(str: string | undefined, names: Set<string>) {
 export function createSchemaCompiler(options: SchemaCompilerOptions) {
   return function compiler(config: ApiPipeline.ConfigRead) {
     const routes = config.__schemaRoutes || []
+    const allInterfaces = [
+      ...(config.graphs.scopes.main?.interfaces || []),
+      ...(config.graphs.scopes.type?.interfaces || []),
+    ]
+    const allTypings = config.graphs.scopes.type?.typings || []
     const interfaceNames = new Set([
-      ...config.graphs.interfaces.map(i => i.name),
-      ...config.graphs.typings.filter(t => t.name && !t.value?.includes('{')).map(t => t.name),
+      ...allInterfaces.map(i => i.name),
+      ...allTypings.filter(t => t.name && !t.value?.includes('{')).map(t => t.name),
     ])
 
     // 1. Ultimate tree construction: leveraging reduce chaining operations
@@ -51,8 +56,8 @@ export function createSchemaCompiler(options: SchemaCompilerOptions) {
       return res
     }
 
-    // 3. $fetch declaration simplification
-    config.graphs.functions = [{
+    // 3. $fetch declaration simplification (main scope)
+    config.graphs.scopes.main.functions = [{
       export: true,
       name: '$fetch',
       async: true,
@@ -61,17 +66,17 @@ export function createSchemaCompiler(options: SchemaCompilerOptions) {
       body: [`return ${options.httpClient}(input, init as any) as Promise<TypedResponse<TypedFetchResponseBody<APISchema, T>>>`],
     }]
 
-    // 4. Output injection: precise slice replacement
-    config.outputs.forEach((out: any) => {
-      if (out.type === 'request' && !config.config.meta?.onlyDeclaration) {
-        const code = compilerTsRequestDeclaration(config)
+    // 4. Output injection: compile(main/type), inject APISchema into main when not onlyDeclaration
+    config.outputs.forEach((out: ApiPipeline.Output) => {
+      if (out.type === 'main' && !config.config.meta?.onlyDeclaration) {
+        const code = compile(config, 'main')
         const schema = `\n// API Schema\n${genInterface('APISchema', toObj(tree, true))}\n`
         const idx = code.lastIndexOf('import')
         const pos = idx !== -1 ? code.indexOf('\n', idx) + 1 : 0
         out.code = code.slice(0, pos) + schema + code.slice(pos)
       }
-      else if (out.type === 'typings') {
-        out.code = compilerTsTypingsDeclaration(config)
+      else if (out.type === 'type') {
+        out.code = compile(config, 'type')
       }
     })
 

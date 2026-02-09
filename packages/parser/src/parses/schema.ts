@@ -1,5 +1,6 @@
 import type { StatementField } from '@genapi/shared'
 import type { Properties, Schema, SchemaType } from 'openapi-specification-types'
+import type { ParserContext } from '../parser'
 import { inject } from '@genapi/shared'
 import { isArray, uniq } from '@hairy/utils'
 import { spliceEnumType, useRefMap, varName } from '../utils'
@@ -29,7 +30,8 @@ function schemaRequired(schema: SchemaLike, field?: string): boolean {
  * ```
  */
 export function parseSchemaType(propertie: SchemaWithAllOf): string {
-  const { interfaces = [], configRead } = inject()
+  const { configRead, interfaces: ifaceCtx } = inject<ParserContext>()
+  const interfaces = ifaceCtx.all()
 
   if (!propertie)
     return 'any'
@@ -99,7 +101,7 @@ export function parseSchemaType(propertie: SchemaWithAllOf): string {
       }
     }
     if (!interfaces.some(v => v.name === name))
-      interfaces.push({ name, properties: Object.values(fields), export: true })
+      ifaceCtx.add('type', { name, properties: Object.values(fields), export: true })
     return name
   }
 

@@ -7,7 +7,7 @@ import * as uniModule from '../../src/uni'
 
 describe('presets/src/uni', () => {
   beforeEach(() => {
-    provide({ interfaces: [], functions: [], configRead: undefined })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] }, configRead: undefined })
   })
 
   it('exports js preset', () => {

@@ -7,7 +7,7 @@ import * as ofetchTsModule from '../../../src/ofetch/ts'
 
 describe('presets/src/ofetch/ts', () => {
   beforeEach(() => {
-    provide({ interfaces: [], functions: [], configRead: undefined })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] }, configRead: undefined })
   })
 
   it('exports default openapiPipeline function', () => {

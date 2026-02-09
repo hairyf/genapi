@@ -16,18 +16,16 @@ describe('tanstack/colada parser', () => {
       },
       source: {},
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: {
+          main: { comments: [], functions: [], imports: [], interfaces: [], typings: [], variables: [] },
+          type: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+        },
         response: {},
       },
       inputs: {},
       outputs: [],
     }
-    provide({ configRead, interfaces: [], functions: [] })
+    provide({ configRead, interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] } })
   })
 
   it('parses GET endpoint into fetcher and useQuery hook with key and query', () => {
@@ -36,8 +34,8 @@ describe('tanstack/colada parser', () => {
 
     const result = parser(configRead)
 
-    expect(result.graphs.functions).toHaveLength(2)
-    const [fetcher, hook] = result.graphs.functions
+    expect(result.graphs.scopes.main.functions).toHaveLength(2)
+    const [fetcher, hook] = result.graphs.scopes.main.functions
     expect(fetcher.name).toBe('getPets')
     expect(hook.name).toBe('useGetPets')
     expect(hook.body?.some(line => line.includes('useQuery'))).toBe(true)
@@ -61,7 +59,7 @@ describe('tanstack/colada parser', () => {
     configRead.source = source
 
     const result = parser(configRead)
-    const mutationHook = result.graphs.functions.find((f: any) =>
+    const mutationHook = result.graphs.scopes.main.functions.find((f: any) =>
       f.body?.some((line: string) => line.includes('useMutation') && line.includes('mutation:')),
     )
     expect(mutationHook).toBeDefined()

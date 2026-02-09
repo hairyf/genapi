@@ -7,7 +7,7 @@ import * as fetchJsModule from '../../../src/fetch/js'
 
 describe('presets/src/fetch/js', () => {
   beforeEach(() => {
-    provide({ interfaces: [], functions: [], configRead: undefined })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] }, configRead: undefined })
   })
 
   it('exports default openapiPipeline function', () => {

@@ -7,7 +7,7 @@ import * as coladaModule from '../../../src/tanstack/colada'
 
 describe('presets/src/tanstack/colada', () => {
   beforeEach(() => {
-    provide({ interfaces: [], functions: [], configRead: undefined })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] }, configRead: undefined })
   })
 
   it('exports default openapiPipeline function', () => {

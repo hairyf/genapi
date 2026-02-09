@@ -17,18 +17,16 @@ describe('ofetch/ts parser', () => {
       },
       source: {},
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: {
+          main: { comments: [], functions: [], imports: [], interfaces: [], typings: [], variables: [] },
+          type: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+        },
         response: {},
       },
       inputs: {},
       outputs: [],
     }
-    provide({ configRead, interfaces: [], functions: [] })
+    provide({ configRead, interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] } })
   })
 
   it('parses simple GET endpoint', () => {
@@ -37,8 +35,8 @@ describe('ofetch/ts parser', () => {
 
     const result = parser(configRead)
 
-    expect(result.graphs.functions).toHaveLength(1)
-    const func = result.graphs.functions[0]
+    expect(result.graphs.scopes.main.functions).toHaveLength(1)
+    const func = result.graphs.scopes.main.functions[0]
     expect(func.name).toBe('getPets')
     expect(func.export).toBe(true)
     expect(func.body).toBeDefined()
@@ -51,7 +49,7 @@ describe('ofetch/ts parser', () => {
 
     const result = parser(configRead)
 
-    const func = result.graphs.functions[0]
+    const func = result.graphs.scopes.main.functions[0]
     expect(func.body?.[0]).toContain('baseURL')
   })
 
@@ -61,7 +59,7 @@ describe('ofetch/ts parser', () => {
 
     const result = parser(configRead)
 
-    const func = result.graphs.functions[0]
+    const func = result.graphs.scopes.main.functions[0]
     const optionsParam = func.parameters?.find((p: any) => p.name === 'options')
     expect(optionsParam).toBeDefined()
     expect(optionsParam?.type).toBe('FetchOptions')

@@ -7,7 +7,7 @@ describe('got/ts config', () => {
       input: 'test.json',
     } as any)
 
-    const gotImport = configRead.graphs.imports.find(i => i.name === 'http' || i.names?.includes('OptionsOfTextResponseBody'))
+    const gotImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http' || i.names?.includes('OptionsOfTextResponseBody'))
     expect(gotImport).toBeDefined()
     expect(gotImport?.value).toBe('got')
   })
@@ -22,7 +22,7 @@ describe('got/ts config', () => {
       },
     } as any)
 
-    const gotImport = configRead.graphs.imports.find(i => i.name === 'http' && i.names?.includes('OptionsOfTextResponseBody'))
+    const gotImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http' && i.names?.includes('OptionsOfTextResponseBody'))
     expect(gotImport).toBeDefined()
     expect(gotImport?.value).toBe('got')
   })
@@ -37,11 +37,11 @@ describe('got/ts config', () => {
       },
     } as any)
 
-    const customImport = configRead.graphs.imports.find(i => i.name === 'http')
+    const customImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http')
     expect(customImport).toBeDefined()
     expect(customImport?.value).toBe('custom-http')
 
-    const gotConfigImport = configRead.graphs.imports.find(i => i.names?.includes('OptionsOfTextResponseBody') && i.value === 'got')
+    const gotConfigImport = configRead.graphs.scopes.main.imports.find(i => i.names?.includes('OptionsOfTextResponseBody') && i.value === 'got')
     expect(gotConfigImport).toBeDefined()
   })
 })

@@ -32,19 +32,14 @@ describe('transformParameters', () => {
       inputs: {},
       outputs: [
         {
-          type: 'typings',
+          type: 'type',
           root: './dist',
           path: './dist/types.d.ts',
           import: './types',
         },
       ],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] }, type: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {
           generic: '',
           infer: '',
@@ -52,7 +47,8 @@ describe('transformParameters', () => {
       },
     }
 
-    provide({ configRead, interfaces })
+    const interfacesBlock = { add: () => {}, values: () => interfaces, all: () => interfaces }
+    provide({ configRead, interfaces: interfacesBlock })
   })
 
   it('transforms parameters for TypeScript syntax', () => {
@@ -95,7 +91,7 @@ describe('transformParameters', () => {
   it('adds namespace prefix for existing interfaces in TypeScript', () => {
     configRead.outputs = [
       {
-        type: 'typings',
+        type: 'type',
         root: './dist',
         path: './dist/types.d.ts',
         import: './types',
@@ -118,7 +114,7 @@ describe('transformParameters', () => {
   it('prefixes type names inside inline response type with Types when typings output exists', () => {
     configRead.outputs = [
       {
-        type: 'typings',
+        type: 'type',
         root: './dist',
         path: './dist/index.type.d.ts',
         import: './index.type',
@@ -139,6 +135,24 @@ describe('transformParameters', () => {
     expect(result.spaceResponseType).toContain('Types.ExchangeRateDto')
     expect(result.spaceResponseType).not.toContain('data: ExchangeRateDto')
     expect(result.spaceResponseType).toContain('data: Types.ExchangeRateDto')
+  })
+
+  it('does not double-prefix when responseType already has namespace (e.g. Types.User)', () => {
+    configRead.outputs = [
+      { type: 'type', root: './dist', path: './dist/index.type.d.ts', import: './index.type' },
+    ]
+    // 当 spliceTypeSpace 已返回 Types.SystemConfigResponseDto 时，不应再前缀成 Types.Types.xxx
+    interfaces.push({ name: 'SystemConfigResponseDto', properties: [], export: true })
+    const description: string[] = []
+    const result = transformParameters(parameters, {
+      configRead,
+      interfaces,
+      description,
+      responseType: 'SystemConfigResponseDto',
+      syntax: 'typescript',
+    })
+    expect(result.spaceResponseType).toContain('Types.SystemConfigResponseDto')
+    expect(result.spaceResponseType).not.toContain('Types.Types.')
   })
 
   it('does not add namespace for non-existent interfaces', () => {
@@ -330,7 +344,7 @@ describe('transformParameters', () => {
   it('uses import path for namespace in ECMAScript', () => {
     configRead.outputs = [
       {
-        type: 'typings',
+        type: 'type',
         root: './dist',
         path: './dist/types.d.ts',
         import: './types',

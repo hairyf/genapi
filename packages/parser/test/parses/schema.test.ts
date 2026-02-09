@@ -3,8 +3,17 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { parseSchemaType } from '../../src/parses/schema'
 
 describe('parseSchemaType', () => {
+  let schemaInterfaces: any[]
   beforeEach(() => {
-    provide({ interfaces: [] })
+    schemaInterfaces = []
+    provide({
+      interfaces: {
+        add: (_scope: string, item: any) => { schemaInterfaces.push(item) },
+        values: (_scope: string) => schemaInterfaces,
+        all: () => schemaInterfaces,
+      },
+      configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead,
+    })
   })
 
   it('returns "any" for null/undefined', () => {
@@ -103,9 +112,7 @@ describe('parseSchemaType', () => {
   })
 
   it('handles schemaRequired with array and undefined field (line 16 coverage)', () => {
-    // Test the branch: field !== undefined ? r.includes(field) : true
-    // When field is undefined and required is an array, should return true
-    provide({ interfaces: [], configRead: { config: {} } as any })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as any })
     const schema = {
       type: 'object',
       properties: {
@@ -166,7 +173,7 @@ describe('parseSchemaType', () => {
   })
 
   it('handles allOf with $ref that does not exist in interfaces', () => {
-    provide({ interfaces: [], configRead: { config: {} } as any })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as any })
     const schema = {
       allOf: [
         { $ref: '#/definitions/NonExistent' },
@@ -183,9 +190,8 @@ describe('parseSchemaType', () => {
   })
 
   it('handles allOf with $ref where interface.find returns undefined', () => {
-    // Test case where interfaces.find returns undefined (line 64)
-    const interfaces: any[] = [] // Empty interfaces array
-    provide({ interfaces, configRead: { config: {} } as any })
+    const interfaces: any[] = []
+    provide({ interfaces: { add: () => {}, values: () => interfaces, all: () => interfaces }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as any })
     const schema = {
       allOf: [
         { $ref: '#/definitions/NonExistentRef' }, // This ref won't be found
@@ -206,11 +212,10 @@ describe('parseSchemaType', () => {
   })
 
   it('handles allOf with $ref where interfaces.find returns undefined (line 64 coverage)', () => {
-    // Specifically test line 64: interfaces.find(v => v.name === type)?.properties || []
     const interfaces: any[] = [
-      { name: 'OtherType', properties: [] }, // Different name, won't match
+      { name: 'OtherType', properties: [] },
     ]
-    provide({ interfaces, configRead: { config: {} } as any })
+    provide({ interfaces: { add: () => {}, values: () => interfaces, all: () => interfaces }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as any })
     const schema = {
       allOf: [
         { $ref: '#/definitions/NonExistentType' }, // This will parse to 'NonExistentType' but won't be found
@@ -228,7 +233,7 @@ describe('parseSchemaType', () => {
   })
 
   it('handles allOf with items.$ref', () => {
-    provide({ interfaces: [], configRead: { config: {} } as any })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as any })
     const schema = {
       allOf: [
         {
@@ -247,7 +252,7 @@ describe('parseSchemaType', () => {
   })
 
   it('parses allOf composition and merges into interface', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const schema = {
       allOf: [
         { $ref: '#/definitions/ErrorModel' },
@@ -281,7 +286,7 @@ describe('parseSchemaType', () => {
   })
 
   it('returns definition name from originalRef (varName applied)', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const schema = { originalRef: '#/definitions/User' }
     const result = parseSchemaType(schema as any)
     expect(result).toContain('User')
@@ -289,7 +294,7 @@ describe('parseSchemaType', () => {
   })
 
   it('unwraps nested .schema (e.g. body parameter)', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const schema = {
       schema: {
         type: 'object',
@@ -315,7 +320,7 @@ describe('parseSchemaType', () => {
   })
 
   it('parses type as array (union) to union string', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const schema = { type: ['string', 'null'] }
     const result = parseSchemaType(schema as any)
     expect(result).toContain('string')
@@ -332,7 +337,7 @@ describe('parseSchemaType', () => {
   })
 
   it('wraps union type in parentheses in array items', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const schema = {
       type: 'array',
       items: { type: ['string', 'integer'] },
@@ -344,14 +349,15 @@ describe('parseSchemaType', () => {
   })
 
   it('handles array without items (edge case)', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const schema = { type: 'array' }
     const result = parseSchemaType(schema as any)
     expect(result).toContain('[]')
   })
 
   it('generates unique AllOf name when collision exists', () => {
-    provide({ interfaces: [{ name: 'AllOfErrorModel', properties: [], export: true }] })
+    const list = [{ name: 'AllOfErrorModel', properties: [], export: true }]
+    provide({ interfaces: { add: () => {}, values: () => list, all: () => list }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const schema = {
       allOf: [
         { $ref: '#/definitions/ErrorModel' },

@@ -15,12 +15,24 @@ describe('createParser', () => {
       outputs: [],
       source: swagger2Minimal,
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: {
+          main: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [],
+            interfaces: [],
+          },
+          type: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [],
+            interfaces: [],
+          },
+        },
         response: {},
       },
     }
@@ -42,8 +54,8 @@ describe('createParser', () => {
 
     parser(configRead)
 
-    expect(configRead.graphs.comments).toBeDefined()
-    expect(Array.isArray(configRead.graphs.comments)).toBe(true)
+    expect(configRead.graphs.scopes.main.comments).toBeDefined()
+    expect(Array.isArray(configRead.graphs.scopes.main.comments)).toBe(true)
   })
 
   it('initializes interfaces and functions arrays', () => {
@@ -52,10 +64,10 @@ describe('createParser', () => {
 
     parser(configRead)
 
-    expect(configRead.graphs.interfaces).toBeDefined()
-    expect(Array.isArray(configRead.graphs.interfaces)).toBe(true)
-    expect(configRead.graphs.functions).toBeDefined()
-    expect(Array.isArray(configRead.graphs.functions)).toBe(true)
+    expect(configRead.graphs.scopes.main.interfaces).toBeDefined()
+    expect(Array.isArray(configRead.graphs.scopes.main.interfaces)).toBe(true)
+    expect(configRead.graphs.scopes.main.functions).toBeDefined()
+    expect(Array.isArray(configRead.graphs.scopes.main.functions)).toBe(true)
   })
 
   it('provides context to pathHandler', () => {
@@ -68,7 +80,9 @@ describe('createParser', () => {
     const callArgs = pathHandler.mock.calls[0]
     expect(callArgs[1]).toHaveProperty('configRead')
     expect(callArgs[1]).toHaveProperty('interfaces')
+    expect(callArgs[1].interfaces).toHaveProperty('add')
     expect(callArgs[1]).toHaveProperty('functions')
+    expect(callArgs[1].functions).toHaveProperty('add')
   })
 
   it('transforms baseURL from source', () => {

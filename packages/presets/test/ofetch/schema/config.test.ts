@@ -7,7 +7,7 @@ describe('ofetch/schema config', () => {
       input: 'test.json',
     } as any)
 
-    const ofetchImport = configRead.graphs.imports.find(i => i.names?.includes('ofetch'))
+    const ofetchImport = configRead.graphs.scopes.main.imports.find(i => i.names?.includes('ofetch'))
     expect(ofetchImport).toBeDefined()
     expect(ofetchImport?.value).toBe('ofetch')
   })
@@ -17,7 +17,7 @@ describe('ofetch/schema config', () => {
       input: 'test.json',
     } as any)
 
-    const fetchdtsImport = configRead.graphs.imports.find(
+    const fetchdtsImport = configRead.graphs.scopes.main.imports.find(
       i => i.value === 'fetchdts' && i.names?.includes('TypedFetchInput'),
     )
     expect(fetchdtsImport).toBeDefined()
@@ -39,7 +39,7 @@ describe('ofetch/schema config', () => {
       },
     } as any)
 
-    const customImport = configRead.graphs.imports.find(i => i.names?.includes('ofetch'))
+    const customImport = configRead.graphs.scopes.main.imports.find(i => i.names?.includes('ofetch'))
     expect(customImport).toBeDefined()
     expect(customImport?.value).toBe('custom-fetch')
   })

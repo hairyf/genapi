@@ -63,7 +63,7 @@ describe('presets/src/tanstack', () => {
   })
 
   it('react preset can be called as function', async () => {
-    provide({ interfaces: [], functions: [], configRead: undefined })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] }, configRead: undefined })
     const source = parseOpenapiSpecification(swagger2Minimal)
     const result = await tanstackModule.react({
       input: { json: source },
@@ -73,7 +73,7 @@ describe('presets/src/tanstack', () => {
   })
 
   it('vue preset can be called as function', async () => {
-    provide({ interfaces: [], functions: [], configRead: undefined })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] }, configRead: undefined })
     const source = parseOpenapiSpecification(swagger2Minimal)
     const result = await tanstackModule.vue({
       input: { json: source },
@@ -83,7 +83,7 @@ describe('presets/src/tanstack', () => {
   })
 
   it('colada preset can be called as function', async () => {
-    provide({ interfaces: [], functions: [], configRead: undefined })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] }, configRead: undefined })
     const source = parseOpenapiSpecification(swagger2Minimal)
     const result = await tanstackModule.colada({
       input: { json: source },

@@ -1,5 +1,6 @@
 import type { ApiPipeline } from '@genapi/shared'
 import { config as _config } from '@genapi/pipeline'
+import { inject } from '@genapi/shared'
 
 export function config(userConfig: ApiPipeline.Config): ApiPipeline.ConfigRead {
   userConfig.meta = userConfig.meta || {}
@@ -7,14 +8,15 @@ export function config(userConfig: ApiPipeline.Config): ApiPipeline.ConfigRead {
   userConfig.meta.import.http = userConfig.meta.import.http || 'ofetch'
 
   const configRead = _config(userConfig)
+  const { imports } = inject()
 
-  configRead.graphs.imports.push({
+  imports.add('main', {
     names: userConfig.meta.import.http === 'ofetch' ? ['FetchOptions', 'ofetch'] : ['ofetch'],
     value: userConfig.meta.import.http,
   })
 
   if (userConfig.meta.import.http !== 'ofetch') {
-    configRead.graphs.imports.push({
+    imports.add('main', {
       names: ['FetchOptions'],
       value: 'ofetch',
     })

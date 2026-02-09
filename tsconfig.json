@@ -16,6 +16,7 @@
   },
   "exclude": [
     "playground/dist",
-    "test/fixtures/generated"
+    "test/fixtures/generated",
+    "packages/presets/test/fixtures/generated"
   ]
 }

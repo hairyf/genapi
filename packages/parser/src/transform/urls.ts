@@ -99,7 +99,8 @@ export function transformBaseURL(source: OpenAPISpecificationV2) {
   }
 
   if (configRead.config.meta?.baseURL) {
-    configRead.graphs.variables.push({
+    const ctx = inject()
+    ctx.variables.add('main', {
       export: true,
       flag: 'const',
       name: 'baseURL',

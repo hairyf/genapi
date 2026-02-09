@@ -1,5 +1,6 @@
 import type { ApiPipeline } from '@genapi/shared'
 import { config as _config } from '@genapi/pipeline'
+import { inject } from '@genapi/shared'
 
 export interface SchemaConfigOptions {
   /** HTTP client package name (e.g., 'ofetch') */
@@ -17,13 +18,13 @@ export function createSchemaConfig(options: SchemaConfigOptions = {}) {
       userConfig.meta.import.http = userConfig.meta.import.http || options.httpPackage
 
       const configRead = _config(userConfig)
+      const { imports } = inject()
 
-      configRead.graphs.imports.push({
-        value: userConfig.meta.import.http,
+      imports.add('main', {
         names: [options.httpClientName],
+        value: userConfig.meta.import.http,
       })
-
-      configRead.graphs.imports.push({
+      imports.add('main', {
         names: [
           'TypedFetchInput',
           'TypedFetchRequestInit',
@@ -40,8 +41,9 @@ export function createSchemaConfig(options: SchemaConfigOptions = {}) {
 
     // For native fetch, no HTTP client import needed
     const configRead = _config(userConfig)
+    const { imports } = inject()
 
-    configRead.graphs.imports.push({
+    imports.add('main', {
       names: [
         'TypedFetchInput',
         'TypedFetchRequestInit',

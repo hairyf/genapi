@@ -3,6 +3,7 @@ import { provide } from '@genapi/shared'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { swagger2Minimal } from '../../../../parser/test/fixtures/swagger2-minimal'
+import { swagger2Parameters } from '../../../../parser/test/fixtures/swagger2-parameters'
 import { parser } from '../../../src/tanstack/react/parser'
 
 describe('tanstack/react parser', () => {
@@ -16,18 +17,16 @@ describe('tanstack/react parser', () => {
       },
       source: {},
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: {
+          main: { comments: [], functions: [], imports: [], interfaces: [], typings: [], variables: [] },
+          type: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+        },
         response: {},
       },
       inputs: {},
       outputs: [],
     }
-    provide({ configRead, interfaces: [], functions: [] })
+    provide({ configRead, interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] } })
   })
 
   it('parses GET endpoint into fetcher and useQuery hook', () => {
@@ -36,8 +35,8 @@ describe('tanstack/react parser', () => {
 
     const result = parser(configRead)
 
-    expect(result.graphs.functions).toHaveLength(2)
-    const [fetcher, hook] = result.graphs.functions
+    expect(result.graphs.scopes.main.functions).toHaveLength(2)
+    const [fetcher, hook] = result.graphs.scopes.main.functions
     expect(fetcher.name).toBe('getPets')
     expect(fetcher.export).toBe(true)
     expect(fetcher.async).toBe(true)
@@ -53,7 +52,7 @@ describe('tanstack/react parser', () => {
     configRead.source = source
 
     const result = parser(configRead)
-    const fetcher = result.graphs.functions[0]
+    const fetcher = result.graphs.scopes.main.functions[0]
     const configParam = fetcher.parameters?.find((p: any) => p.name === 'config')
     expect(configParam).toBeDefined()
     expect(configParam?.type).toBe('RequestInit')
@@ -65,8 +64,28 @@ describe('tanstack/react parser', () => {
     configRead.source = source
 
     const result = parser(configRead)
-    const [fetcher, hook] = result.graphs.functions
+    const [fetcher, hook] = result.graphs.scopes.main.functions
     expect(fetcher.parameters?.length).toBe(hook.parameters?.length)
     expect(hook.body?.some(line => line.includes('queryKey') && line.includes('queryFn'))).toBe(true)
+  })
+
+  it('emits path/query/header parameter interfaces to type scope so Types.XXX resolves in main file', () => {
+    const source = parseOpenapiSpecification(swagger2Parameters)
+    configRead.source = source
+
+    const result = parser(configRead)
+
+    const typeInterfaces = result.graphs.scopes.type?.interfaces ?? []
+    expect(typeInterfaces.length).toBeGreaterThanOrEqual(1)
+
+    const pathInterface = typeInterfaces.find((i: any) => i.name.endsWith('Path'))
+    const queryInterface = typeInterfaces.find((i: any) => i.name.endsWith('Query'))
+    expect(pathInterface).toBeDefined()
+    expect(pathInterface?.name).toMatch(/GetPets.*Path$/)
+    expect(pathInterface?.properties).toContainEqual(expect.objectContaining({ name: 'petId', type: 'string' }))
+    expect(queryInterface).toBeDefined()
+    expect(queryInterface?.name).toMatch(/GetPets.*Query$/)
+
+    expect(result.graphs.scopes.main.interfaces).toEqual([])
   })
 })

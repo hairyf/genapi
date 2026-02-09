@@ -80,6 +80,10 @@ describe('transformBaseURL', () => {
   let configRead: ApiPipeline.ConfigRead
 
   beforeEach(() => {
+    const scopes: ApiPipeline.Graphs['scopes'] = {
+      main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+      type: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+    }
     configRead = {
       config: {
         input: '',
@@ -88,16 +92,22 @@ describe('transformBaseURL', () => {
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes,
         response: {},
       },
     }
-    provide({ configRead })
+    provide({
+      configRead,
+      variables: {
+        add: (scope: string, item: any) => {
+          if (!scopes[scope])
+            scopes[scope] = { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] }
+          scopes[scope].variables.push(item)
+        },
+        values: (scope: string) => scopes[scope].variables,
+        all: () => Object.values(scopes).flatMap(s => s.variables),
+      },
+    })
   })
 
   it('does not set baseURL when baseURL is false', () => {
@@ -173,7 +183,16 @@ describe('transformBaseURL', () => {
 
   it('does not override existing baseURL', () => {
     configRead.config.meta = { baseURL: 'https://custom.api.com' }
-    provide({ configRead })
+    const noop = () => {}
+    const noopValues = () => []
+    provide({
+      configRead,
+      variables: { add: noop, values: noopValues, all: noopValues },
+      interfaces: { add: noop, values: noopValues, all: noopValues },
+      functions: { add: noop, values: noopValues, all: noopValues },
+      imports: { add: noop, values: noopValues, all: noopValues },
+      typings: { add: noop, values: noopValues, all: noopValues },
+    })
 
     const source = {
       swagger: '2.0',

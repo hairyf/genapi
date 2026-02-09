@@ -7,7 +7,7 @@ describe('tanstack/vue config', () => {
       input: 'test.json',
     } as any)
 
-    const queryImport = configRead.graphs.imports.find(
+    const queryImport = configRead.graphs.scopes.main.imports.find(
       i => i.value === '@tanstack/vue-query' && i.names?.includes('useQuery') && i.names?.includes('useMutation'),
     )
     expect(queryImport).toBeDefined()
@@ -23,6 +23,6 @@ describe('tanstack/vue config', () => {
 
     expect(configRead.outputs).toBeDefined()
     expect(configRead.outputs!.length).toBeGreaterThanOrEqual(1)
-    expect(configRead.graphs.imports.some(i => i.value === '@tanstack/vue-query')).toBe(true)
+    expect(configRead.graphs.scopes.main.imports.some(i => i.value === '@tanstack/vue-query')).toBe(true)
   })
 })

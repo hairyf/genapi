@@ -4,7 +4,7 @@ import { parseParameterFiled } from '../../src/parses/parameter'
 
 describe('parseParameterFiled', () => {
   it('parses path parameter with type and description', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = {
       name: 'petId',
       in: 'path' as const,
@@ -20,7 +20,7 @@ describe('parseParameterFiled', () => {
   })
 
   it('parses query integer parameter', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = {
       name: 'limit',
       in: 'query' as const,
@@ -32,7 +32,7 @@ describe('parseParameterFiled', () => {
   })
 
   it('parses query array parameter with items', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = {
       name: 'tags',
       in: 'query' as const,
@@ -44,7 +44,7 @@ describe('parseParameterFiled', () => {
   })
 
   it('parses header parameter', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = {
       name: 'X-Request-ID',
       in: 'header' as const,
@@ -55,7 +55,7 @@ describe('parseParameterFiled', () => {
   })
 
   it('parses body parameter with schema', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = {
       name: 'body',
       in: 'body' as const,
@@ -73,7 +73,7 @@ describe('parseParameterFiled', () => {
   })
 
   it('parses formData file parameter', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = {
       name: 'avatar',
       in: 'formData' as const,
@@ -86,28 +86,28 @@ describe('parseParameterFiled', () => {
   })
 
   it('sanitizes parameter name for invalid identifiers', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = { name: 'my-param', in: 'query' as const, type: 'string' as const }
     const field = parseParameterFiled(param as any)
     expect(field.name).toBe('\'my-param\'')
   })
 
   it('parses cookie parameter', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = { name: 'session', in: 'cookie' as const, type: 'string' as const }
     const field = parseParameterFiled(param as any)
     expect(field.type).toBe('string')
   })
 
   it('parses querystring parameter', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = { name: 'filter', in: 'querystring' as const, type: 'string' as const }
     const field = parseParameterFiled(param as any)
     expect(field.type).toBe('string')
   })
 
   it('parses query array with collectionFormat ssv', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = {
       name: 'ids',
       in: 'query' as const,
@@ -120,21 +120,21 @@ describe('parseParameterFiled', () => {
   })
 
   it('parses optional parameter (required false)', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = { name: 'skip', in: 'query' as const, type: 'integer' as const, required: false }
     const field = parseParameterFiled(param as any)
     expect(field.required).toBe(false)
   })
 
   it('parses parameter with default value', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = { name: 'limit', in: 'query' as const, type: 'integer' as const, default: 10 }
     const field = parseParameterFiled(param as any)
     expect(field.type).toBe('number')
   })
 
   it('oAS 3: parses parameter with schema instead of type', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = {
       name: 'limit',
       in: 'query' as const,
@@ -145,7 +145,7 @@ describe('parseParameterFiled', () => {
   })
 
   it('oAS 3: parses parameter with schema (array of refs)', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = {
       name: 'ids',
       in: 'query' as const,
@@ -156,7 +156,7 @@ describe('parseParameterFiled', () => {
   })
 
   it('omits description when empty', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = { name: 'id', in: 'path' as const, required: true, type: 'string' as const }
     const field = parseParameterFiled(param as any)
     expect(field.description).toBeUndefined()
@@ -166,7 +166,7 @@ describe('parseParameterFiled', () => {
   })
 
   it('handles query array parameter with enum values (including non-string)', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = {
       name: 'status',
       in: 'query' as const,
@@ -187,7 +187,7 @@ describe('parseParameterFiled', () => {
   })
 
   it('handles parameter with unsupported in type', () => {
-    provide({ interfaces: [] })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
     const param = {
       name: 'custom',
       in: 'unsupported' as any,

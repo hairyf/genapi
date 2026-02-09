@@ -1,64 +1,55 @@
-import type { ApiPipeline, StatementField, StatementFunction, StatementInterface } from '../types'
+import type { ApiPipeline, StatementField, StatementFunction, StatementImported, StatementInterface, StatementTypeAlias, StatementVariable } from '../types'
+
 /**
- * Context passed through pipeline steps (config, configRead, interfaces, functions, parameters).
- * @description Used by inject()/provide() to pass data between parser, compiler, and presets.
- * @example
- * ```ts
- * provide({ configRead, interfaces: [], functions: [] })
- * const ctx = inject()
- * ctx.configRead.outputs
- * ```
+ * Context passed through pipeline steps (config, configRead, parser scopes).
+ * Parser uses ApiPipeline.Block<T> for add(scope, item) / values(scope).
+ * Named scope (e.g. `${method}/${path}`) 使用 parameters、options；provide(name, { responseType }) 使用 responseType。
  */
 export interface Context {
   config?: ApiPipeline.Config
   configRead?: ApiPipeline.ConfigRead
-  interfaces?: StatementInterface[]
-  functions?: StatementFunction[]
+  interfaces?: ApiPipeline.Block<StatementInterface>
+  functions?: ApiPipeline.Block<StatementFunction>
+  imports?: ApiPipeline.Block<StatementImported>
+  variables?: ApiPipeline.Block<StatementVariable>
+  typings?: ApiPipeline.Block<StatementTypeAlias>
   parameters?: StatementField[]
+  /** Named scope: method config options (e.g. LiteralField[]) */
+  options?: unknown[]
   responseType?: string
 }
 
-export const context: Record<string, Context> = {
-}
+export const context: Record<string, Context> = {}
 
 /**
  * Gets the current pipeline context for the given scope (default: `'default'`).
- * Used inside pipeline steps to read config/graphs.
+ * Type-safe: use inject<ParserContext>() in parser steps to get ParserContext without cast.
  *
  * @param scope - Context key
  * @returns Current context for that scope
  * @group Inject
  * @example
  * ```ts
- * const { configRead, interfaces } = inject()
- * const config = inject('get/user/1')
+ * const ctx = inject<ParserContext>()
+ * ctx.functions.add('main', item)
  * ```
  */
-export function inject(scope = 'default') {
+export function inject<T = Context>(scope = 'default'): Required<T> {
   const currentContext = context[scope] || {}
-  return currentContext as Required<Context>
+  return currentContext as Required<T>
 }
 
 /**
- * Sets context for a scope. Call with `(value)` for default scope or `(scope, value)` for a named scope.
- *
+ * Sets context for a scope.
  * @group Inject
- * @example
- * ```ts
- * provide({ configRead, interfaces: [] })
- * provide('get/user', { parameters: [...] })
- * ```
  */
 export function provide(value: Context): void
 export function provide(scope: string, value: Context): void
 export function provide(...args: [string, Context] | [Context]): void {
-  const [scope, value] = args
-  if (typeof scope === 'string') {
-    context[scope] = context[scope] || {}
-    Object.assign(context[scope], value)
+  if (args.length === 2) {
+    context[args[0] as string] = args[1]
   }
   else {
-    context.default = context.default || {}
-    Object.assign(context.default, scope)
+    context.default = args[0] as Context
   }
 }

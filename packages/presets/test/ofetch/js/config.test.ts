@@ -7,7 +7,7 @@ describe('ofetch/js config', () => {
       input: 'test.json',
     } as any)
 
-    const ofetchImport = configRead.graphs.imports.find(i => i.names?.includes('ofetch'))
+    const ofetchImport = configRead.graphs.scopes.main.imports.find(i => i.names?.includes('ofetch'))
     expect(ofetchImport).toBeDefined()
     expect(ofetchImport?.value).toBe('ofetch')
   })
@@ -30,7 +30,7 @@ describe('ofetch/js config', () => {
       },
     } as any)
 
-    const customImport = configRead.graphs.imports.find(i => i.names?.includes('ofetch'))
+    const customImport = configRead.graphs.scopes.main.imports.find(i => i.names?.includes('ofetch'))
     expect(customImport).toBeDefined()
     expect(customImport?.value).toBe('custom-ofetch')
   })

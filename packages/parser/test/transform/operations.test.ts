@@ -19,13 +19,8 @@ describe('transformOperation', () => {
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
-        response: {},
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
+        response: { generic: '', infer: '' },
       },
     }
     provide({ configRead })
@@ -231,13 +226,8 @@ describe('transformOperation', () => {
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
-        response: {},
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
+        response: { generic: '', infer: '' },
       },
     } as any
 

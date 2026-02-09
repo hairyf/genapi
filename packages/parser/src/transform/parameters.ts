@@ -25,8 +25,8 @@ export interface ParameterTransformOptions {
  */
 export function transformParameters(parameters: StatementField[], options: ParameterTransformOptions) {
   const { configRead, syntax, interfaces, description, responseType } = options
-  const importType = configRead.outputs.find(v => v.type === 'typings')?.import
-  const isGenerate = configRead.outputs.map(v => v.type).includes('typings')
+  const importType = configRead.outputs.find(v => v.type === 'type')?.import
+  const isGenerate = configRead.outputs.map(v => v.type).includes('type')
   const namespace = syntax === 'ecmascript' ? `import('${importType}')` : 'Types'
   const infer = configRead.graphs.response.infer || ''
   const generic = parseGenericType(configRead.graphs.response.generic || options.generic, syntax)

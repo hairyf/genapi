@@ -7,7 +7,7 @@ describe('ofetch/ts config', () => {
       input: 'test.json',
     } as any)
 
-    const ofetchImport = configRead.graphs.imports.find(i => i.names?.includes('ofetch') || i.names?.includes('FetchOptions'))
+    const ofetchImport = configRead.graphs.scopes.main.imports.find(i => i.names?.includes('ofetch') || i.names?.includes('FetchOptions'))
     expect(ofetchImport).toBeDefined()
     expect(ofetchImport?.value).toBe('ofetch')
   })
@@ -22,7 +22,7 @@ describe('ofetch/ts config', () => {
       },
     } as any)
 
-    const ofetchImport = configRead.graphs.imports.find(i => i.names?.includes('ofetch') && i.names?.includes('FetchOptions'))
+    const ofetchImport = configRead.graphs.scopes.main.imports.find(i => i.names?.includes('ofetch') && i.names?.includes('FetchOptions'))
     expect(ofetchImport).toBeDefined()
     expect(ofetchImport?.value).toBe('ofetch')
   })
@@ -37,11 +37,11 @@ describe('ofetch/ts config', () => {
       },
     } as any)
 
-    const customImport = configRead.graphs.imports.find(i => i.names?.includes('ofetch'))
+    const customImport = configRead.graphs.scopes.main.imports.find(i => i.names?.includes('ofetch'))
     expect(customImport).toBeDefined()
     expect(customImport?.value).toBe('custom-http')
 
-    const fetchOptionsImport = configRead.graphs.imports.find(i => i.names?.includes('FetchOptions') && i.value === 'ofetch')
+    const fetchOptionsImport = configRead.graphs.scopes.main.imports.find(i => i.names?.includes('FetchOptions') && i.value === 'ofetch')
     expect(fetchOptionsImport).toBeDefined()
   })
 })

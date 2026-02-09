@@ -7,7 +7,7 @@ describe('uni/ts config', () => {
       input: 'test.json',
     } as any)
 
-    const uniImport = configRead.graphs.imports.find(i => i.name === 'http' || i.names?.includes('UnConfig'))
+    const uniImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http' || i.names?.includes('UnConfig'))
     expect(uniImport).toBeDefined()
     expect(uniImport?.value).toBe('@uni-helper/uni-network')
   })
@@ -22,7 +22,7 @@ describe('uni/ts config', () => {
       },
     } as any)
 
-    const uniImport = configRead.graphs.imports.find(i => i.name === 'http' && i.names?.includes('UnConfig'))
+    const uniImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http' && i.names?.includes('UnConfig'))
     expect(uniImport).toBeDefined()
     expect(uniImport?.value).toBe('@uni-helper/uni-network')
   })
@@ -37,11 +37,11 @@ describe('uni/ts config', () => {
       },
     } as any)
 
-    const customImport = configRead.graphs.imports.find(i => i.name === 'http')
+    const customImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http')
     expect(customImport).toBeDefined()
     expect(customImport?.value).toBe('custom-http')
 
-    const uniConfigImport = configRead.graphs.imports.find(i => i.names?.includes('UnConfig') && i.value === '@uni-helper/uni-network')
+    const uniConfigImport = configRead.graphs.scopes.main.imports.find(i => i.names?.includes('UnConfig') && i.value === '@uni-helper/uni-network')
     expect(uniConfigImport).toBeDefined()
   })
 })

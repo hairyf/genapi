@@ -7,7 +7,7 @@ describe('axios/ts config', () => {
       input: 'test.json',
     } as any)
 
-    const axiosImport = configRead.graphs.imports.find(i => i.name === 'http' || i.names?.includes('AxiosRequestConfig'))
+    const axiosImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http' || i.names?.includes('AxiosRequestConfig'))
     expect(axiosImport).toBeDefined()
     expect(axiosImport?.value).toBe('axios')
   })
@@ -22,7 +22,7 @@ describe('axios/ts config', () => {
       },
     } as any)
 
-    const axiosImport = configRead.graphs.imports.find(i => i.name === 'http' && i.names?.includes('AxiosRequestConfig'))
+    const axiosImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http' && i.names?.includes('AxiosRequestConfig'))
     expect(axiosImport).toBeDefined()
     expect(axiosImport?.value).toBe('axios')
   })
@@ -37,11 +37,11 @@ describe('axios/ts config', () => {
       },
     } as any)
 
-    const customImport = configRead.graphs.imports.find(i => i.name === 'http')
+    const customImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http')
     expect(customImport).toBeDefined()
     expect(customImport?.value).toBe('custom-http')
 
-    const axiosConfigImport = configRead.graphs.imports.find(i => i.names?.includes('AxiosRequestConfig') && i.value === 'axios')
+    const axiosConfigImport = configRead.graphs.scopes.main.imports.find(i => i.names?.includes('AxiosRequestConfig') && i.value === 'axios')
     expect(axiosConfigImport).toBeDefined()
   })
 

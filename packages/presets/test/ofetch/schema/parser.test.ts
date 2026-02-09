@@ -16,17 +16,16 @@ describe('ofetch/schema parser', () => {
       },
       source: {},
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: {
+          main: { comments: [], functions: [], imports: [], interfaces: [], typings: [], variables: [] },
+          type: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+        },
+        response: {},
       },
       inputs: {},
       outputs: [],
     }
-    provide({ configRead, interfaces: [], functions: [] })
+    provide({ configRead, interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] } })
   })
 
   it('collects route information for simple GET endpoint', () => {

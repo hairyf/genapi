@@ -37,12 +37,7 @@ describe('dest', () => {
         },
       ],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -71,12 +66,7 @@ describe('dest', () => {
         },
       ],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -101,12 +91,7 @@ describe('dest', () => {
         },
       ],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -124,12 +109,7 @@ describe('dest', () => {
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
@@ -155,12 +135,7 @@ describe('dest', () => {
         },
       ],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }

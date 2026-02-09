@@ -16,7 +16,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   let { name, description, url, responseType } = parseMethodMetadata(config)
 
   options.push(['...', 'config'])
-  interfaces.push(...attachInters)
+  attachInters.forEach(i => interfaces.add('type', i))
   parameters.push({
     name: 'config',
     type: 'AxiosRequestConfig',
@@ -31,12 +31,12 @@ export const parser = createParser((config, { configRead, functions, interfaces 
     syntax: 'typescript',
     configRead,
     description,
-    interfaces,
+    interfaces: interfaces.all(),
     responseType,
   })
   url = transformUrlSyntax(url)
 
-  functions.push({
+  functions.add('main', {
     export: true,
     name,
     description,

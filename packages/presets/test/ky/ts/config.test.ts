@@ -7,7 +7,7 @@ describe('ky/ts config', () => {
       input: 'test.json',
     } as any)
 
-    const kyImport = configRead.graphs.imports.find(i => i.name === 'http' || i.names?.includes('Options'))
+    const kyImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http' || i.names?.includes('Options'))
     expect(kyImport).toBeDefined()
     expect(kyImport?.value).toBe('ky')
   })
@@ -22,7 +22,7 @@ describe('ky/ts config', () => {
       },
     } as any)
 
-    const kyImport = configRead.graphs.imports.find(i => i.name === 'http' && i.names?.includes('Options'))
+    const kyImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http' && i.names?.includes('Options'))
     expect(kyImport).toBeDefined()
     expect(kyImport?.value).toBe('ky')
   })
@@ -37,11 +37,11 @@ describe('ky/ts config', () => {
       },
     } as any)
 
-    const customImport = configRead.graphs.imports.find(i => i.name === 'http')
+    const customImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http')
     expect(customImport).toBeDefined()
     expect(customImport?.value).toBe('custom-http')
 
-    const kyConfigImport = configRead.graphs.imports.find(i => i.names?.includes('Options') && i.value === 'ky')
+    const kyConfigImport = configRead.graphs.scopes.main.imports.find(i => i.names?.includes('Options') && i.value === 'ky')
     expect(kyConfigImport).toBeDefined()
   })
 })

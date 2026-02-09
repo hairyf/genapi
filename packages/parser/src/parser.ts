@@ -1,4 +1,4 @@
-import type { ApiPipeline, StatementFunction, StatementInterface } from '@genapi/shared'
+import type { ApiPipeline, StatementFunction, StatementImported, StatementInterface, StatementTypeAlias, StatementVariable } from '@genapi/shared'
 import type { PathMethod } from './traverse'
 import { inject, provide } from '@genapi/shared'
 import { parseHeaderCommits, parseOpenapiSpecification } from './parses'
@@ -6,29 +6,45 @@ import { transformDefinitions } from './transform/definitions'
 import { transformBaseURL } from './transform/urls'
 import { traversePaths } from './traverse'
 
-/**
- * Parser context injected by createParser for use in each preset's pathHandler.
- * @description Holds configRead, collected functions, and interfaces during path traversal.
- * @example
- * ```ts
- * const ctx = inject() as ParserContext
- * ctx.functions.push({ name: 'getUser', parameters: [], body: [] })
- * ```
- */
+function block<T>(configRead: ApiPipeline.ConfigRead, key: keyof ApiPipeline.GraphSlice): ApiPipeline.Block<T> {
+  return {
+    add(scope, item) {
+      let slice = configRead.graphs.scopes[scope]
+      if (!slice) {
+        slice = { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] }
+        configRead.graphs.scopes[scope] = slice
+      }
+      if (Array.isArray(slice[key]))
+        (slice[key] as T[]).push(item)
+    },
+    values(scope) {
+      const slice = configRead.graphs.scopes[scope]
+      return (slice && Array.isArray(slice[key]) ? slice[key] : []) as T[]
+    },
+    all() {
+      return Object.values(configRead.graphs.scopes).flatMap(s => (s[key] || []) as T[])
+    },
+  }
+}
+
+/** Parser context: 仅 Block add/values，无 getAll。 */
 export interface ParserContext {
   configRead: ApiPipeline.ConfigRead
-  functions: StatementFunction[]
-  interfaces: StatementInterface[]
+  functions: ApiPipeline.Block<StatementFunction>
+  interfaces: ApiPipeline.Block<StatementInterface>
+  imports: ApiPipeline.Block<StatementImported>
+  variables: ApiPipeline.Block<StatementVariable>
+  typings: ApiPipeline.Block<StatementTypeAlias>
 }
 
 /**
  * Handler for a single path/method; each preset implements this to turn an OpenAPI operation into HTTP client code.
- * @description Callback invoked for each (path, method) with merged parameters and operation options.
+ * @description Callback invoked for each (path, method). Use ctx.*.add(scope, item) to collect per-output-type.
  * @example
  * ```ts
  * const pathHandler: PathHandler = (config, ctx) => {
- *   const { name, url } = parseMethodMetadata(config)
- *   ctx.functions.push({ name, parameters: config.parameters, body: [] })
+ *   const { name } = parseMethodMetadata(config)
+ *   ctx.functions.add('main', { name, parameters: [], body: [] })
  * }
  * ```
  */
@@ -36,43 +52,33 @@ export type PathHandler = (config: PathMethod, context: ParserContext) => void
 
 /**
  * Creates a unified parser entry that reuses the common flow: parse spec → inject context → transform baseURL/definitions → traverse paths.
- * Presets only need to implement pathHandler, avoiding duplicated parser() and transformPaths boilerplate.
+ * Presets use ctx.*.add(scope, item) only; no push or flat arrays.
  *
- * @description Builds a pipeline parser that parses OpenAPI spec, transforms definitions/baseURL, then calls pathHandler for each path/method.
  * @param pathHandler - Callback invoked per path in traversePaths
  * @returns parser(configRead) function conforming to the pipeline contract
- * @example
- * ```ts
- * const parser = createParser((config, ctx) => {
- *   const meta = parseMethodMetadata(config)
- *   ctx.functions.push({ name: meta.name, parameters: meta.parameters, body: [] })
- * })
- * const configRead = parser(configRead)
- * ```
  */
 export function createParser(pathHandler: PathHandler) {
   return function parser(configRead: ApiPipeline.ConfigRead): ApiPipeline.ConfigRead {
     const source = parseOpenapiSpecification(configRead.source)
     const comments = parseHeaderCommits(source)
-    const interfaces: StatementInterface[] = []
-    const functions: StatementFunction[] = []
 
-    // Inject interfaces, functions, and configRead into default context
-    // Referenced at:
-    // - packages/parser/src/parses/method.ts:95 (inject() gets interfaces, configRead)
-    // - packages/parser/src/parses/schema.ts:24 (inject() gets interfaces, configRead)
-    // - packages/parser/src/transform/definitions.ts:12 (inject() gets interfaces, configRead)
-    // - packages/parser/src/create-parser.ts:43 (inject() gets interfaces, functions, configRead)
-    provide({ interfaces, functions, configRead })
+    const ctx: ParserContext = {
+      configRead,
+      functions: block(configRead, 'functions'),
+      interfaces: block(configRead, 'interfaces'),
+      imports: block(configRead, 'imports'),
+      variables: block(configRead, 'variables'),
+      typings: block(configRead, 'typings'),
+    }
+    provide(ctx)
     transformBaseURL(source)
     if (source.definitions)
       transformDefinitions(source.definitions)
 
-    traversePaths(source.paths ?? {}, config => pathHandler(config, inject() as ParserContext))
+    traversePaths(source.paths ?? {}, config => pathHandler(config, inject<ParserContext>()))
 
-    configRead.graphs.comments = comments
-    configRead.graphs.functions = functions
-    configRead.graphs.interfaces = interfaces
+    if (configRead.graphs.scopes.main)
+      configRead.graphs.scopes.main.comments = comments
     return configRead
   }
 }

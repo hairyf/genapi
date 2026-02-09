@@ -7,6 +7,7 @@ describe('parseMethodParameters', () => {
   let configRead: ApiPipeline.ConfigRead
 
   beforeEach(() => {
+    const allInterfaces: any[] = []
     configRead = {
       config: {
         input: '',
@@ -14,16 +15,18 @@ describe('parseMethodParameters', () => {
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: { main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] }, type: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] } },
         response: {},
       },
     }
-    provide({ interfaces: [], configRead })
+    provide({
+      configRead,
+      interfaces: {
+        add: (_s: string, item: any) => { allInterfaces.push(item) },
+        values: (_s: string) => allInterfaces,
+        all: () => allInterfaces,
+      },
+    })
   })
 
   it('parses empty parameters', () => {
@@ -344,26 +347,22 @@ describe('parseMethodParameters', () => {
 
 describe('parseMethodMetadata', () => {
   let configRead: ApiPipeline.ConfigRead
+  const emptyBlock = { add: () => {}, values: () => [] as any[], all: () => [] as any[] }
 
   beforeEach(() => {
     configRead = {
-      config: {
-        input: '',
-        meta: {},
-      } as ApiPipeline.Config,
+      config: { input: '', meta: {} } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+        },
         response: {},
       },
     }
-    provide({ interfaces: [], configRead, functions: [] })
+    provide({ configRead, interfaces: emptyBlock, functions: emptyBlock })
   })
 
   it('generates metadata with method, summary, and description', () => {
@@ -586,7 +585,7 @@ describe('parseMethodMetadata', () => {
       },
     ]
 
-    provide({ interfaces, configRead, functions: [] })
+    provide({ configRead, interfaces: { add: () => {}, values: () => interfaces, all: () => interfaces }, functions: emptyBlock })
 
     parseMethodParameters({
       method: 'get',
@@ -639,7 +638,7 @@ describe('parseMethodMetadata', () => {
       },
     ]
 
-    provide({ interfaces, configRead, functions: [] })
+    provide({ configRead, interfaces: { add: () => {}, values: () => interfaces, all: () => interfaces }, functions: emptyBlock })
 
     parseMethodParameters({
       method: 'get',
@@ -695,7 +694,7 @@ describe('parseMethodMetadata', () => {
       },
     ]
 
-    provide({ interfaces, configRead, functions: [] })
+    provide({ configRead, interfaces: { add: () => {}, values: () => interfaces, all: () => interfaces }, functions: emptyBlock })
 
     parseMethodParameters({
       method: 'get',

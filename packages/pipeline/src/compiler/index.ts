@@ -1,28 +1,21 @@
 import type { ApiPipeline } from '@genapi/shared'
-import { compilerTsRequestDeclaration } from './request'
-import { compilerTsTypingsDeclaration } from './typings'
+import { compile } from './scope'
 
 /**
- * Compiles graphs to code string: request and typings for each output.
+ * Compiles each output from graphs.scopes[output.type]; onlyDeclaration 时仅编译 type 为 "type" 的 output。
  *
- * @param configRead - ConfigRead with graphs and outputs
+ * @param configRead - ConfigRead with graphs.scopes and outputs
  * @returns Same configRead with output.code set
  * @group Pipeline
- * @example
- * ```ts
- * compiler(configRead)
- * configRead.outputs.forEach(o => console.log(o.code))
- * ```
  */
 export function compiler(configRead: ApiPipeline.ConfigRead) {
+  const onlyDeclaration = !!configRead.config.meta?.onlyDeclaration
   for (const output of configRead.outputs) {
-    if (output.type === 'request' && !configRead.config.meta?.onlyDeclaration)
-      output.code = compilerTsRequestDeclaration(configRead)
-    if (output.type === 'typings')
-      output.code = compilerTsTypingsDeclaration(configRead)
+    if (onlyDeclaration && output.type !== 'type')
+      continue
+    output.code = compile(configRead, output.type)
   }
-
   return configRead
 }
 
-export { compilerTsRequestDeclaration, compilerTsTypingsDeclaration }
+export { compile } from './scope'

@@ -7,7 +7,7 @@ describe('uni/js config', () => {
       input: 'test.json',
     } as any)
 
-    const uniImport = configRead.graphs.imports.find(i => i.name === 'http')
+    const uniImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http')
     expect(uniImport).toBeDefined()
     expect(uniImport?.value).toBe('@uni-helper/uni-network')
   })
@@ -39,7 +39,7 @@ describe('uni/js config', () => {
       },
     } as any)
 
-    const customImport = configRead.graphs.imports.find(i => i.name === 'http')
+    const customImport = configRead.graphs.scopes.main.imports.find(i => i.name === 'http')
     expect(customImport).toBeDefined()
     expect(customImport?.value).toBe('custom-uni')
   })

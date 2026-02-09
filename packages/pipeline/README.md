@@ -86,28 +86,6 @@ await original(configRead)
 // configRead.source is set from uri/http/json; wpapi transformed to swagger2 if parser is 'wpapi'
 ```
 
-### `compilerTsRequestDeclaration(configRead)`
-
-Compiles configRead graphs to TypeScript request module code (imports, variables, functions).
-
-**Example:**
-
-```ts
-const code = compilerTsRequestDeclaration(configRead)
-await fs.writeFile('src/api.ts', code)
-```
-
-### `compilerTsTypingsDeclaration(configRead, comment)`
-
-Compiles configRead graphs to TypeScript typings code (type aliases, interfaces, optional header comment).
-
-**Example:**
-
-```ts
-const code = compilerTsTypingsDeclaration(configRead)
-await fs.writeFile('src/api.type.ts', code)
-```
-
 ### `formatTypescript(code, options?)`
 
 Formats TypeScript/JavaScript code string with Prettier.

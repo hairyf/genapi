@@ -11,12 +11,10 @@ describe('compilerTsTypingsDeclaration', () => {
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+        },
         response: {},
       },
     }
@@ -27,18 +25,14 @@ describe('compilerTsTypingsDeclaration', () => {
 
   it('includes comments when present and comment is true', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: ['@title Test API', '@version 1.0.0'],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: { comments: ['@title Test API', '@version 1.0.0'], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+        },
         response: {},
       },
     }
@@ -48,48 +42,41 @@ describe('compilerTsTypingsDeclaration', () => {
     expect(result).toContain('@version 1.0.0')
   })
 
-  it('excludes comments when comment is false', () => {
+  it('includes type scope comments (comment param is ignored)', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: ['@title Test API'],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: { comments: ['@title Test API'], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+        },
         response: {},
       },
     }
 
     const result = compilerTsTypingsDeclaration(configRead, false)
-    expect(result).not.toContain('@title Test API')
+    expect(result).toContain('@title Test API')
   })
 
   it('includes typings when present', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [
-          {
-            name: 'ApiResponse',
-            value: 'Promise<T>',
-            export: true,
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [{ name: 'ApiResponse', value: 'Promise<T>', export: true }],
+            interfaces: [],
           },
-        ],
-        variables: [],
+        },
         response: {},
       },
     }
@@ -107,21 +94,19 @@ describe('compilerTsTypingsDeclaration', () => {
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [
-          {
-            name: 'User',
-            properties: [
-              { name: 'id', type: 'number', required: true },
-              { name: 'name', type: 'string', required: false },
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [],
+            interfaces: [
+              { name: 'User', properties: [{ name: 'id', type: 'number', required: true }, { name: 'name', type: 'string', required: false }], export: true },
             ],
-            export: true,
           },
-        ],
-        typings: [],
-        variables: [],
+        },
         response: {},
       },
     }
@@ -134,27 +119,30 @@ describe('compilerTsTypingsDeclaration', () => {
 
   it('handles optional properties correctly', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [
-          {
-            name: 'User',
-            properties: [
-              { name: 'id', type: 'number', required: true },
-              { name: 'email', type: 'string', required: false },
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [],
+            interfaces: [
+              {
+                name: 'User',
+                properties: [
+                  { name: 'id', type: 'number', required: true },
+                  { name: 'email', type: 'string', required: false },
+                ],
+                export: true,
+              },
             ],
-            export: true,
           },
-        ],
-        typings: [],
-        variables: [],
+        },
         response: {},
       },
     }
@@ -166,26 +154,27 @@ describe('compilerTsTypingsDeclaration', () => {
 
   it('handles properties without type (defaults to any)', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [
-          {
-            name: 'User',
-            properties: [
-              { name: 'data', type: undefined, required: true },
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [],
+            interfaces: [
+              {
+                name: 'User',
+                properties: [{ name: 'data', type: undefined, required: true }],
+                export: true,
+              },
             ],
-            export: true,
           },
-        ],
-        typings: [],
-        variables: [],
+        },
         response: {},
       },
     }
@@ -197,31 +186,27 @@ describe('compilerTsTypingsDeclaration', () => {
 
   it('includes property descriptions in JSDoc', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [
-          {
-            name: 'User',
-            properties: [
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [],
+            interfaces: [
               {
-                name: 'id',
-                type: 'number',
-                required: true,
-                description: 'User ID',
+                name: 'User',
+                properties: [{ name: 'id', type: 'number', required: true, description: 'User ID' }],
+                export: true,
               },
             ],
-            export: true,
           },
-        ],
-        typings: [],
-        variables: [],
+        },
         response: {},
       },
     }
@@ -232,24 +217,21 @@ describe('compilerTsTypingsDeclaration', () => {
 
   it('handles non-exported interfaces', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [
-          {
-            name: 'InternalUser',
-            properties: [],
-            export: false,
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [],
+            interfaces: [{ name: 'InternalUser', properties: [], export: false }],
           },
-        ],
-        typings: [],
-        variables: [],
+        },
         response: {},
       },
     }
@@ -260,24 +242,21 @@ describe('compilerTsTypingsDeclaration', () => {
 
   it('handles non-exported typings', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [
-          {
-            name: 'InternalType',
-            value: 'string',
-            export: false,
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [{ name: 'InternalType', value: 'string', export: false }],
+            interfaces: [],
           },
-        ],
-        variables: [],
+        },
         response: {},
       },
     }
@@ -288,24 +267,21 @@ describe('compilerTsTypingsDeclaration', () => {
 
   it('handles empty properties array', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [
-          {
-            name: 'EmptyInterface',
-            properties: [],
-            export: true,
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [],
+            interfaces: [{ name: 'EmptyInterface', properties: [], export: true }],
           },
-        ],
-        typings: [],
-        variables: [],
+        },
         response: {},
       },
     }
@@ -316,32 +292,23 @@ describe('compilerTsTypingsDeclaration', () => {
 
   it('combines comments, typings, and interfaces', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: ['@title Test API'],
-        functions: [],
-        imports: [],
-        interfaces: [
-          {
-            name: 'User',
-            properties: [
-              { name: 'id', type: 'number', required: true },
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: ['@title Test API'],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [{ name: 'ApiResponse', value: 'Promise<T>', export: true }],
+            interfaces: [
+              { name: 'User', properties: [{ name: 'id', type: 'number', required: true }], export: true },
             ],
-            export: true,
           },
-        ],
-        typings: [
-          {
-            name: 'ApiResponse',
-            value: 'Promise<T>',
-            export: true,
-          },
-        ],
-        variables: [],
+        },
         response: {},
       },
     }
@@ -354,50 +321,49 @@ describe('compilerTsTypingsDeclaration', () => {
 
   it('initializes empty arrays when undefined', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: undefined as any,
-        functions: [],
-        imports: [],
-        interfaces: undefined as any,
-        typings: undefined as any,
-        variables: [],
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: undefined as any,
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: undefined as any,
+            interfaces: undefined as any,
+          },
+        },
         response: {},
       },
     }
 
     const result = compilerTsTypingsDeclaration(configRead)
     expect(result).toBe('')
-    // Should not throw and should initialize arrays
-    expect(configRead.graphs.comments).toEqual([])
-    expect(configRead.graphs.interfaces).toEqual([])
-    expect(configRead.graphs.typings).toEqual([])
+    expect(configRead.graphs.scopes.type.comments || []).toEqual([])
+    expect(configRead.graphs.scopes.type.interfaces || []).toEqual([])
+    expect(configRead.graphs.scopes.type.typings || []).toEqual([])
   })
 
   it('handles interface with null properties', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [
-          {
-            name: 'Empty',
-            properties: null as any,
-            export: true,
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [],
+            interfaces: [{ name: 'Empty', properties: null as any, export: true }],
           },
-        ],
-        typings: [],
-        variables: [],
+        },
         response: {},
       },
     }
@@ -408,29 +374,64 @@ describe('compilerTsTypingsDeclaration', () => {
 
   it('handles interface with undefined properties', () => {
     const configRead: ApiPipeline.ConfigRead = {
-      config: {
-        input: '',
-      } as ApiPipeline.Config,
+      config: { input: '' } as ApiPipeline.Config,
       inputs: {},
       outputs: [],
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [
-          {
-            name: 'Empty',
-            properties: undefined as any,
-            export: true,
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [],
+            interfaces: [{ name: 'Empty', properties: undefined as any, export: true }],
           },
-        ],
-        typings: [],
-        variables: [],
+        },
         response: {},
       },
     }
 
     const result = compilerTsTypingsDeclaration(configRead)
     expect(result).toContain('Empty')
+  })
+
+  it('generates correct property keys for header names with hyphens (varFiled format)', () => {
+    const configRead: ApiPipeline.ConfigRead = {
+      config: { input: '' } as ApiPipeline.Config,
+      inputs: {},
+      outputs: [],
+      graphs: {
+        scopes: {
+          main: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+          type: {
+            comments: [],
+            functions: [],
+            imports: [],
+            variables: [],
+            typings: [],
+            interfaces: [
+              {
+                name: 'PostKycWebhookHeader',
+                properties: [
+                  { name: '\'x-payload-digest-alg\'', type: 'string', required: true },
+                  { name: '\'x-payload-digest\'', type: 'string', required: true },
+                ],
+                export: true,
+              },
+            ],
+          },
+        },
+        response: {},
+      },
+    }
+
+    const result = compilerTsTypingsDeclaration(configRead)
+    expect(result).toContain('PostKycWebhookHeader')
+    expect(result).toMatch(/"x-payload-digest-alg":\s*string/)
+    expect(result).toMatch(/"x-payload-digest":\s*string/)
+    expect(result).not.toMatch(/"'x-payload-digest-alg'":/)
+    expect(result).not.toMatch(/"'x-payload-digest'":/)
   })
 })

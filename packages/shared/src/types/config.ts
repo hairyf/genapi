@@ -11,7 +11,8 @@ import type {
 
 export namespace ApiPipeline {
   export interface Output {
-    type: 'request' | 'typings'
+    /** main: 主入口 | api: hooks 等 | type: 类型声明 | 任意 string */
+    type: 'main' | 'api' | 'type' | (string & {})
     root: string
     path: string
     import?: string
@@ -38,8 +39,9 @@ export namespace ApiPipeline {
   export interface PreOutput {
     /**
      * genapi output file options
+     * main: 主入口, type: 类型声明, api: hooks 等, 任意 key
      */
-    output?: string | { main?: string, type?: string | false }
+    output?: string | { main?: string, type?: string | false, api?: string, [key: string]: string | false | undefined }
   }
 
   export interface ResponseTypeOptions {
@@ -178,34 +180,20 @@ export namespace ApiPipeline {
     parser?: 'wpapi' | 'swagger'
   }
 
-  export interface Graphs {
-    /**
-     * all comments
-     */
-    comments: string[]
-
-    /**
-     * all api options
-     */
+  /** 单作用域图：comments/imports/variables/functions/typings/interfaces */
+  export interface GraphSlice {
+    comments?: string[]
     functions: StatementFunction[]
-    /**
-     * all request imports
-     */
     imports: StatementImported[]
-
-    /**
-     * all request variables
-     */
     variables: StatementVariable[]
-    /**
-     * all request typings
-     */
     typings: StatementTypeAlias[]
-    /**
-     * all request interfaces
-     */
     interfaces: StatementInterface[]
+  }
 
+  export interface Graphs {
+    /** 按输出类型划分的作用域，key 为 output.type（main/type/api 等） */
+    scopes: Record<string, GraphSlice>
+    /** 全局 response 元数据，compiler 等使用 */
     response: StatementResponse
   }
   export interface ConfigRead<Config = ApiPipeline.Config> {
@@ -238,4 +226,14 @@ export namespace ApiPipeline {
   export type DefineConfig = ConfigServers | Config
 
   export type Pipeline = (config: ApiPipeline.Config) => Promise<void>
+
+  /**
+   * @description
+   * Block of items with add(scope, item), values(scope), and all() (merged from all scopes).
+   */
+  export interface Block<T> {
+    add: (scope: string, item: T) => void
+    values: (scope: string) => T[]
+    all: () => T[]
+  }
 }

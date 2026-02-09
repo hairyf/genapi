@@ -8,7 +8,7 @@ import { ofetch } from '../../../src'
 
 describe('ofetch/schema integration', () => {
   beforeEach(() => {
-    provide({ interfaces: [], functions: [], configRead: undefined })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] }, configRead: undefined })
   })
 
   it('generates complete code with schema preset', async () => {

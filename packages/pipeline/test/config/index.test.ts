@@ -12,8 +12,8 @@ describe('config', () => {
     const result = config(userConfig)
 
     expect(result.inputs.uri).toBe('https://api.example.com/swagger.json')
-    expect(result.outputs).toHaveLength(2) // request + typings
-    expect(result.outputs[0].type).toBe('request')
+    expect(result.outputs).toHaveLength(2) // main + type
+    expect(result.outputs[0].type).toBe('main')
     expect(result.outputs[0].path).toMatch(/[\\/]src[\\/]api[\\/]index\.ts$/)
   })
 
@@ -62,7 +62,7 @@ describe('config', () => {
     const result = config(userConfig)
 
     expect(result.outputs).toHaveLength(2)
-    expect(result.outputs[1].type).toBe('typings')
+    expect(result.outputs[1].type).toBe('type')
     expect(result.outputs[1].path).toContain('.type.ts')
   })
 
@@ -78,7 +78,7 @@ describe('config', () => {
     const result = config(userConfig)
 
     expect(result.outputs).toHaveLength(1)
-    expect(result.outputs[0].type).toBe('request')
+    expect(result.outputs[0].type).toBe('main')
   })
 
   it('uses custom typings path when provided', () => {
@@ -93,7 +93,7 @@ describe('config', () => {
     const result = config(userConfig)
 
     expect(result.outputs).toHaveLength(2)
-    expect(result.outputs[1].type).toBe('typings')
+    expect(result.outputs[1].type).toBe('type')
     expect(result.outputs[1].path).toContain('types.d.ts')
   })
 
@@ -147,10 +147,10 @@ describe('config', () => {
 
     const result = config(userConfig)
 
-    expect(result.graphs.imports).toHaveLength(1)
-    expect(result.graphs.imports[0].name).toBe('Types')
-    expect(result.graphs.imports[0].type).toBe(true)
-    expect(result.graphs.imports[0].namespace).toBe(true)
+    expect(result.graphs.scopes.main.imports).toHaveLength(1)
+    expect(result.graphs.scopes.main.imports[0].name).toBe('Types')
+    expect(result.graphs.scopes.main.imports[0].type).toBe(true)
+    expect(result.graphs.scopes.main.imports[0].namespace).toBe(true)
   })
 
   it('does not generate typings import for JavaScript', () => {
@@ -163,7 +163,7 @@ describe('config', () => {
 
     const result = config(userConfig)
 
-    expect(result.graphs.imports).toHaveLength(0)
+    expect(result.graphs.scopes.main.imports).toHaveLength(0)
   })
 
   it('generates Infer type alias when responseType.infer is set', () => {
@@ -178,9 +178,9 @@ describe('config', () => {
 
     const result = config(userConfig)
 
-    expect(result.graphs.typings).toHaveLength(1)
-    expect(result.graphs.typings[0].name).toBe('Infer<T>')
-    expect(result.graphs.typings[0].export).toBe(true)
+    expect(result.graphs.scopes.type.typings).toHaveLength(1)
+    expect(result.graphs.scopes.type.typings[0].name).toBe('Infer<T>')
+    expect(result.graphs.scopes.type.typings[0].export).toBe(true)
   })
 
   it('initializes meta object when not provided', () => {
@@ -206,7 +206,7 @@ describe('config', () => {
 
     const result = config(userConfig)
 
-    expect(result.graphs.imports[0].value).toBeTruthy()
+    expect(result.graphs.scopes.main.imports[0].value).toBeTruthy()
     expect(result.outputs[1].import).toBeTruthy()
   })
 
@@ -225,7 +225,7 @@ describe('config', () => {
 
     const result = config(userConfig)
 
-    expect(result.graphs.imports[0].value).toBe('./custom-types')
+    expect(result.graphs.scopes.main.imports[0].value).toBe('./custom-types')
   })
 
   it('provides config and configRead to context', () => {
@@ -284,7 +284,7 @@ describe('config', () => {
     const result = config(userConfig)
 
     expect(result.outputs).toHaveLength(2)
-    expect(result.outputs[1].type).toBe('typings')
+    expect(result.outputs[1].type).toBe('type')
   })
 
   it('handles baseURL ending with /"', () => {
@@ -325,7 +325,7 @@ describe('config', () => {
 
     const result = config(userConfig)
 
-    expect(result.graphs.imports[0].value).toBeTruthy()
+    expect(result.graphs.scopes.main.imports[0].value).toBeTruthy()
     expect(result.outputs[1].import).toBeTruthy()
   })
 })

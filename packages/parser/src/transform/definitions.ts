@@ -36,7 +36,7 @@ export function transformDefinitions(definitions: Definitions) {
     ;({ name, properties } = applyPatch(transformDef?.(name, properties)))
     ;({ name, properties } = applyPatch(patchDefinitions[name]))
 
-    interfaces.push({
+    interfaces.add('type', {
       name,
       export: true,
       properties,

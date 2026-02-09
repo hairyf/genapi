@@ -18,7 +18,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   const { parameters, interfaces: attachInters, options } = parseMethodParameters(config)
   let { name, description, url, responseType, body } = parseMethodMetadata(config)
 
-  interfaces.push(...attachInters)
+  attachInters.forEach(i => interfaces.add('type', i))
   const fetcherParams = [...parameters]
   fetcherParams.push({
     name: 'config',
@@ -37,7 +37,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
     syntax: 'typescript',
     configRead,
     description,
-    interfaces,
+    interfaces: interfaces.all(),
     responseType,
   })
 
@@ -46,7 +46,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   url = transformUrlSyntax(url, { baseURL: configRead.config.meta?.baseURL })
   const fetchBody = transformFetchBody(url, options, spaceResponseType)
 
-  functions.push({
+  functions.add('main', {
     export: true,
     async: true,
     name,
@@ -65,7 +65,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   if (isRead) {
     // @pinia/colada useQuery: key + query (not queryKey/queryFn)
     const keyItems = `'${name}', ${paramNames}`
-    functions.push({
+    functions.add('main', {
       export: true,
       name: hook,
       description: [`@wraps ${name}`],
@@ -77,7 +77,7 @@ export const parser = createParser((config, { configRead, functions, interfaces 
   }
   else {
     // @pinia/colada useMutation: mutation (not mutationFn)
-    functions.push({
+    functions.add('main', {
       export: true,
       name: hook,
       description: description ? [...(Array.isArray(description) ? description : [description]), `@wraps ${name}`] : [`@wraps ${name}`],

@@ -18,18 +18,16 @@ describe('axios/ts parser', () => {
       },
       source: {},
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: {
+          main: { comments: [], functions: [], imports: [], interfaces: [], typings: [], variables: [] },
+          type: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+        },
         response: {},
       },
       inputs: {},
       outputs: [],
     }
-    provide({ configRead, interfaces: [], functions: [] })
+    provide({ configRead, interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] } })
   })
 
   it('parses simple GET endpoint', () => {
@@ -38,8 +36,8 @@ describe('axios/ts parser', () => {
 
     const result = parser(configRead)
 
-    expect(result.graphs.functions).toHaveLength(1)
-    const func = result.graphs.functions[0]
+    expect(result.graphs.scopes.main.functions).toHaveLength(1)
+    const func = result.graphs.scopes.main.functions[0]
     expect(func.name).toBe('getPets')
     expect(func.export).toBe(true)
     expect(func.body).toBeDefined()
@@ -53,7 +51,7 @@ describe('axios/ts parser', () => {
 
     const result = parser(configRead)
 
-    const func = result.graphs.functions[0]
+    const func = result.graphs.scopes.main.functions[0]
     expect(func.body?.[1]).toContain('baseURL')
   })
 
@@ -70,25 +68,23 @@ describe('axios/ts parser', () => {
       },
       source: {},
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: {
+          main: { comments: [], functions: [], imports: [], interfaces: [], typings: [], variables: [] },
+          type: { comments: [], functions: [], imports: [], variables: [], typings: [], interfaces: [] },
+        },
         response: {},
       },
       inputs: {},
       outputs: [],
     }
-    provide({ configRead: configReadWithoutBaseURL, interfaces: [], functions: [] })
+    provide({ configRead: configReadWithoutBaseURL, interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] } })
 
     const source = parseOpenapiSpecification(swagger2Minimal)
     configReadWithoutBaseURL.source = source
 
     const result = parser(configReadWithoutBaseURL)
 
-    const func = result.graphs.functions[0]
+    const func = result.graphs.scopes.main.functions[0]
     // baseURL should not be in options when explicitly disabled
     expect(func.body?.[1]).not.toContain('baseURL')
   })
@@ -99,7 +95,7 @@ describe('axios/ts parser', () => {
 
     const result = parser(configRead)
 
-    const getFunc = result.graphs.functions.find((f: any) => f.name.toLowerCase().includes('get'))
+    const getFunc = result.graphs.scopes.main.functions.find((f: any) => f.name.toLowerCase().includes('get'))
     expect(getFunc).toBeDefined()
     expect(getFunc?.parameters).toBeDefined()
     const paramsParam = getFunc?.parameters?.find((p: any) => p.name === 'params')
@@ -112,7 +108,7 @@ describe('axios/ts parser', () => {
 
     const result = parser(configRead)
 
-    const func = result.graphs.functions[0]
+    const func = result.graphs.scopes.main.functions[0]
     const configParam = func.parameters?.find((p: any) => p.name === 'config')
     expect(configParam).toBeDefined()
     expect(configParam?.type).toBe('AxiosRequestConfig')
@@ -125,7 +121,7 @@ describe('axios/ts parser', () => {
 
     const result = parser(configRead)
 
-    const func = result.graphs.functions[0]
+    const func = result.graphs.scopes.main.functions[0]
     expect(func.body?.[1]).toContain('method')
     expect(func.body?.[1]).toContain('"get"')
   })

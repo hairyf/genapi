@@ -6,29 +6,32 @@ describe('ofetch/schema compiler', () => {
   let configRead: any
 
   beforeEach(() => {
+    const mainSlice = {
+      comments: [] as string[],
+      functions: [] as any[],
+      imports: [
+        { name: 'fetch', value: 'ofetch' },
+        {
+          names: ['TypedFetchInput', 'TypedFetchRequestInit', 'TypedFetchResponseBody', 'TypedResponse', 'Endpoint', 'DynamicParam'],
+          value: 'fetchdts',
+        },
+      ],
+      interfaces: [] as any[],
+      typings: [] as any[],
+      variables: [] as any[],
+    }
     configRead = {
-      config: {
-        input: 'test.json',
-      },
+      config: { input: 'test.json' },
       graphs: {
-        comments: [],
-        functions: [],
-        imports: [
-          { name: 'fetch', value: 'ofetch' },
-          {
-            names: ['TypedFetchInput', 'TypedFetchRequestInit', 'TypedFetchResponseBody', 'TypedResponse', 'Endpoint', 'DynamicParam'],
-            value: 'fetchdts',
-          },
-        ],
-        interfaces: [],
-        typings: [],
-        variables: [],
+        scopes: {
+          main: { ...mainSlice },
+          type: { comments: [], functions: [], imports: [], interfaces: [], typings: [], variables: [] },
+        },
+        response: {},
       },
       outputs: [
-        {
-          type: 'request',
-          path: 'dist/index.ts',
-        },
+        { type: 'main', path: 'dist/index.ts' },
+        { type: 'type', path: 'dist/index.type.ts' },
       ],
     }
   })
@@ -44,8 +47,8 @@ describe('ofetch/schema compiler', () => {
 
     const result = compiler(configRead)
 
-    expect(result.graphs.functions).toHaveLength(1)
-    const fetchFunction = result.graphs.functions[0]
+    expect(result.graphs.scopes.main.functions).toHaveLength(1)
+    const fetchFunction = result.graphs.scopes.main.functions[0]
     expect(fetchFunction.name).toBe('$fetch')
     expect(fetchFunction.export).toBe(true)
     expect(fetchFunction.async).toBe(true)
@@ -182,8 +185,8 @@ describe('ofetch/schema compiler', () => {
 
     compiler(configRead)
 
-    expect(configRead.graphs.functions).toHaveLength(1)
-    const fetchFunction = configRead.graphs.functions[0]
+    expect(configRead.graphs.scopes.main.functions).toHaveLength(1)
+    const fetchFunction = configRead.graphs.scopes.main.functions[0]
     expect(fetchFunction.name).toBe('$fetch')
   })
 

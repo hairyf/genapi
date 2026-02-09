@@ -7,7 +7,7 @@ import * as tanstackVueModule from '../../../src/tanstack/vue'
 
 describe('presets/src/tanstack/vue', () => {
   beforeEach(() => {
-    provide({ interfaces: [], functions: [], configRead: undefined })
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, functions: { add: () => {}, values: () => [], all: () => [] }, configRead: undefined })
   })
 
   it('exports default openapiPipeline function', () => {
