@@ -1,5 +1,9 @@
 # yaml-language-server: $schema=https://unpkg.com/undocs/schema/config.json
 
+# 保留 server API（playground /api/generate），否则静态构建会返回 405
+nitro:
+  static: false
+
 name: genapi
 shortDescription: Lightweight API code generator—only the code you need, nothing extra.
 description: A lightweight API code generator that generates only the code you want from OpenAPI and other specs, with no bloat.

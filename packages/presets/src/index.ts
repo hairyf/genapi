@@ -22,7 +22,7 @@ export {
  * @example
  * ```ts
  * import presets from '@genapi/presets'
- * // presets.axios, presets.fetch, presets.ofetch, presets.tanstackQuery, presets.uni, presets.colada
+ * // presets.axios, presets.fetch, presets.ofetch, presets.tanstackQuery, presets.uni; colada: presets.tanstackQuery.colada
  * ```
  */
 export default {

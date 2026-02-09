@@ -153,6 +153,9 @@ patchedDependencies:
   md4w@0.2.7:
     hash: 24299bf86f7d47d3d150ba1e5e5d878ebe662f4b8665f803e19c7717982d185d
     path: patches/md4w@0.2.7.patch
+  undocs@0.4.16:
+    hash: 30aebf24ca3d5a8689833564a4d6a9afecdb5e70bec40ac253251b1c2a4dc561
+    path: patches/undocs@0.4.16.patch
 
 importers:
 
@@ -242,7 +245,7 @@ importers:
     devDependencies:
       undocs:
         specifier: catalog:docs
-        version: 0.4.16(@parcel/watcher@2.5.6)(@tiptap/extensions@3.19.0(@tiptap/core@3.19.0(@tiptap/pm@3.19.0))(@tiptap/pm@3.19.0))(@tiptap/y-tiptap@3.0.2(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.6)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(@types/node@22.19.9)(@vue/compiler-sfc@3.5.27)(@vueuse/core@14.2.0(vue@3.5.27(typescript@5.9.3)))(axios@1.13.4)(cac@6.7.14)(change-case@5.4.4)(commander@13.1.0)(db0@0.3.4)(embla-carousel@8.6.0)(eslint@9.39.2(jiti@2.6.1))(ioredis@5.9.2)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(react@19.2.4)(rolldown@1.0.0-rc.3)(rollup@4.57.1)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(yaml@2.8.2)(yjs@13.6.29)(zod@3.25.76)
+        version: 0.4.16(patch_hash=30aebf24ca3d5a8689833564a4d6a9afecdb5e70bec40ac253251b1c2a4dc561)(@parcel/watcher@2.5.6)(@tiptap/extensions@3.19.0(@tiptap/core@3.19.0(@tiptap/pm@3.19.0))(@tiptap/pm@3.19.0))(@tiptap/y-tiptap@3.0.2(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.6)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(@types/node@22.19.9)(@vue/compiler-sfc@3.5.27)(@vueuse/core@14.2.0(vue@3.5.27(typescript@5.9.3)))(axios@1.13.4)(cac@6.7.14)(change-case@5.4.4)(commander@13.1.0)(db0@0.3.4)(embla-carousel@8.6.0)(eslint@9.39.2(jiti@2.6.1))(ioredis@5.9.2)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(react@19.2.4)(rolldown@1.0.0-rc.3)(rollup@4.57.1)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(yaml@2.8.2)(yjs@13.6.29)(zod@3.25.76)
 
   packages/core:
     dependencies:
@@ -15066,7 +15069,7 @@ snapshots:
 
   undici-types@6.21.0: {}
 
-  undocs@0.4.16(@parcel/watcher@2.5.6)(@tiptap/extensions@3.19.0(@tiptap/core@3.19.0(@tiptap/pm@3.19.0))(@tiptap/pm@3.19.0))(@tiptap/y-tiptap@3.0.2(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.6)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(@types/node@22.19.9)(@vue/compiler-sfc@3.5.27)(@vueuse/core@14.2.0(vue@3.5.27(typescript@5.9.3)))(axios@1.13.4)(cac@6.7.14)(change-case@5.4.4)(commander@13.1.0)(db0@0.3.4)(embla-carousel@8.6.0)(eslint@9.39.2(jiti@2.6.1))(ioredis@5.9.2)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(react@19.2.4)(rolldown@1.0.0-rc.3)(rollup@4.57.1)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(yaml@2.8.2)(yjs@13.6.29)(zod@3.25.76):
+  undocs@0.4.16(patch_hash=30aebf24ca3d5a8689833564a4d6a9afecdb5e70bec40ac253251b1c2a4dc561)(@parcel/watcher@2.5.6)(@tiptap/extensions@3.19.0(@tiptap/core@3.19.0(@tiptap/pm@3.19.0))(@tiptap/pm@3.19.0))(@tiptap/y-tiptap@3.0.2(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.6)(y-protocols@1.0.7(yjs@13.6.29))(yjs@13.6.29))(@types/node@22.19.9)(@vue/compiler-sfc@3.5.27)(@vueuse/core@14.2.0(vue@3.5.27(typescript@5.9.3)))(axios@1.13.4)(cac@6.7.14)(change-case@5.4.4)(commander@13.1.0)(db0@0.3.4)(embla-carousel@8.6.0)(eslint@9.39.2(jiti@2.6.1))(ioredis@5.9.2)(lightningcss@1.31.1)(magicast@0.5.2)(optionator@0.9.4)(react@19.2.4)(rolldown@1.0.0-rc.3)(rollup@4.57.1)(terser@5.46.0)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(yaml@2.8.2)(yjs@13.6.29)(zod@3.25.76):
     dependencies:
       '@headlessui/vue': 1.7.23(vue@3.5.27(typescript@5.9.3))
       '@nuxt/content': 3.11.2(magicast@0.5.2)

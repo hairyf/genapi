@@ -1,0 +1,22 @@
+diff --git a/cli/setup.mjs b/cli/setup.mjs
+index 2b6c815d7ea4dce5b46cd71b5d335d28f393a6f1..350765960b4cced280f8ba1d79ee23f8a9bc0b8e 100644
+--- a/cli/setup.mjs
++++ b/cli/setup.mjs
+@@ -124,7 +124,7 @@ export async function setupDocs(docsDir, opts = {}) {
+         },
+       },
+     },
+-    nitro: {
++    nitro: defu(docsconfig.nitro, {
+       static: true,
+       publicAssets: [{ baseURL: "/", dir: resolve(docsDir, ".docs/public"), maxAge: 0 }],
+       serverAssets: [
+@@ -136,7 +136,7 @@ export async function setupDocs(docsDir, opts = {}) {
+       prerender: {
+         routes: ["/llms.txt", "/llms-full.txt"],
+       },
+-    },
++    }),
+     routeRules: Object.fromEntries(
+       Object.entries(docsconfig.redirects || {}).map(([from, to]) => [from, { redirect: to }]),
+     ),

@@ -25,7 +25,7 @@ const PRESETS: Record<string, PresetConfig> = {
   // 框架集成：通常有固定模式，且仅支持 TS
   'react-query': { label: '@tanstack/react-query', pkg: 'tanstackQuery', fixedMode: 'react', features: ['ts'] },
   'vue-query': { label: '@tanstack/vue-query', pkg: 'tanstackQuery', fixedMode: 'vue', features: ['ts'] },
-  'colada': { label: '@pinia/colada', pkg: 'colada', features: ['ts'] },
+  'colada': { label: '@pinia/colada', pkg: 'tanstackQuery', fixedMode: 'colada', features: ['ts'] },
   'uni-network': { label: '@uni-helper/uni-network', pkg: 'uni', features: ['ts', 'js'] },
 }
 
