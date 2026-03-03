@@ -16,3 +16,5 @@ skills
 test/fixtures
 **/test/fixtures
 BLOG.md
+# OpenClaw skills lock
+skills-lock.json
