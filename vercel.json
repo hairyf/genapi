@@ -1,6 +1,0 @@
-{
-  "buildCommand": "NITRO_PRESET=vercel pnpm -C docs build",
-  "outputDirectory": "docs/.docs/.vercel/output",
-  "framework": "nitro",
-  "installCommand": "pnpm install"
-}
