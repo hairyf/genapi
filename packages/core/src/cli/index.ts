@@ -52,16 +52,30 @@ const main = defineCommand({
     }
 
     const cliOptions = parser.options(options)
-    const { config } = await loadConfig<ApiPipeline.DefineConfig>({
+
+    const loadConfigOptions = {
       name: 'genapi',
-      configFile: 'genapi.config',
       merger: (defaults: any, ...sources: any[]) => {
         const merged = merge(defaults, ...sources)
         return merge(cliOptions, merged)
       },
+    }
+
+    let result = await loadConfig<ApiPipeline.DefineConfig>({
+      ...loadConfigOptions,
+      configFile: 'api.config',
     })
 
-    if (!config) {
+    if (!result._configFile) {
+      result = await loadConfig<ApiPipeline.DefineConfig>({
+        ...loadConfigOptions,
+        configFile: 'genapi.config',
+      })
+    }
+
+    const { config } = result
+
+    if (!config || !result._configFile) {
       console.error('Error: genapi config file not found')
       console.log('\nTip: run "genapi init" to create config file\n')
       process.exit(1)
