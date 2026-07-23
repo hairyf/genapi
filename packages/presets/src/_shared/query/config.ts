@@ -51,6 +51,10 @@ export function createQueryConfig(options: QueryConfigOptions | string) {
       names: ['useQuery', 'useMutation'],
       value: queryLibrary,
     })
+    imports.add('type', {
+      names: ['useQuery', 'useMutation'],
+      value: queryLibrary,
+    })
 
     return configRead
   }

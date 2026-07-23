@@ -14,9 +14,19 @@ function hookName(fetcherName: string) {
   return `use${fetcherName.charAt(0).toUpperCase()}${fetcherName.slice(1)}`
 }
 
-/** Query preset 统一 parser：固定三文件，useQuery(queryKey, queryFn)、useMutation(mutationFn)，description 统一 @wraps */
+/** Prefix schema-defined type names with `Types.` for the main file scope */
+function prefixSchemaType(type: string): string {
+  const arraySuffix = type.endsWith('[]') ? '[]' : ''
+  const baseType = arraySuffix ? type.slice(0, -2) : type
+  const primitives = new Set(['string', 'number', 'boolean', 'void', 'null', 'undefined', 'any', 'never', 'unknown', 'object', 'symbol', 'bigint'])
+  if (/^[A-Z]\w*$/.test(baseType) && !primitives.has(baseType))
+    return `Types.${baseType}${arraySuffix}`
+  return type
+}
+
+/** Query preset 统一 parser */
 export function createQueryParser() {
-  return createParser((config, { configRead, functions, interfaces }) => {
+  return createParser((config, { configRead, functions, interfaces, typings }) => {
     const { parameters, interfaces: attachInters, options: optList } = parseMethodParameters(config)
     let { name, description, url, responseType, body } = parseMethodMetadata(config)
 
@@ -62,19 +72,61 @@ export function createQueryParser() {
       ],
     })
 
+    // Add type aliases to type scope (only once per configRead, checked by existing count)
+    if (typings.values('type').length === 0) {
+      typings.add('type', {
+        export: true,
+        name: 'ExactQueryOptions',
+        generic: 'Response, Query',
+        value: 'Omit<Parameters<typeof useQuery<Response, Error, Response, readonly [string, Query]>>[0], "queryKey" | "queryFn">',
+      })
+      typings.add('type', {
+        export: true,
+        name: 'InitiaQueryOptions',
+        generic: 'RequestConfig = any, Response = void',
+        value: 'Omit<ExactQueryOptions<Response, RequestConfig>, "queryKey" | "queryFn"> & { request: RequestConfig }',
+      })
+      typings.add('type', {
+        export: true,
+        name: 'InitiaMutationOptions',
+        generic: 'RequestConfig = any, Response = void',
+        value: 'Omit<Parameters<typeof useMutation<Response, Error, RequestConfig>>[0], "mutationFn">',
+      })
+    }
+
     const isRead = ['get', 'head'].includes(config.method.toLowerCase())
     const hook = hookName(name)
-    const paramNames = fetcherParams.map(p => p.name).join(', ')
+    const cleanResponseType = responseType ? prefixSchemaType(responseType) : 'void'
+
+    // Build request type from fetcher params (e.g. "{ query?: Types.X, config?: RequestInit }")
+    const requestFields = fetcherParams.map(p =>
+      `${p.name}${p.required ? '' : '?'}: ${p.type}`,
+    )
+    const requestType = `{ ${requestFields.join(', ')} }`
+    const requestAccessors = fetcherParams.map(p =>
+      `request.${p.name}`,
+    ).join(', ')
+
+    // options 是否必传：取决于 request 中有没有 required 的字段
+    const isRequired = fetcherParams.some(p => p.required === true)
+    const destructure = isRequired
+      ? `const { request, ...rest } = options`
+      : `const { request = {}, ...rest } = options ?? {}`
+    const hookDescription = [...description.filter(d => !d.startsWith('@method')), `@see apis.${name}`]
 
     if (isRead) {
-      const keyItems = `${fetcherRef}.name, ${paramNames}`
       functions.add('main', {
         export: true,
         name: hook,
-        description: [`@wraps ${name}`],
-        parameters: fetcherParams,
+        description: hookDescription,
+        parameters: [{
+          name: 'options',
+          type: `Types.InitiaQueryOptions<${requestType}, ${cleanResponseType}>`,
+          required: isRequired,
+        }],
         body: [
-          `return useQuery({ queryKey: [${keyItems}], queryFn: () => ${fetcherRef}(${paramNames}) })`,
+          destructure,
+          `return useQuery({ queryKey: [${fetcherRef}.name, request] as const, queryFn: () => ${fetcherRef}(${requestAccessors}), ...rest })`,
         ],
       })
     }
@@ -82,10 +134,14 @@ export function createQueryParser() {
       functions.add('main', {
         export: true,
         name: hook,
-        description: [`@wraps ${name}`],
-        parameters: [],
+        description: hookDescription,
+        parameters: [{
+          name: 'options',
+          type: `Types.InitiaMutationOptions<${requestType}, ${cleanResponseType}>`,
+          required: isRequired,
+        }],
         body: [
-          `return useMutation({ mutationFn: ${fetcherRef} })`,
+          `return useMutation({ mutationFn: (request) => ${fetcherRef}(${requestAccessors}), ...options })`,
         ],
       })
     }

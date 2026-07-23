@@ -102,6 +102,7 @@ export interface StatementTypeAlias {
   export?: boolean
   name: string
   value: string
+  generic?: string
 }
 
 export interface StatementResponse {

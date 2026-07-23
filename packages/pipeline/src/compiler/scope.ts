@@ -129,8 +129,17 @@ export function compile(configRead: ApiPipeline.ConfigRead, scope: string): stri
   if (functions.length)
     sections.push(functions.join('\n\n'))
 
+  function parseGenerics(generic?: string): { name: string, default?: string }[] {
+    if (!generic)
+      return []
+    return generic.split(',').map((s) => {
+      const [name, ...rest] = s.trim().split('=')
+      return rest.length > 0 ? { name: name.trim(), default: rest.join('=').trim() } : { name: name.trim() }
+    })
+  }
+
   const typings = (slice.typings || []).map(item =>
-    genTypeAlias(item.name, item.value, { export: !!item.export }),
+    genTypeAlias(item.name, item.value, { export: !!item.export, generics: parseGenerics(item.generic) }),
   )
   if (typings.length)
     sections.push(typings.join('\n'))
