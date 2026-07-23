@@ -99,34 +99,32 @@ export function createQueryParser() {
     const cleanResponseType = responseType ? prefixSchemaType(responseType) : 'void'
 
     // Build request type from fetcher params (e.g. "{ query?: Types.X, config?: RequestInit }")
-    const requestFields = fetcherParams.map(p =>
-      `${p.name}${p.required ? '' : '?'}: ${p.type}`,
-    )
+    const requestFields = fetcherParams.map(p => `${p.name}${p.required ? '' : '?'}: ${p.type}`)
     const requestType = `{ ${requestFields.join(', ')} }`
-    const requestAccessors = fetcherParams.map(p =>
-      `request.${p.name}`,
-    ).join(', ')
+    const requestAccessors = fetcherParams.map(p => `request.${p.name}`).join(', ')
 
     // options 是否必传：取决于 request 中有没有 required 的字段
     const isRequired = fetcherParams.some(p => p.required === true)
-    const destructure = isRequired
-      ? `const { request, ...rest } = options`
-      : `const { request = {}, ...rest } = options ?? {}`
-    const hookDescription = [...description.filter(d => !d.startsWith('@method')), `@see apis.${name}`]
+    const requestKey = isRequired ? 'options.request' : 'options?.request || {}'
+
+    description = [...description.filter(d => !d.startsWith('@method')), `@see apis.${name}`]
 
     if (isRead) {
       functions.add('main', {
         export: true,
         name: hook,
-        description: hookDescription,
+        description,
         parameters: [{
           name: 'options',
           type: `Types.InitiaQueryOptions<${requestType}, ${cleanResponseType}>`,
           required: isRequired,
         }],
         body: [
-          destructure,
-          `return useQuery({ queryKey: [${fetcherRef}.name, request] as const, queryFn: () => ${fetcherRef}(${requestAccessors}), ...rest })`,
+          `return useQuery({`,
+          `  queryKey: [${fetcherRef}.name, ${requestKey}] as const, `,
+          `  queryFn: ({ queryKey: [_, request] }) => ${fetcherRef}(${requestAccessors}), `,
+          `  ...options`,
+          `})`,
         ],
       })
     }
@@ -134,14 +132,17 @@ export function createQueryParser() {
       functions.add('main', {
         export: true,
         name: hook,
-        description: hookDescription,
+        description,
         parameters: [{
           name: 'options',
           type: `Types.InitiaMutationOptions<${requestType}, ${cleanResponseType}>`,
           required: isRequired,
         }],
         body: [
-          `return useMutation({ mutationFn: (request) => ${fetcherRef}(${requestAccessors}), ...options })`,
+          `return useMutation({`,
+          `  mutationFn: (request) => ${fetcherRef}(${requestAccessors}),`,
+          `  ...options`,
+          `})`,
         ],
       })
     }
