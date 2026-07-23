@@ -16,7 +16,7 @@ describe('parseParameterFiled', () => {
     expect(field.name).toBe('petId')
     expect(field.type).toBe('string')
     expect(field.required).toBe(true)
-    expect(field.description).toContain('ID of pet')
+    expect(field.description).toEqual(['@description ID of pet'])
   })
 
   it('parses query integer parameter', () => {
@@ -184,6 +184,35 @@ describe('parseParameterFiled', () => {
     const descStr = Array.isArray(field.description) ? field.description.join(' ') : field.description
     expect(descStr).toContain('active')
     expect(descStr).toContain('inactive')
+  })
+
+  it('adds @example and @format to parameter description', () => {
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
+    const param = {
+      name: 'petId',
+      in: 'path' as const,
+      required: true,
+      type: 'string' as const,
+      description: 'ID of pet',
+      example: 'pet-123',
+      format: 'uuid',
+    }
+    const field = parseParameterFiled(param as any)
+    expect(field.description).toEqual([
+      '@description ID of pet',
+      '@example "pet-123"',
+      '@format uuid',
+    ])
+  })
+
+  it('adds @default to parameter description', () => {
+    provide({ interfaces: { add: () => {}, values: () => [], all: () => [] }, configRead: { config: { input: '' }, inputs: {}, outputs: [], graphs: { scopes: {}, response: {} } } as import('@genapi/shared').ApiPipeline.ConfigRead })
+    const param = { name: 'limit', in: 'query' as const, type: 'integer' as const, description: 'Page size', default: 20 }
+    const field = parseParameterFiled(param as any)
+    expect(field.description).toEqual([
+      '@description Page size',
+      '@default 20',
+    ])
   })
 
   it('handles parameter with unsupported in type', () => {

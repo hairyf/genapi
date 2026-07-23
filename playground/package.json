@@ -7,7 +7,8 @@
   },
   "dependencies": {
     "@genapi/pipeline": "workspace:*",
-    "@genapi/transform": "workspace:*"
+    "@genapi/transform": "workspace:*",
+    "@tanstack/react-query": "catalog:"
   },
   "devDependencies": {
     "@genapi/core": "workspace:*",

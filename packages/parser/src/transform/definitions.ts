@@ -44,7 +44,16 @@ export function transformDefinitions(definitions: Definitions) {
 
     function defToFields(name: string, propertie: Schema) {
       const required = Array.isArray(definition?.required) ? definition.required.includes(name) : undefined
-      const description = propertie.description ? `@description ${propertie.description}` : undefined
+      const descParts: string[] = []
+      if (propertie.description)
+        descParts.push(`@description ${propertie.description}`)
+      if (propertie.example !== undefined)
+        descParts.push(`@example ${JSON.stringify(propertie.example)}`)
+      if (propertie.format)
+        descParts.push(`@format ${propertie.format}`)
+      if (propertie.default !== undefined)
+        descParts.push(`@default ${JSON.stringify(propertie.default)}`)
+      const description = descParts.length > 0 ? descParts : undefined
       return {
         name: varFiled(name),
         type: parseSchemaType(propertie),

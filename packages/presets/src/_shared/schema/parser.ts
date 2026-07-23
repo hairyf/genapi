@@ -20,8 +20,18 @@ function hasContent(r: unknown): r is { content?: Record<string, { schema?: unkn
 function getResponseType(responses: any): string {
   const resDefault = responses.default && hasContent(responses.default) ? responses.default : null
   const res200 = responses['200'] && typeof responses['200'] === 'object' ? responses['200'] : null
-  const contentDefault = resDefault?.content?.['application/json']
-  const content200 = res200 && hasContent(res200) ? res200.content?.['application/json'] : null
+
+  // 兼容 application/json 和 */* 等媒体类型
+  const getContentByType = (res: any) => {
+    if (!res?.content)
+      return null
+    return res.content['application/json']
+      ?? res.content['*/*']
+      ?? null
+  }
+
+  const contentDefault = getContentByType(resDefault)
+  const content200 = res200 && hasContent(res200) ? getContentByType(res200) : null
   const schemaFromContent = (contentDefault && typeof contentDefault === 'object' && 'schema' in contentDefault ? (contentDefault as { schema: unknown }).schema : null)
     ?? (content200 && typeof content200 === 'object' && 'schema' in content200 ? (content200 as { schema: unknown }).schema : null)
   const schemaFromRes200 = res200 && typeof res200 === 'object' && 'schema' in res200 && !('content' in res200) ? (res200 as { schema: unknown }).schema : null

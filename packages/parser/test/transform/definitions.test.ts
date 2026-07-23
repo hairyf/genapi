@@ -146,7 +146,36 @@ describe('transformDefinitions', () => {
     const testInterface = typeInterfaces.find((i: any) => i.name === 'Test')
     expect(testInterface).toBeDefined()
     const idField = testInterface!.properties.find((p: any) => p.name === 'id')
-    expect(idField?.description).toBe('@description The unique identifier')
+    expect(idField?.description).toEqual(['@description The unique identifier'])
+  })
+
+  it('adds @format and @default to definition property description', () => {
+    typeInterfaces = []
+    provide({ configRead, interfaces: { add: (_s: string, item: any) => typeInterfaces.push(item), values: (_s: string) => typeInterfaces, all: () => typeInterfaces } })
+    const definitions = {
+      Test: {
+        type: 'object',
+        properties: {
+          id: { type: 'integer', description: 'The unique identifier', format: 'int64', example: 1 },
+          name: { type: 'string', description: 'Name', default: 'default-name' },
+          active: { type: 'boolean', default: true },
+        },
+      },
+    }
+    transformDefinitions(definitions as any)
+    const testInterface = typeInterfaces.find((i: any) => i.name === 'Test')
+    expect(testInterface).toBeDefined()
+    const idField = testInterface!.properties.find((p: any) => p.name === 'id')
+    expect(idField?.description).toEqual([
+      '@description The unique identifier',
+      '@example 1',
+      '@format int64',
+    ])
+    const nameField = testInterface!.properties.find((p: any) => p.name === 'name')
+    expect(nameField?.description).toEqual([
+      '@description Name',
+      '@default "default-name"',
+    ])
   })
 
   it('handles $ref in definition properties', () => {

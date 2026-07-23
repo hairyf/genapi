@@ -455,6 +455,37 @@ describe('parseMethodMetadata', () => {
     expect(result.responseType).toBe('Pet[]')
   })
 
+  it('extracts response type from OpenAPI 3 content schema with wildcard content type', () => {
+    parseMethodParameters({
+      method: 'get',
+      path: '/pets',
+      parameters: [],
+      options: {} as any,
+      responses: {},
+    })
+
+    const result = parseMethodMetadata({
+      method: 'get',
+      path: '/pets',
+      parameters: [],
+      options: {} as any,
+      responses: {
+        200: {
+          description: 'OK',
+          content: {
+            '*/*': {
+              schema: {
+                $ref: '#/components/schemas/Pet',
+              },
+            },
+          },
+        },
+      },
+    })
+
+    expect(result.responseType).toBe('Pet')
+  })
+
   it('extracts response type from Swagger 2 schema', () => {
     parseMethodParameters({
       method: 'get',

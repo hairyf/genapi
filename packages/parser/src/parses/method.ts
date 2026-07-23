@@ -140,8 +140,13 @@ export function parseMethodMetadata({ method, path, responses, options: meta }: 
     const res200 = responses['200']
     const resDefault = responses.default
 
-    // 优先尝试从 content/application/json 获取 (OpenAPI 3.0)
-    const getContentSchema = (res: any) => res?.content?.['application/json']?.schema
+    // 支持 OpenAPI 3.0 content 取 schema，兼容 application/json 和 */* 等媒体类型
+    const getContentSchema = (res: any) => {
+      if (!res?.content)
+        return undefined
+      return res.content['application/json']?.schema
+        ?? res.content['*/*']?.schema
+    }
     const schemaFromContent = getContentSchema(res200) ?? getContentSchema(resDefault)
     if (schemaFromContent)
       return schemaFromContent
