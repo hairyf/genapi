@@ -136,7 +136,7 @@ export function parseSchemaType(propertie: SchemaWithAllOf): string {
     const itemsEnum = propertie.items?.enum
     if (Array.isArray(itemsEnum)) {
       const enumStrs = itemsEnum.filter((e): e is string => typeof e === 'string')
-      return ['string', spliceEnumType(enumStrs)].filter(Boolean).join(' | ')
+      return spliceEnumType(enumStrs)
     }
 
     let itemsType = parseSchemaType(propertie.items!)
