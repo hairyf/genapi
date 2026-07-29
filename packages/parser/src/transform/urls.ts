@@ -178,7 +178,7 @@ export function transformFetchBody(url: string, options: LiteralField[], spaceRe
   if (spaceResponseType === 'void')
     return bodies.void
 
-  if (spaceResponseType === 'string' || spaceResponseType === 'number')
+  if (spaceResponseType === 'string')
     return bodies.text
 
   if (spaceResponseType === 'any')
